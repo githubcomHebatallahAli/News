@@ -25,6 +25,15 @@ class Admin extends Authenticatable  implements JWTSubject
     {
         return $this->belongsTo(Role::class);
     }
+       // public function permissions()
+    // {
+    //     return $this->role->rolePermissions->pluck('name') ?? [];
+    // }
+    // public function hasPermission($permissionCheck)
+    // {
+    //     $uesrPermissions = $this->permissions();
+    //     return in_array($permissionCheck, $uesrPermissions);
+    // }
 
     protected $hidden = [
         'password',
