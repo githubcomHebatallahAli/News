@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Log;
 use App\Models\Role;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
@@ -17,10 +18,14 @@ class RoleController extends Controller
         $this->middleware('admin');
     }
 
-    // public function showAll()
-    // {
-    //     return $this->showAll(Role::class, RoleResource::class);
-    // }
+    public function showAll(){
+        Log::info('Fetching all roles');
+        return $this->showAll(Role::class, RoleResource::class);
+
+    }
+
+
+
 
     // public function create(RoleRequest $request)
     // {
@@ -57,16 +62,16 @@ class RoleController extends Controller
         return $this->forceDeleteModel(Role::class, $id);
     }
 
-    public function showAll()
-    {
-        $this->authorize('manage_users');
+    // public function showAll()
+    // {
+    //     $this->authorize('manage_users');
 
-        $Roles = Role::get();
-        return response()->json([
-            'data' => RoleResource::collection($Roles),
-            'message' => "Show All Roles Successfully."
-        ]);
-    }
+    //     $Roles = Role::get();
+    //     return response()->json([
+    //         'data' => RoleResource::collection($Roles),
+    //         'message' => "Show All Roles Successfully."
+    //     ]);
+    // }
 
 
     public function create(RoleRequest $request)
