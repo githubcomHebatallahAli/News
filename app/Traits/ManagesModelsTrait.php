@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 trait ManagesModelsTrait
 {
 
-    public function showAll(string $modelClass, string $resourceClass)
-    {
-        $this->authorize('manage_users');
+    // public function showAll(string $modelClass, string $resourceClass)
+    // {
+    //     $this->authorize('manage_users');
 
-        $models = $modelClass::get();
-        return response()->json([
-            'data' => $resourceClass::collection($models),
-            'message' => "Show All " . class_basename($modelClass) . "s Successfully."
-        ]);
-    }
+    //     $models = $modelClass::get();
+    //     return response()->json([
+    //         'data' => $resourceClass::collection($models),
+    //         'message' => "Show All " . class_basename($modelClass) . "s Successfully."
+    //     ]);
+    // }
 
     public function create(Request $request, string $modelClass, string $resourceClass)
     {
