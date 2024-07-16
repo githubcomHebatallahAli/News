@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\Admin;
+use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Ichtrojan\Otp\Otp;
+use App\Rules\EmailExistsInUsersOrAdmins;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 
 class ResetPasswordController extends Controller
@@ -21,7 +23,20 @@ class ResetPasswordController extends Controller
             if (!$otp2->status){
                 return response()->json(['error' => $otp2],401);
             }
-            $user = User::where('email',$request->email)->first();
+
+            $user = User::where('email', $request->email)->first();
+            if (!$user) {
+                $admin = Admin::where('email', $request->email)->first();
+                if (!$admin) {
+                    return response()->json(['error' => 'User or admin not found.'], 404);
+                }
+
+                $admin->update(['password' => Hash::make($request->password)]);
+            } else {
+
+                $user->update(['password' => Hash::make($request->password)]);
+            }
+
             $user->update(['password'=>Hash::make($request->password)]);
             // $user->tokens()->delete();
 
