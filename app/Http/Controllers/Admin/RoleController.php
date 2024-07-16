@@ -16,6 +16,7 @@ class RoleController extends Controller
     protected $model = Role::class;
     protected $resource = RoleResource::class;
     protected $policy = 'manage_users';
+    protected $request = RoleRequest::class;
 
 //     public function showAll()
 //     {
