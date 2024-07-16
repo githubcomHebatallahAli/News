@@ -24,7 +24,7 @@ class RoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' =>'string|required',
+            'name' =>'string|required',
         ];
     }
     public function failedValidation(Validator $validator)

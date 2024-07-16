@@ -82,63 +82,23 @@ class CategoryController extends Controller
 }
 
 public function destroy(string $id){
-//     $this->authorize('manage_users');
-//     $Category =Category::find($id);
-//     if (!$Category) {
-//      return response()->json([
-//          'message' => "Category not found."
-//      ], 404);
-//  }
 
-//     $Category->delete($id);
-//     return response()->json([
-//         'data' =>new CategoryResource($Category),
-//         'message' => " Soft Delete Category By Id Successfully."
-//     ]);
 return $this->destroyModel(Category::class, CategoryResource::class, $id);
 }
 
     public function showDeleted(){
-    //     $this->authorize('manage_users');
-    // $Categorys=Category::onlyTrashed()->get();
-    // return response()->json([
-    //     'data' =>CategoryResource::collection($Categorys),
-    //     'message' => "Show Deleted Categorys Successfully."
-    // ]);
+
     return $this->showDeletedModels(Category::class, CategoryResource::class);
 }
 
 public function restore(string $id)
 {
-    //    $this->authorize('manage_users');
-    // $Category = Category::withTrashed()->where('id', $id)->first();
-    // if (!$Category) {
-    //     return response()->json([
-    //         'message' => "Category not found."
-    //     ], 404);
-    // }
 
-    // $Category->restore();
-    // return response()->json([
-    //     'message' => "Restore Category By Id Successfully."
-    // ]);
     return $this->restoreModel(Category::class, $id);
 }
 
 public function forceDelete(string $id){
-    // $this->authorize('manage_users');
-    // $Category=Category::withTrashed()->where('id',$id)->first();
-    // if (!$Category) {
-    //     return response()->json([
-    //         'message' => "Category not found."
-    //     ], 404);
-    // }
 
-
-    // $Category->forceDelete();
-    // return response()->json([
-    //     'message' => " Force Delete Category By Id Successfully."
-    // ]);
     return $this->forceDeleteModel(Category::class, $id);
 }
 }

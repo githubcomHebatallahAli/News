@@ -124,7 +124,7 @@ class AdminAuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('admin')->factory()->getTTL() * 60,
             'admin' => auth()->guard('admin')->user(),
-              'admin' => Admin::with('role:id,role')->find(auth()->id()),
+              'admin' => Admin::with('name:id,role')->find(auth()->id()),
         ]);
     }
 }
