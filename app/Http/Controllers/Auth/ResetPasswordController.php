@@ -37,7 +37,6 @@ class ResetPasswordController extends Controller
                 $user->update(['password' => Hash::make($request->password)]);
             }
 
-            $user->update(['password'=>Hash::make($request->password)]);
             // $user->tokens()->delete();
 
 
