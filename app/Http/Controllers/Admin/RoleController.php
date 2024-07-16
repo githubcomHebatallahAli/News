@@ -13,7 +13,7 @@ class RoleController extends Controller
 
     public function showAll()
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
 
         $Roles = Role::get();
         return response()->json([
@@ -25,7 +25,7 @@ class RoleController extends Controller
 
     public function create(RoleRequest $request)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
 
            $Role =Role::create ([
 
@@ -42,7 +42,7 @@ class RoleController extends Controller
 
     public function edit(string $id)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
         $Role = Role::find($id);
 
         if (!$Role) {
@@ -61,7 +61,7 @@ class RoleController extends Controller
 
     public function update(RoleRequest $request, string $id)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
        $Role =Role::findOrFail($id);
 
        if (!$Role) {
@@ -81,7 +81,7 @@ class RoleController extends Controller
 }
 
 public function destroy(string $id){
-    // $this->authorize('manage_users');
+    $this->authorize('manage_users');
     $Role =Role::find($id);
     if (!$Role) {
      return response()->json([
@@ -97,7 +97,7 @@ public function destroy(string $id){
 }
 
     public function showDeleted(){
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
     $Roles=Role::onlyTrashed()->get();
     return response()->json([
         'data' =>RoleResource::collection($Roles),
@@ -107,14 +107,14 @@ public function destroy(string $id){
 
 public function restore(string $id)
 {
-    //    $this->authorize('manage_users');
+       $this->authorize('manage_users');
     $Role = Role::withTrashed()->where('id', $id)->first();
     if (!$Role) {
         return response()->json([
             'message' => "Role not found."
         ], 404);
     }
- 
+
     $Role->restore();
     return response()->json([
         'message' => "Restore Role By Id Successfully."
@@ -122,7 +122,7 @@ public function restore(string $id)
 }
 
 public function forceDelete(string $id){
-    // $this->authorize('manage_users');
+    $this->authorize('manage_users');
     $Role=Role::withTrashed()->where('id',$id)->first();
     if (!$Role) {
         return response()->json([
