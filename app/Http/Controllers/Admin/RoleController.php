@@ -25,7 +25,7 @@ class RoleController extends Controller
 
     public function create(RoleRequest $request)
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
 
            $Role =Role::create ([
 
