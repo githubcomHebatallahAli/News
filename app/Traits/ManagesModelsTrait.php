@@ -11,6 +11,17 @@ trait ManagesModelsTrait
     protected $policy;
     protected $request;
 
+    public function showAll()
+    {
+        $this->authorize($this->policy);
+
+        $models = $this->model::get();
+        return response()->json([
+            'data' => $this->resource::collection($models),
+            'message' => "Show All " . class_basename($this->model) . "s Successfully."
+        ]);
+    }
+    
     public function create(Request $request)
     {
         $this->authorize($this->policy);
