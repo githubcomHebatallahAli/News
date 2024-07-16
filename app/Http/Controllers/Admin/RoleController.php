@@ -13,10 +13,45 @@ class RoleController extends Controller
 {
     use ManagesModelsTrait;
 
-    protected $model = Role::class;
-    protected $resource = RoleResource::class;
-    protected $policy = 'manage_users';
-    protected $request = RoleRequest::class;
+    public function showAll()
+    {
+        return $this->showAll(Role::class, RoleResource::class);
+    }
+
+    public function create(RoleRequest $request)
+    {
+        return $this->create($request, Role::class, RoleResource::class);
+    }
+
+    public function edit(string $id)
+    {
+        return $this->edit(Role::class, RoleResource::class, $id);
+    }
+
+    public function update(RoleRequest $request, string $id)
+    {
+        return $this->update($request, Role::class, RoleResource::class, $id);
+    }
+
+    public function destroy(string $id)
+    {
+        return $this->destroyModel(Role::class, RoleResource::class, $id);
+    }
+
+    public function showDeleted()
+    {
+        return $this->showDeletedModels(Role::class, RoleResource::class);
+    }
+
+    public function restore(string $id)
+    {
+        return $this->restoreModel(Role::class, $id);
+    }
+
+    public function forceDelete(string $id)
+    {
+        return $this->forceDeleteModel(Role::class, $id);
+    }
 
 //     public function showAll()
 //     {

@@ -6,148 +6,116 @@ use Illuminate\Http\Request;
 
 trait ManagesModelsTrait
 {
-    protected $model;
-    protected $resource;
-    protected $policy;
-    protected $request;
 
-    public function showAll()
+    public function showAll(string $modelClass, string $resourceClass)
     {
-        $this->authorize($this->policy);
+        $this->authorize('manage_users');
 
-        $models = $this->model::get();
+        $models = $modelClass::get();
         return response()->json([
-            'data' => $this->resource::collection($models),
-            'message' => "Show All " . class_basename($this->model) . "s Successfully."
-        ]);
-    }
-    
-    public function create(Request $request)
-    {
-        $this->authorize($this->policy);
-
-        // Validate incoming request using RoleRequest
-        $validatedData = $request->validate($this->request::rules());
-
-        // Create new model instance with validated data
-        $model = $this->model::create($validatedData);
-        $model->save();
-
-        return response()->json([
-            'data' => new $this->resource($model),
-            'message' => class_basename($this->model) . " Created Successfully."
+            'data' => $resourceClass::collection($models),
+            'message' => "Show All " . class_basename($modelClass) . "s Successfully."
         ]);
     }
 
-    public function edit(Request $request, string $id)
+    public function create(Request $request, string $modelClass, string $resourceClass)
     {
-        $this->authorize($this->policy);
-        $model = $this->model::find($id);
+        // Optionally authorize here if needed
+        $this->authorize('manage_users');
+
+        $model = $modelClass::create($request->all());
+        return response()->json([
+            'data' => new $resourceClass($model),
+            'message' => class_basename($modelClass) . " Created Successfully."
+        ]);
+    }
+
+    public function edit(string $modelClass, string $resourceClass, string $id)
+    {
+        $this->authorize('manage_users');
+        $model = $modelClass::find($id);
 
         if (!$model) {
             return response()->json([
-                'message' => class_basename($this->model) . " not found."
+                'message' => class_basename($modelClass) . " not found."
             ], 404);
         }
 
-        // Validate and update the model instance
-        $validatedData = $request->validate($this->request::rules());
-
-        $model->fill($validatedData);
-        $model->save();
-
         return response()->json([
-            'data' => new $this->resource($model),
-            'message' => class_basename($this->model) . " Updated Successfully."
+            'data' => new $resourceClass($model),
+            'message' => "Edit " . class_basename($modelClass) . " By ID Successfully."
         ]);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $modelClass, string $resourceClass, string $id)
     {
-        $this->authorize($this->policy);
-        $model = $this->model::findOrFail($id);
+        $this->authorize('manage_users');
+        $model = $modelClass::findOrFail($id);
 
         if (!$model) {
             return response()->json([
-                'message' => class_basename($this->model) . " not found."
+                'message' => class_basename($modelClass) . " not found."
             ], 404);
         }
 
-        // Validate and update the model instance
-        $validatedData = $request->validate($this->request::rules());
-
-        $model->fill($validatedData);
-        $model->save();
-
+        $model->update($request->all());
         return response()->json([
-            'data' => new $this->resource($model),
-            'message' => class_basename($this->model) . " Updated Successfully."
+            'data' => new $resourceClass($model),
+            'message' => " Update " . class_basename($modelClass) . " By Id Successfully."
         ]);
     }
-
-    public function destroyModel(string $id)
-    {
-        $this->authorize($this->policy);
-        $model = $this->model::find($id);
-
-        if (!$model) {
+    public function destroyModel(string $modelClass, string $resourceClass, string $id){
+        $this->authorize('manage_users');
+        $modelInstance = $modelClass::find($id);
+        if (!$modelInstance) {
             return response()->json([
-                'message' => class_basename($this->model) . " not found."
+                'message' => class_basename($modelClass) . " not found."
             ], 404);
         }
 
-        $model->delete();
-
+        $modelInstance->delete();
         return response()->json([
-            'data' => new $this->resource($model),
-            'message' => "Soft Delete " . class_basename($this->model) . " By Id Successfully."
+            'data' => new $resourceClass($modelInstance),
+            'message' => "Soft Delete " . class_basename($modelClass) . " By Id Successfully."
         ]);
     }
 
-    public function restoreModel(string $id)
-    {
-        $this->authorize($this->policy);
-        $model = $this->model::withTrashed()->find($id);
+    public function showDeletedModels(string $modelClass, string $resourceClass){
+        $this->authorize('manage_users');
+        $models = $modelClass::onlyTrashed()->get();
+        return response()->json([
+            'data' => $resourceClass::collection($models),
+            'message' => "Show Deleted " . class_basename($modelClass) . " Successfully."
+        ]);
+    }
 
-        if (!$model) {
+    public function restoreModel(string $modelClass, string $id){
+        $this->authorize('manage_users');
+        $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
+        if (!$modelInstance) {
             return response()->json([
-                'message' => class_basename($this->model) . " not found."
+                'message' => class_basename($modelClass) . " not found."
             ], 404);
         }
 
-        $model->restore();
-
+        $modelInstance->restore();
         return response()->json([
-            'message' => "Restore " . class_basename($this->model) . " By Id Successfully."
+            'message' => "Restore " . class_basename($modelClass) . " By Id Successfully."
         ]);
     }
 
-    public function forceDeleteModel(string $id)
-    {
-        $this->authorize($this->policy);
-        $model = $this->model::withTrashed()->find($id);
-
-        if (!$model) {
+    public function forceDeleteModel(string $modelClass, string $id){
+        $this->authorize('manage_users');
+        $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
+        if (!$modelInstance) {
             return response()->json([
-                'message' => class_basename($this->model) . " not found."
+                'message' => class_basename($modelClass) . " not found."
             ], 404);
         }
 
-        $model->forceDelete();
-
+        $modelInstance->forceDelete();
         return response()->json([
-            'message' => "Force Delete " . class_basename($this->model) . " By Id Successfully."
-        ]);
-    }
-
-    public function showDeletedModels()
-    {
-        $this->authorize($this->policy);
-        $models = $this->model::onlyTrashed()->get();
-
-        return response()->json([
-            'data' => $this->resource::collection($models),
-            'message' => "Show Deleted " . class_basename($this->model) . " Successfully."
+            'message' => "Force Delete " . class_basename($modelClass) . " By Id Successfully."
         ]);
     }
 }
