@@ -22,10 +22,10 @@ class RoleController extends Controller
     //     return $this->showAll(Role::class, RoleResource::class);
     // }
 
-    public function create(RoleRequest $request)
-    {
-        return $this->create($request, Role::class, RoleResource::class);
-    }
+    // public function create(RoleRequest $request)
+    // {
+    //     return $this->create($request, Role::class, RoleResource::class);
+    // }
 
     public function edit(string $id)
     {
