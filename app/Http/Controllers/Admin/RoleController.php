@@ -12,6 +12,10 @@ use App\Http\Resources\Admin\RoleResource;
 class RoleController extends Controller
 {
     use ManagesModelsTrait;
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
 
     public function showAll()
     {
