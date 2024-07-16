@@ -18,17 +18,17 @@ trait ManagesModelsTrait
     //     ]);
     // }
 
-    public function create(Request $request, string $modelClass, string $resourceClass)
-    {
-        // Optionally authorize here if needed
-        $this->authorize('manage_users');
+    // public function create(Request $request, string $modelClass, string $resourceClass)
+    // {
+    //     // Optionally authorize here if needed
+    //     $this->authorize('manage_users');
 
-        $model = $modelClass::create($request->all());
-        return response()->json([
-            'data' => new $resourceClass($model),
-            'message' => class_basename($modelClass) . " Created Successfully."
-        ]);
-    }
+    //     $model = $modelClass::create($request->all());
+    //     return response()->json([
+    //         'data' => new $resourceClass($model),
+    //         'message' => class_basename($modelClass) . " Created Successfully."
+    //     ]);
+    // }
 
     public function edit(string $modelClass, string $resourceClass, string $id)
     {

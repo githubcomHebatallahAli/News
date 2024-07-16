@@ -69,21 +69,21 @@ class RoleController extends Controller
     }
 
 
-//     public function create(RoleRequest $request)
-//     {
-//         // $this->authorize('manage_users');
+    public function create(RoleRequest $request)
+    {
+        // $this->authorize('manage_users');
 
-//            $Role =Role::create ([
+           $Role =Role::create ([
 
-//                 "name" => $request->name
-//             ]);
-//            $Role->save();
-//            return response()->json([
-//             'data' =>new RoleResource($Role),
-//             'message' => "Role Created Successfully."
-//         ]);
+                "name" => $request->name
+            ]);
+           $Role->save();
+           return response()->json([
+            'data' =>new RoleResource($Role),
+            'message' => "Role Created Successfully."
+        ]);
 
-//         }
+        }
 
 
 //     public function edit(string $id)
