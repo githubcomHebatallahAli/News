@@ -13,34 +13,78 @@ use App\Http\Resources\Admin\RoleResource;
 class RoleController extends Controller
 {
     use ManagesModelsTrait;
-    public function __construct()
+    
+      public function showAll()
     {
-        $this->middleware('admin');
+        $this->authorize('manage_users');
+
+        $Roles = Role::get();
+        return response()->json([
+            'data' => RoleResource::collection($Roles),
+            'message' => "Show All Roles Successfully."
+        ]);
     }
 
-    public function showAll(){
-        Log::info('Fetching all roles');
-        return $this->showAll(Role::class, RoleResource::class);
 
-    }
+    public function create(RoleRequest $request)
+    {
+        // $this->authorize('manage_users');
 
+           $Role =Role::create ([
 
+                "name" => $request->name
+            ]);
+           $Role->save();
+           return response()->json([
+            'data' =>new RoleResource($Role),
+            'message' => "Role Created Successfully."
+        ]);
 
+        }
 
-    // public function create(RoleRequest $request)
-    // {
-    //     return $this->create($request, Role::class, RoleResource::class);
-    // }
 
     public function edit(string $id)
     {
-        return $this->edit(Role::class, RoleResource::class, $id);
+        $this->authorize('manage_users');
+        $Role = Role::find($id);
+
+        if (!$Role) {
+            return response()->json([
+                'message' => "Role not found."
+            ], 404);
+        }
+
+        return response()->json([
+            'data' =>new RoleResource($Role),
+            'message' => "Edit Role By ID Successfully."
+        ]);
     }
+
+
 
     public function update(RoleRequest $request, string $id)
     {
-        return $this->update($request, Role::class, RoleResource::class, $id);
+        $this->authorize('manage_users');
+       $Role =Role::findOrFail($id);
+
+       if (!$Role) {
+        return response()->json([
+            'message' => "Role not found."
+        ], 404);
     }
+       $Role->update([
+        "name" => $request->name
+        ]);
+
+       $Role->save();
+       return response()->json([
+        'data' =>new RoleResource($Role),
+        'message' => " Update Role By Id Successfully."
+    ]);
+
+}
+
+
 
     public function destroy(string $id)
     {
@@ -62,130 +106,6 @@ class RoleController extends Controller
         return $this->forceDeleteModel(Role::class, $id);
     }
 
-    // public function showAll()
-    // {
-    //     $this->authorize('manage_users');
 
-    //     $Roles = Role::get();
-    //     return response()->json([
-    //         'data' => RoleResource::collection($Roles),
-    //         'message' => "Show All Roles Successfully."
-    //     ]);
-    // }
-
-
-    public function create(RoleRequest $request)
-    {
-        // $this->authorize('manage_users');
-
-           $Role =Role::create ([
-
-                "name" => $request->name
-            ]);
-           $Role->save();
-           return response()->json([
-            'data' =>new RoleResource($Role),
-            'message' => "Role Created Successfully."
-        ]);
-
-        }
-
-
-//     public function edit(string $id)
-//     {
-//         $this->authorize('manage_users');
-//         $Role = Role::find($id);
-
-//         if (!$Role) {
-//             return response()->json([
-//                 'message' => "Role not found."
-//             ], 404);
-//         }
-
-//         return response()->json([
-//             'data' =>new RoleResource($Role),
-//             'message' => "Edit Role By ID Successfully."
-//         ]);
-//     }
-
-
-
-//     public function update(RoleRequest $request, string $id)
-//     {
-//         $this->authorize('manage_users');
-//        $Role =Role::findOrFail($id);
-
-//        if (!$Role) {
-//         return response()->json([
-//             'message' => "Role not found."
-//         ], 404);
-//     }
-//        $Role->update([
-//         "name" => $request->name
-//         ]);
-
-//        $Role->save();
-//        return response()->json([
-//         'data' =>new RoleResource($Role),
-//         'message' => " Update Role By Id Successfully."
-//     ]);
-// }
-
-// public function destroy(string $id){
-//     $this->authorize('manage_users');
-//     $Role =Role::find($id);
-//     if (!$Role) {
-//      return response()->json([
-//          'message' => "Role not found."
-//      ], 404);
-//  }
-
-//     $Role->delete($id);
-//     return response()->json([
-//         'data' =>new RoleResource($Role),
-//         'message' => " Soft Delete Role By Id Successfully."
-//     ]);
-// }
-
-//     public function showDeleted(){
-//         $this->authorize('manage_users');
-//     $Roles=Role::onlyTrashed()->get();
-//     return response()->json([
-//         'data' =>RoleResource::collection($Roles),
-//         'message' => "Show Deleted Roles Successfully."
-//     ]);
-// }
-
-// public function restore(string $id)
-// {
-//        $this->authorize('manage_users');
-//     $Role = Role::withTrashed()->where('id', $id)->first();
-//     if (!$Role) {
-//         return response()->json([
-//             'message' => "Role not found."
-//         ], 404);
-//     }
-
-//     $Role->restore();
-//     return response()->json([
-//         'message' => "Restore Role By Id Successfully."
-//     ]);
-// }
-
-// public function forceDelete(string $id){
-//     $this->authorize('manage_users');
-//     $Role=Role::withTrashed()->where('id',$id)->first();
-//     if (!$Role) {
-//         return response()->json([
-//             'message' => "Role not found."
-//         ], 404);
-//     }
-
-
-//     $Role->forceDelete();
-//     return response()->json([
-//         'message' => " Force Delete Role By Id Successfully."
-//     ]);
-// }
 
 }

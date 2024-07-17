@@ -21,7 +21,5 @@
     ],
     "roles" => [
         "Super Admin",
-        "Admin",
-        
     ]
 ];

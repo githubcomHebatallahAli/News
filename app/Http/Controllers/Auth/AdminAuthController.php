@@ -15,7 +15,7 @@ class AdminAuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin',
-         ['except' => ['login',"register",'verify']]);
+         ['except' => ['login','verify']]);
     }
 
     /**
