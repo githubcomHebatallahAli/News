@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class CategoryRequest extends FormRequest
+class TNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' =>'string|required',
-            'url' =>'string|required',
+            'content' =>'string|required',
+            'trending_news_id'=>'required|exists:trending_news,id'
         ];
     }
 

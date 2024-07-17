@@ -27,17 +27,6 @@ class User extends Authenticatable implements JWTSubject
     ];
 
 
-
-    // public function permissions()
-    // {
-    //     return $this->role->rolePermissions->pluck('name') ?? [];
-    // }
-    // public function hasPermission($permissionCheck)
-    // {
-    //     $uesrPermissions = $this->permissions();
-    //     return in_array($permissionCheck, $uesrPermissions);
-    // }
-
     /**
      * The attributes that should be hidden for serialization.
      *

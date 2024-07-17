@@ -26,7 +26,7 @@ class TrendingNewsRequest extends FormRequest
     {
         return [
             'title' =>'string|required',
-            'content' =>'string|required',
+           
         ];
     }
 

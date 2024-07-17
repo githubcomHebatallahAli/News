@@ -6,15 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TrendingNews extends Model
+class TNews extends Model
 {
     use HasFactory , SoftDeletes ;
     protected $fillable = [
-        'title',
+        'content',
+        'trending_news_id'
     ];
 
-    public function news()
+    public function trendingNews()
     {
-        return $this->hasMany(TNews::class);
+        return $this->belongsTo(TrendingNews::class);
     }
+
 }

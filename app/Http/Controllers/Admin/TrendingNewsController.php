@@ -31,7 +31,7 @@ class TrendingNewsController extends Controller
            $TrendingNews =TrendingNews::create ([
 
                 "title" => $request->title,
-                "content" => $request->content,
+
             ]);
            $TrendingNews->save();
            return response()->json([
@@ -73,7 +73,7 @@ class TrendingNewsController extends Controller
     }
        $TrendingNews->update([
         "title" => $request-> title,
-        "content" => $request-> content
+     
         ]);
 
        $TrendingNews->save();

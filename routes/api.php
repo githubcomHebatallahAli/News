@@ -13,3 +13,4 @@ require __DIR__ . '/Apis/Auth/resetPassword.php';
 require __DIR__ . '/Apis/Admin/role.php';
 require __DIR__ . '/Apis/Admin/category.php';
 require __DIR__ . '/Apis/Admin/trendingNews.php';
+require __DIR__ . '/Apis/Admin/TNews.php';

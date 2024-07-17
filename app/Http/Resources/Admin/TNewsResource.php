@@ -5,7 +5,7 @@ namespace App\Http\Resources\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TrendingNewsResource extends JsonResource
+class TNewsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,9 @@ class TrendingNewsResource extends JsonResource
     {
         return [
             "id" => $this -> id,
-            'title' => $this -> title,
+            'content' => $this -> content,
+            'trending_news' => new TrendingNewsResource($this->TrendingNews),
+
         ];
     }
 }

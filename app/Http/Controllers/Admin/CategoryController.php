@@ -30,7 +30,8 @@ class CategoryController extends Controller
 
            $Category =Category::create ([
 
-                "name" => $request->name
+                "name" => $request->name,
+                "url" => $request->url
             ]);
            $Category->save();
            return response()->json([
@@ -71,7 +72,8 @@ class CategoryController extends Controller
         ], 404);
     }
        $Category->update([
-        "name" => $request->name
+        "name" => $request->name,
+        "url" => $request->url
         ]);
 
        $Category->save();
