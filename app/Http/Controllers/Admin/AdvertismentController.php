@@ -84,7 +84,7 @@ class AdvertismentController extends Controller
           if ($advertisment->img) {
               Storage::disk('public')->delete($advertisment->img);
           }
-          $imgPath = $request->file('img')->store('advertisments', 'public');
+          $imgPath = $request->file('img')->store('Advertisments', 'public');
           $advertisment->img = $imgPath;
       }
 
