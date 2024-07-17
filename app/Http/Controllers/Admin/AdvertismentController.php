@@ -35,7 +35,7 @@ class AdvertismentController extends Controller
           ]);
           if ($request->hasFile('img')) {
             $imgPath = $request->file('img')->store(Advertisment::storageFolder);
-            $Advertisment->poster =  $imgPath;
+            $Advertisment->img =  $imgPath;
         }
          $Advertisment->save();
          return response()->json([
@@ -68,33 +68,34 @@ class AdvertismentController extends Controller
   public function update(AdvertismentRequest $request, string $id)
   {
       $this->authorize('manage_users');
-     $Advertisment =Advertisment::findOrFail($id);
+      $advertisment = Advertisment::findOrFail($id);
 
-     if (!$Advertisment) {
-      return response()->json([
-          'message' => "Advertisment not found."
-      ], 404);
-  }
-     $Advertisment->update([
-        "title" => $request-> title,
-        "content" => $request-> content,
-        "url" => $request-> url,
+      if (!$advertisment) {
+          return response()->json([
+              'message' => "Advertisment not found."
+          ], 404);
+      }
+
+      $advertisment->update([
+          'url' => $request->url,
       ]);
+
       if ($request->hasFile('img')) {
-        if ($Advertisment->img) {
-            Storage::disk('public')->delete($Advertisment->img);
-        }
-        $imgPath = $request->file('img')->store('img', 'public');
-        $Advertisment->img = $imgPath;
-    }
+          if ($advertisment->img) {
+              Storage::disk('public')->delete($advertisment->img);
+          }
+          $imgPath = $request->file('img')->store('advertisments', 'public');
+          $advertisment->img = $imgPath;
+      }
 
-     $Advertisment->save();
-     return response()->json([
-      'data' =>new AdvertismentResource($Advertisment),
-      'message' => " Update Advertisment By Id Successfully."
-  ]);
+      $advertisment->save();
 
-}
+      return response()->json([
+          'data' => new AdvertismentResource($advertisment),
+          'message' => "Update Advertisment By Id Successfully."
+      ]);
+  }
+
 
 
 

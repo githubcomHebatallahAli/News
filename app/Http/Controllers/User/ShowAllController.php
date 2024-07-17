@@ -4,10 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Models\TNews;
 use App\Models\Category;
+use App\Models\Advertisment;
 use App\Models\TrendingNews;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\CategoryResource;
+use App\Http\Resources\Admin\AdvertismentResource;
 use App\Http\Resources\Admin\TrendingNewsResource;
 
 
@@ -22,7 +24,7 @@ class ShowAllController extends Controller
             'message' => "Show All Categorys Successfully."
         ]);
     }
-    
+
 
     public function showAllTNews()
     {
@@ -40,6 +42,16 @@ class ShowAllController extends Controller
         return response()->json([
             'data' => TrendingNewsResource::collection($TrendingNews),
             'message' => "Show All TrendingNews Successfully."
+        ]);
+    }
+
+    public function showAllAdvertisment()
+    {
+
+        $Advertisments = Advertisment::get();
+        return response()->json([
+            'data' => AdvertismentResource::collection($Advertisments),
+            'message' => "Show All Advertisments Successfully."
         ]);
     }
 
