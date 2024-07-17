@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController;
 
-// Route::post('/create', [RoleController::class, 'create']) ;
 
 
 
@@ -14,4 +11,5 @@ require __DIR__ . '/Apis/Admin/role.php';
 require __DIR__ . '/Apis/Admin/category.php';
 require __DIR__ . '/Apis/Admin/trendingNews.php';
 require __DIR__ . '/Apis/Admin/TNews.php';
+require __DIR__ . '/Apis/Admin/slider.php';
 require __DIR__ . '/Apis/User/showAll.php';
