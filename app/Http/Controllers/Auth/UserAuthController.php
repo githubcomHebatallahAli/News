@@ -24,7 +24,7 @@ class UserAuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        
+
         if (! $token = auth()->guard('api')->attempt($validator->validated())) {
             return response()->json(['message' => 'Invalid Data'], 422);
         }
@@ -35,7 +35,7 @@ class UserAuthController extends Controller
         //         'message' => 'Email not verified. Please verify it.'
         //     ], 403);
         // }
-        return $this->createNewToken($token);
+        return $this->createNewToken($token , $user);
     }
 
 
@@ -78,7 +78,7 @@ class UserAuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user(),
+            'user' => auth()->guard('api')->user(),
             // 'user' => User::with('role:id,name')->find(auth()->id()),
             // 'permissions' => User::find(auth()->id())->permissions(),
         ]);

@@ -10,9 +10,14 @@ class ContactUs extends Model
 {
     use HasFactory , SoftDeletes ;
     protected $fillable = [
-        'name',
-        'email',
+        'user_id',
         'phone',
         'message'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

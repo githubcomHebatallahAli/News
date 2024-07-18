@@ -24,10 +24,9 @@ class ContactUsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100',
             'phone' => 'required|string',
-            'message' => 'required|string'
+            'message' => 'required|string',
+            'user_id'  =>'required|exists:users,id'
         ];
     }
     public function failedValidation(Validator $validator)
