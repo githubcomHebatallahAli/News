@@ -11,5 +11,6 @@ Route::group([
 'middleware' => 'auth'
 ], function () {
 Route::post('create/contactUs',[CreateController::class,'createContactUs']);
+Route::post('create/advertiseHere',[CreateController::class,'createAdvertiseHere']);
 
 });

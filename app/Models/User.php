@@ -30,6 +30,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(ContactUs::class);
     }
 
+    public function advertiseHere()
+    {
+        return $this->hasMany(AdvertiseHere::class);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

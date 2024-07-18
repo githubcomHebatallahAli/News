@@ -13,4 +13,5 @@ Route::get('showAll/category',[ShowAllController::class,'showAllCategory']);
 Route::get('showAll/TNews',[ShowAllController::class,'showAllTNews']);
 Route::get('showAll/trendingNews',[ShowAllController::class,'showAllTrendingNews']);
 Route::get('showAll/advertisment',[ShowAllController::class,'showAllAdvertisment']);
+Route::get('showAll/slider',[ShowAllController::class,'showAllSlider']);
 });

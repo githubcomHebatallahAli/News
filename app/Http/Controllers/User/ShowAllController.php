@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\TNews;
+use App\Models\Slider;
 use App\Models\Category;
 use App\Models\Advertisment;
 use App\Models\TrendingNews;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\TNewsResource;
+use App\Http\Resources\Admin\SliderResource;
 use App\Http\Resources\Admin\CategoryResource;
 use App\Http\Resources\Admin\AdvertismentResource;
 use App\Http\Resources\Admin\TrendingNewsResource;
@@ -22,6 +24,16 @@ class ShowAllController extends Controller
         return response()->json([
             'data' => CategoryResource::collection($Categorys),
             'message' => "Show All Categorys Successfully."
+        ]);
+    }
+
+    public function showAllSlider()
+    {
+
+        $Sliders = Slider::get();
+        return response()->json([
+            'data' => SliderResource::collection(  $Sliders),
+            'message' => "Show All Sliders Successfully."
         ]);
     }
 
