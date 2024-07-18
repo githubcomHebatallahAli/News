@@ -25,9 +25,17 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|between:2,100',
-            'email' => 'required|string|email|max:100|unique:admins',
+            'email' => 'required|string|email|max:100|unique:users',
             'password' => 'required|string|confirmed|min:6',
 
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'لا يمكن التسجيل بهذا البريد الإلكتروني لأنه مسجل مسبقاً.',
+            // إضافة رسائل مخصصة أخرى إذا لزم الأمر
         ];
     }
     public function failedValidation(Validator $validator)

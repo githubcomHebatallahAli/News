@@ -17,12 +17,14 @@ class UserAuthController extends Controller
     }
 
     public function login(LoginRequest $request){
-    	$validator = Validator::make($request->all(),$request->rules()
+    	$validator = Validator::make($request->all(),$request->rules(),$request->messages()
 
         );
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+        
         if (! $token = auth()->guard('api')->attempt($validator->validated())) {
             return response()->json(['message' => 'Invalid Data'], 422);
         }
