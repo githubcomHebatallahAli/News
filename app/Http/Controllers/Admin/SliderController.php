@@ -31,10 +31,8 @@ class SliderController extends Controller
       $this->authorize('manage_users');
 
          $Slider =Slider::create ([
-
               "title" => $request-> title,
               "content" => $request-> content,
-              "url" => $request-> url,
           ]);
           if ($request->hasFile('img')) {
             $imgPath = $request->file('img')->store(Slider::storageFolder);
@@ -81,7 +79,7 @@ class SliderController extends Controller
      $Slider->update([
         "title" => $request-> title,
         "content" => $request-> content,
-        "url" => $request-> url,
+
       ]);
       if ($request->hasFile('img')) {
         if ($Slider->img) {
