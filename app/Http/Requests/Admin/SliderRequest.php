@@ -26,7 +26,7 @@ class SliderRequest extends FormRequest
         return [
             'title' =>'string|required',
             'content' =>'string|required',
-            'url' =>'string|required',
+            'url' =>'string|nullable',
             'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
         ];
     }
