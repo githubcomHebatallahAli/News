@@ -17,9 +17,9 @@ class ContactUsResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'user' => new UserRegisterResource($this->user),
             'phone'=>$this->phone,
             'message'=>$this->message,
+            'user' => new UserRegisterResource($this->user),
         ];
     }
 }

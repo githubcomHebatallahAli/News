@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\ContactUs;
 use Illuminate\Http\Request;
 use App\Traits\ManagesModelsTrait;
@@ -15,12 +16,29 @@ class ContactUsController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
+        $usersWithContacts = User::whereHas('contactUs')->get();
 
-        $ContactUs = ContactUs::get();
+        $usersArray = $usersWithContacts->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'contacts' => $user->contactUs->map(function ($contact) {
+                    return [
+                        'id' => $contact->id,
+                        'phone' => $contact->phone,
+                        'message' => $contact->message
+                            ];
+                        }),
+                    ];
+        })->toArray();
+
         return response()->json([
-            'data' => ContactUsResource::collection($ContactUs),
-            'message' => "Show All ContactUss Successfully."
+            'data' => $usersArray,
+            'message' => "Show All Users With Messages Of Contact Us Successfully."
         ]);
+
+
     }
 
     public function edit(string $id)

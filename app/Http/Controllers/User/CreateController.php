@@ -13,16 +13,18 @@ class CreateController extends Controller
     {
 
            $ContactUs =ContactUs::create ([
-                'user_id' => $request->user()->id,
+                'user_id' => $request->user_id,
                 "phone" => $request->phone,
                 "message" => $request->message
             ]);
-           $ContactUs->save();
-           return response()->json([
-            'data' =>new ContactUsResource($ContactUs),
-            'message' => "ContactUs Created Successfully."
-        ]);
 
+            $ContactUs->save();
+
+            return response()->json([
+                'data' => new ContactUsResource($ContactUs),
+                'message' => 'ContactUs Created Successfully.'
+            ]);
         }
+
 
 }
