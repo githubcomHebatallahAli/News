@@ -20,12 +20,5 @@ class UserRegisterResource extends JsonResource
             'email'=>$this->email,
         ];
     }
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'success'   => false,
-            'message'   => 'Validation errors',
-            'data'      => $validator->errors()
-        ]));
-    }
+   
 }

@@ -14,3 +14,4 @@ require __DIR__ . '/Apis/Admin/TNews.php';
 require __DIR__ . '/Apis/Admin/slider.php';
 require __DIR__ . '/Apis/Admin/advertisment.php';
 require __DIR__ . '/Apis/User/showAll.php';
+require __DIR__ . '/Apis/User/contactUs.php';
