@@ -38,7 +38,7 @@ class SliderController extends Controller
           ]);
           if ($request->hasFile('img')) {
             $imgPath = $request->file('img')->store(Slider::storageFolder);
-            $Slider->poster =  $imgPath;
+            $Slider->img =  $imgPath;
         }
          $Slider->save();
          return response()->json([
@@ -87,8 +87,9 @@ class SliderController extends Controller
         if ($Slider->img) {
             Storage::disk('public')->delete($Slider->img);
         }
-        $imgPath = $request->file('img')->store('img', 'public');
+        $imgPath = $request->file('img')->store('Sliders', 'public');
         $Slider->img = $imgPath;
+
     }
 
      $Slider->save();
