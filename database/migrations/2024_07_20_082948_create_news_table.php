@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('writer');
             $table->date('event_date')->nullable();
             $table->string('img')->nullable();
-            $table->text('text1')->nullable();
-            $table->text('text2')->nullable();
-            $table->text('text3')->nullable();
+            $table->text('part1')->nullable();
+            $table->text('part2')->nullable();
+            $table->text('part3')->nullable();
             $table->string('keyWords');
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->softDeletes();
