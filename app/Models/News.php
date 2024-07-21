@@ -86,4 +86,9 @@ class News extends Model
     {
         return $this->hasMany(NewsView::class);
     }
+
+    public function bestNews()
+    {
+        return $this->hasOne(BestNews::class);
+    }
 }
