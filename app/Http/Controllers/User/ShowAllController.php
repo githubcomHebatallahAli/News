@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\News;
 use App\Models\TNews;
 use App\Models\Slider;
 use App\Models\Category;
 use App\Models\Advertisment;
 use App\Models\TrendingNews;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
 use App\Http\Resources\Admin\CategoryResource;
@@ -66,6 +68,19 @@ class ShowAllController extends Controller
             'message' => "Show All Advertisments Successfully."
         ]);
     }
+
+    public function showAllNews()
+    {
+        // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
+        $news = News::withCount('views')->get();
+
+
+        return response()->json([
+            'news' => NewsResource::collection($news),
+        ]);
+    }
+
+
 
 
 }
