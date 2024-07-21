@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->string('categoryName');
             $table->string('title');
             $table->string('writer');
             $table->date('event_date')->nullable();
             $table->string('img')->nullable();
+            $table->string('url')->nullable();
             $table->text('part1')->nullable();
             $table->text('part2')->nullable();
             $table->text('part3')->nullable();
-            $table->string('keyWords');
+            $table->json('keyWords'); 
+            $table->unsignedBigInteger('news_views_count')->default(0);
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();

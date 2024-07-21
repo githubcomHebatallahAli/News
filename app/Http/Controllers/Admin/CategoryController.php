@@ -16,10 +16,10 @@ class CategoryController extends Controller
     {
         $this->authorize('manage_users');
 
-        $Categorys = Category::get();
+        $categories = Category::withCount('news')->get();
         return response()->json([
-            'data' => CategoryResource::collection($Categorys),
-            'message' => "Show All Categorys Successfully."
+            'data' => CategoryResource::collection($categories),
+            'message' => "Show All Categories With News Count Successfully."
         ]);
     }
 
@@ -31,7 +31,8 @@ class CategoryController extends Controller
            $Category =Category::create ([
 
                 "name" => $request->name,
-                "url" => $request->url
+                "url" => $request->url,
+
             ]);
            $Category->save();
            return response()->json([
@@ -42,22 +43,25 @@ class CategoryController extends Controller
         }
 
 
-    public function edit(string $id)
-    {
-        $this->authorize('manage_users');
-        $Category = Category::find($id);
+        public function edit(string $id)
+        {
+            $this->authorize('manage_users');
+            $category = Category::withCount('news')->find($id);
 
-        if (!$Category) {
+            if (!$category) {
+                return response()->json([
+                    'message' => "Category not found."
+                ], 404);
+            }
+
+            $category->incrementViews();
+
             return response()->json([
-                'message' => "Category not found."
-            ], 404);
+                'data' => new CategoryResource($category),
+                'message' => "Edit Category  With News Count By ID Successfully."
+            ]);
         }
 
-        return response()->json([
-            'data' =>new CategoryResource($Category),
-            'message' => "Edit Category By ID Successfully."
-        ]);
-    }
 
 
 
@@ -73,7 +77,7 @@ class CategoryController extends Controller
     }
        $Category->update([
         "name" => $request->name,
-        "url" => $request->url
+        "url" => $request->url,
         ]);
 
        $Category->save();

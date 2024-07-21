@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class NewsRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class NewsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,26 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' =>'string|required',
+            'writer' =>'string|required',
+            'event_date' => 'nullable|date_format:Y-m-d',
+            'url' =>'string|nullable',
+            'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
+            'part1'=>'nullable|string',
+            'part1'=>'nullable|string',
+            'part1'=>'nullable|string',
+            'keyWords' => 'required|array',
+            'keyWords.*' => 'string',
+             'category_id'=>'required|exists:categories,id'
+
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success'   => false,
+            'message'   => 'Validation errors',
+            'data'      => $validator->errors()
+        ]));
     }
 }
