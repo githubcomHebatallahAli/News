@@ -16,9 +16,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-            $admin = Auth::guard('admin')->user();
+        //     $admin = Auth::guard('admin')->user();
 
-        if ($admin && $admin->role && $admin->role->name === 'Super Admin') {
+        // if ($admin && $admin->role && $admin->role->name === 'Super Admin') {
+        //     return $next($request);
+        // }
+        if (Auth::guard('admin')->check()) ;{
             return $next($request);
         }
 
