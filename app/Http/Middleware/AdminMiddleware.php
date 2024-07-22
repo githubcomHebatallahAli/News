@@ -30,9 +30,5 @@ class AdminMiddleware
         ], 403);
     }
 
-
-        return response()->json([
-            'message' => 'Unauthorized User'
-        ], 403);
-    }
 }
+

@@ -15,17 +15,19 @@ class CreateController extends Controller
     public function createContactUs(ContactUsRequest $request)
     {
 
-           $AdvertiseHere =ContactUs::create ([
+           $ContactUs =ContactUs::create ([
                 'user_id' => $request->user_id,
                 "phone" => $request->phone,
                 "message" => $request->message
             ]);
 
-            $AdvertiseHere->save();
+            $ContactUs->load('user');
+
+            $ContactUs->save();
 
             return response()->json([
-                'data' => new AdvertiseHereResource($AdvertiseHere),
-                'message' => 'AdvertiseHere Created Successfully.'
+                'data' => new ContactUsResource( $ContactUs),
+                'message' => 'ContactUs Created Successfully.'
             ]);
         }
 
@@ -41,8 +43,8 @@ class CreateController extends Controller
                 $AdvertiseHere->save();
 
                 return response()->json([
-                    'data' => new ContactUsResource(  $AdvertiseHere),
-                    'message' => 'ContactUs Created Successfully.'
+                    'data' => new  AdvertiseHereResource(  $AdvertiseHere),
+                    'message' => 'AdvertiseHere Created Successfully.'
                 ]);
             }
 

@@ -20,9 +20,11 @@ class ContactUsController extends Controller
 
         $usersArray = $usersWithContacts->map(function ($user) {
             return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
                 'contacts' => $user->contactUs->map(function ($contact) {
                     return [
                         'id' => $contact->id,
@@ -45,7 +47,7 @@ class ContactUsController extends Controller
     {
         $this->authorize('manage_users');
 
-        $ContactUs = ContactUs::find($id);
+        $ContactUs = ContactUs::with('user')->find($id);
 
         if (!$ContactUs) {
             return response()->json([
