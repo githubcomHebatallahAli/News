@@ -19,10 +19,12 @@ class AdvertiseHereController extends Controller
 
         $usersArray = $usersWithAdvertisments->map(function ($user) {
             return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'contacts' => $user->AdvertiseHere->map(function ($advertise) {
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+                'AdvertiseHere' => $user->AdvertiseHere->map(function ($advertise) {
                     return [
                         'id' => $advertise->id,
                         'phone' => $advertise->phone,
@@ -44,7 +46,7 @@ class AdvertiseHereController extends Controller
     {
         $this->authorize('manage_users');
 
-        $AdvertiseHere = AdvertiseHere::find($id);
+        $AdvertiseHere = AdvertiseHere::with('user')->find($id);
 
         if (!$AdvertiseHere) {
             return response()->json([
