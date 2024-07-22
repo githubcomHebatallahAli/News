@@ -22,6 +22,8 @@ class News extends Model
         'part3',
         'keyWords',
         'category_id',
+        'admin_id',
+        'status'
     ];
 
     protected $casts = [
@@ -90,5 +92,10 @@ class News extends Model
     public function bestNews()
     {
         return $this->hasOne(BestNews::class);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
     }
 }

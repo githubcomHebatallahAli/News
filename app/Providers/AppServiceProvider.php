@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage_users', function($user) {
             return    Auth::guard('admin')->check();
         });
+
+    
         Schema::defaultStringLength(191);
     }
     }

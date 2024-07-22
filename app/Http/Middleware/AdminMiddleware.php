@@ -16,9 +16,16 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('admin')->check()) {
+            $admin = Auth::guard('admin')->user();
+
+        if ($admin && $admin->role && $admin->role->name === 'Super Admin') {
             return $next($request);
         }
+
+        return response()->json([
+            'message' => 'Unauthorized User'
+        ], 403);
+    }
 
 
         return response()->json([

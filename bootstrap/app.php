@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\News;
+use App\Policies\NewsPolicy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,8 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'auth' => \App\Http\Middleware\AuthenticateMiddleware::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'auth' => \App\Http\Middleware\AuthenticateMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
@@ -27,4 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], 401);
             }
         });
-    })->create();
+    })
+    ->booted(function() {
+        Gate::policy(News::class, NewsPolicy::class);
+    })
+    ->create();
+

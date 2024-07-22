@@ -29,12 +29,9 @@ class NewsController extends Controller
 
     public function create(NewsRequest $request)
     {
-        $this->authorize('manage_users');
-
-
-
+        // $this->authorize('manage_users');
+        $this->authorize('create', News::class);
            $News =News::create ([
-
                 "title" => $request->title,
                 "writer" => $request->writer,
                 "event_date" => $request->event_date,
@@ -44,6 +41,8 @@ class NewsController extends Controller
                 "part3" => $request->part3,
                 'keyWords' => $request->keyWords,
                 "category_id" => $request->category_id,
+                "admin_id" =>$request->admin_id,
+                'status' => 'pending'
             ]);
             if ($request->hasFile('img')) {
                 $imgPath = $request->file('img')->store(News::storageFolder);
@@ -65,6 +64,7 @@ class NewsController extends Controller
                 'message' => "News not found."
             ], 404);
         }
+        $this->authorize('edit', News::class);
         $category = $news->category;
         $category->increment('views_count');
 
@@ -90,6 +90,7 @@ class NewsController extends Controller
             'message' => "News not found."
         ], 404);
     }
+    $this->authorize('update', News::class);
        $News->update([
         "title" => $request->title,
         "writer" => $request->writer,
@@ -100,6 +101,8 @@ class NewsController extends Controller
         "part3" => $request->part3,
         "keyWords" => $request->keyWords,
         "category_id" => $request->category_id,
+        "admin_id" => $request ->admin_id,
+         'status' => 'pending'
 
         ]);
 
@@ -138,5 +141,29 @@ public function destroy(string $id){
     public function forceDelete(string $id){
 
         return $this->forceDeleteModel(News::class, $id);
+    }
+
+    public function review(Request $request, News $news)
+    {
+        $this->authorize('review', $news);
+
+        $news->update(['status' => 'reviewed']);
+
+        return response()->json([
+            'data' => new NewsResource($news),
+            'message' => "News Reviewed Successfully."
+        ]);
+    }
+
+    public function publish(Request $request, News $news)
+    {
+        $this->authorize('publish', $news);
+
+        $news->update(['status' => 'published']);
+
+        return response()->json([
+            'data' => new NewsResource($news),
+            'message' => "News Published Successfully."
+        ]);
     }
 }
