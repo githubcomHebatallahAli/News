@@ -66,7 +66,7 @@ class AdminProfileController extends Controller
         //     ]);
         // }
         // }
-        $admin = Admin::with(['news', 'role'])->findOrFail($id);
+        $admin = Admin::with(['news.category', 'role'])->findOrFail($id);
         return new AdminProfileResource($admin);
     }
 
