@@ -24,18 +24,18 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' =>'string|required',
-            'writer' =>'string|required',
+            'title' =>'nullable|required',
+            'writer' =>'nullable|required',
             'event_date' => 'nullable|date_format:Y-m-d',
             'url' =>'string|nullable',
             'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
-            'status' => 'required|string',
-            'keyWords' => 'required|array',
+            'status' => 'nullable|string',
+            'keyWords' => 'nullable|array',
             'keyWords.*' => 'string',
-             'category_id'=>'required|exists:categories,id',
+             'category_id'=>'nullable|exists:categories,id',
             //  'admin_id'=>'required|exists:admins,id'
 
         ];

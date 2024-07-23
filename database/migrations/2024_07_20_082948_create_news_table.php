@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('writer');
+            $table->string('title')->nullable();
+            $table->string('writer')->nullable();
             $table->date('event_date')->nullable();
             $table->string('img')->nullable();
             $table->string('url')->nullable();
             $table->text('part1')->nullable();
             $table->text('part2')->nullable();
             $table->text('part3')->nullable();
-            $table->json('keyWords');
-            $table->foreignId('admin_id')->constrained('admins')->cascadeOnDelete();
+            $table->json('keyWords')->nullable();
+            $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->enum('status', ['pending', 'reviewed','rejected','published'])->default('pending');
             $table->unsignedBigInteger('news_views_count')->default(0);
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
