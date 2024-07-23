@@ -49,8 +49,9 @@ class AdminProfileController extends Controller
             $admin = Admin::with(['news.category', 'role'])->findOrFail($id);
 
             return response()->json([
+                'auther' => new AdminRegisterResource($admin),
 
-                'data' => AdminProfileResource::collection($admin->news)
+                'news' => AdminProfileResource::collection($admin->news)
             ]);
         }
 
