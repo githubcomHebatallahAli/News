@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
+use App\Http\Resources\Admin\AdminProfileResource;
 
 class CategoryController extends Controller
 {
@@ -52,7 +53,7 @@ class CategoryController extends Controller
         public function edit(string $id)
         {
             $this->authorize('manage_users');
-            $category = Category::withCount('news')->find($id);
+            $category = Category::with(['news'])->withCount('news')->find($id);
 
             if (!$category) {
                 return response()->json([
@@ -63,7 +64,8 @@ class CategoryController extends Controller
             $category->incrementViews();
 
             return response()->json([
-                'data' => new CategoryResource($category),
+                // 'data' => new CategoryResource($category),
+                'data' => AdminProfileResource::collection($category->news),
                 'message' => "Edit Category  With News Count By ID Successfully."
             ]);
         }

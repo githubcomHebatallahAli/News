@@ -16,7 +16,7 @@ class AdminProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-       
+            'category' => new CategoryResource($this->category),
             "id" => $this -> id,
             'title' => $this -> title,
             'writer' => $this -> writer,
@@ -30,8 +30,6 @@ class AdminProfileResource extends JsonResource
             'news_views_count' => $this->news_views_count,
             'status' => $this -> status,
 
-
-            'category' => new CategoryResource($this->category)
         ];
     }
 }
