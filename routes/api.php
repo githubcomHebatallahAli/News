@@ -17,5 +17,6 @@ require __DIR__ . '/Apis/Admin/contactUs.php';
 require __DIR__ . '/Apis/Admin/advertiseHere.php';
 require __DIR__ . '/Apis/Admin/news.php';
 require __DIR__ . '/Apis/Admin/bestNews.php';
+require __DIR__ . '/Apis/Admin/adminProfile.php';
 require __DIR__ . '/Apis/User/showAll.php';
 require __DIR__ . '/Apis/User/create.php';

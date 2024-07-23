@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\AdminProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\AdminProfileRequest;
 use App\Http\Resources\Admin\AdminProfileResource;
 
@@ -68,6 +69,13 @@ class AdminProfileController extends Controller
        $AdminProfile->update([
         'admin_id' => $request->admin_id,
         ]);
+        if ($request->hasFile('photo')) {
+            if ($AdminProfile->photo) {
+                Storage::disk('public')->delete($AdminProfile->photo);
+            }
+            $photoPath = $request->file('photo')->store('AdminProfile', 'public');
+            $AdminProfile->photo = $photoPath;
+        }
 
        $AdminProfile->save();
        return response()->json([
