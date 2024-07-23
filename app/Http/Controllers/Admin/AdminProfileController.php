@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\AdminProfileRequest;
 use App\Http\Resources\Admin\AdminProfileResource;
+use App\Http\Resources\Auth\AdminRegisterResource;
 
 class AdminProfileController extends Controller
 {
@@ -55,15 +56,17 @@ class AdminProfileController extends Controller
         //     'message' => "Show Admin Profile By ID Successfully."
         // ]);
 
-        {
-            $admin = Admin::with('news')->findOrFail($id);
+        // {
+        //     $admin = Admin::with('news')->findOrFail($id);
 
-            return response()->json([
-                'name' => $admin->name,
-                'email' => $admin->email,
-                'news' => $admin->news
-            ]);
-        }
+        //     return response()->json([
+        //         'name' => $admin->name,
+        //         'email' => $admin->email,
+        //         'news' => $admin->news
+        //     ]);
+        // }
+        $admin = Admin::with('news', 'role')->findOrFail($id);
+        return new AdminRegisterResource($admin);
     }
 
 
