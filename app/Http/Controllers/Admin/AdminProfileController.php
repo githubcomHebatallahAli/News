@@ -57,7 +57,7 @@ class AdminProfileController extends Controller
         // ]);
 
         // {
-            $admin = Admin::with('news')->findOrFail($id);
+            $admin = Admin::with('news','role')->findOrFail($id);
 
             return response()->json([
                 'name' => $admin->name,
@@ -65,7 +65,7 @@ class AdminProfileController extends Controller
                 'news' => $admin->news
             ]);
         }
-        
+
     //     $admin = Admin::findOrFail($id);
     //     return new AdminProfileResource($admin);
 
