@@ -16,8 +16,6 @@ class AdvertiseHereController extends Controller
     {
         $this->authorize('manage_users');
 
-        $this->authorize('manage_users');
-
         $advertiseHere = AdvertiseHere::with('user')->get();
 
         if ($advertiseHere->isEmpty()) {

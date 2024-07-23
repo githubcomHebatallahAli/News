@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('part3')->nullable();
             $table->json('keyWords')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
-            $table->enum('status', ['pending', 'reviewed','rejected','published'])->default('pending');
+            $table->enum('status', ['pending', 'reviewed', 'rejected', 'published'])->nullable();
             $table->unsignedBigInteger('news_views_count')->default(0);
             $table->foreignId('category_id')->nullable()->constrained('categories')->cascadeOnDelete();
             $table->softDeletes();
