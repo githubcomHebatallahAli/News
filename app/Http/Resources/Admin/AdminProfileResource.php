@@ -16,7 +16,7 @@ class AdminProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // 'admin' => new AdminRegisterResource($this->admin),
+       
             "id" => $this -> id,
             'title' => $this -> title,
             'writer' => $this -> writer,

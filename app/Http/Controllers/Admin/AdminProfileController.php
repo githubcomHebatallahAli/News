@@ -20,7 +20,6 @@ class AdminProfileController extends Controller
         $this->authorize('manage_users');
         $admins = Admin::with(['news.category', 'role'])->get();
 
-        // تحويل البيانات إلى استجابة JSON
         return response()->json([
             'admins' => $admins->map(function ($admin) {
                 return [
@@ -57,6 +56,7 @@ class AdminProfileController extends Controller
 
     public function showDeleted()
     {
+        $this->authorize('manage_users');
         $admins = Admin::onlyTrashed()->with(['news.category', 'role'])->get();
 
         return response()->json([
@@ -72,6 +72,7 @@ class AdminProfileController extends Controller
 
     public function restore(string $id)
 {
+     $this->authorize('manage_users');
     $admin = Admin::onlyTrashed()->findOrFail($id);
     $admin->restore();
 
@@ -83,6 +84,7 @@ class AdminProfileController extends Controller
 
 public function forceDelete(string $id)
 {
+    $this->authorize('manage_users');
     $admin = Admin::onlyTrashed()->findOrFail($id);
     $admin->forceDelete();
 
