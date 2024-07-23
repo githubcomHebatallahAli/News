@@ -7,7 +7,6 @@ use App\Models\AdminProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\Admin\NewsResource;
 use App\Http\Requests\Admin\AdminProfileRequest;
 use App\Http\Resources\Admin\AdminProfileResource;
 
@@ -59,14 +58,10 @@ class AdminProfileController extends Controller
         {
             $admin = Admin::with('news')->findOrFail($id);
 
-            // return response()->json([
-            //     'name' => $admin->name,
-            //     'email' => $admin->email,
-            //     'news' => $admin->news
-            // ]);
             return response()->json([
-                'data' =>new NewsResource($admin),
-                'message' => "Admin Profile Edit By Id Successfully."
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'news' => $admin->news
             ]);
         }
     }
