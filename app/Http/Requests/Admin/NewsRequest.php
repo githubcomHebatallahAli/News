@@ -34,7 +34,7 @@ class NewsRequest extends FormRequest
             'part1'=>'nullable|string',
             'status' => 'nullable|string',
             'keyWords' => 'nullable|array',
-            'keyWords.*' => 'string',
+            'keyWords.*' => 'string|nullable',
              'category_id'=>'nullable|exists:categories,id',
             //  'admin_id'=>'required|exists:admins,id'
 
