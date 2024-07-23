@@ -57,18 +57,17 @@ class AdminProfileController extends Controller
         // ]);
 
         // {
-        //     $admin = Admin::with('news')->findOrFail($id);
+            $admin = Admin::with('news')->findOrFail($id);
 
-        //     return response()->json([
-        //         'name' => $admin->name,
-        //         'email' => $admin->email,
-        //         'news' => $admin->news
-        //     ]);
-        // }
-        // }
-        $admin = Admin::findOrFail($id);
-        return new AdminProfileResource($admin);
-    }
+            return response()->json([
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'news' => $admin->news
+            ]);
+        }
+        
+    //     $admin = Admin::findOrFail($id);
+    //     return new AdminProfileResource($admin);
 
 
 
