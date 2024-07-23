@@ -28,8 +28,8 @@ class NewsResource extends JsonResource
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
             'status' => $this -> status,
-            // 'admin' => AdminRegisterResource::collection($this->admin),
-            'admin' => new AdminRegisterResource($this->admin), 
+            
+            'admin' => new AdminRegisterResource($this->admin),
             'category' => new CategoryResource($this->category)
         ];
     }

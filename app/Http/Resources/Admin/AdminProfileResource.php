@@ -17,7 +17,6 @@ class AdminProfileResource extends JsonResource
     {
         return [
             "id" => $this -> id,
-            'photo' => $this -> photo,
             'admin' => new AdminRegisterResource($this->admin),
             'news' => new NewsResource($this->news),
         ];
