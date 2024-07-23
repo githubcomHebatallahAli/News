@@ -76,7 +76,7 @@ class AdminProfileController extends Controller
 
             return response()->json([
 
-                'news' => NewsResource::collection($admin->news)
+                'data' => NewsResource::collection($admin->news)
             ]);
         }
 
