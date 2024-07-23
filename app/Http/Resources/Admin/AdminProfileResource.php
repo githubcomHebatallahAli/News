@@ -22,7 +22,7 @@ class AdminProfileResource extends JsonResource
 
             // 'name' => $this->name,
             // 'email' => $this->email,
-            'role' => new RoleResource($this->role),
+            // 'role' => new RoleResource($this->role),
             'news' => NewsResource::collection($this->whenLoaded('news')),
         ];
     }
