@@ -6,6 +6,7 @@ use App\Models\Category;
 
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
 
@@ -26,7 +27,12 @@ class CategoryController extends Controller
 
     public function create(CategoryRequest $request)
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
+        if (Gate::denies('manage_users', auth()->guard('admin')->user())) {
+            return response()->json([
+                'message' => 'Unauthorized User'
+            ], 403);
+        }
 
            $Category =Category::create ([
 

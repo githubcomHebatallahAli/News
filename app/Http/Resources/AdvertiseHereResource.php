@@ -15,12 +15,7 @@ class AdvertiseHereResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return [
-        //     'id'=>$this->id,
-        //     'phone'=>$this->phone,
-        //     'message'=>$this->message,
-        //     'user' => new UserRegisterResource($this->user),
-        // ];
+   
         return [
             'user' => new UserRegisterResource($this->whenLoaded('user')),
             'AdvertiseHere' => [

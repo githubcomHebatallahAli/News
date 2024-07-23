@@ -18,7 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'superAdmin' => \App\Http\Middleware\SuperAdminMiddleware::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'reviewer' => \App\Http\Middleware\ReviewerMiddleware::class,
+            'writer' => \App\Http\Middleware\WriterMiddleware::class,
             'auth' => \App\Http\Middleware\AuthenticateMiddleware::class,
         ]);
     })
@@ -31,8 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
     })
-    ->booted(function() {
-        Gate::policy(News::class, NewsPolicy::class);
-    })
+    // ->booted(function() {
+    //     Gate::policy(News::class, NewsPolicy::class);
+    // })
     ->create();
 

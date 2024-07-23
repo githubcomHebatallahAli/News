@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\News;
+use App\Policies\NewsPolicy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
@@ -26,8 +28,11 @@ class AppServiceProvider extends ServiceProvider
             return    Auth::guard('admin')->check();
         });
 
-    
+        Gate::policy(News::class, NewsPolicy::class);
+
+
         Schema::defaultStringLength(191);
     }
+
     }
 

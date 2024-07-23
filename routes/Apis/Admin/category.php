@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 
-Route::controller(CategoryController::class)->prefix('/admin')->middleware('admin')->group(
+Route::controller(CategoryController::class)->prefix('/admin')
+->middleware('admin')->group(
     function () {
 
    Route::get('/showAll/category','showAll');

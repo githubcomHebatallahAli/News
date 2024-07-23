@@ -16,30 +16,19 @@ class ContactUsController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-        $usersWithContacts = User::whereHas('contactUs')->get();
 
-        $usersArray = $usersWithContacts->map(function ($user) {
-            return [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'contacts' => $user->contactUs->map(function ($contact) {
-                    return [
-                        'id' => $contact->id,
-                        'phone' => $contact->phone,
-                        'message' => $contact->message
-                            ];
-                        }),
-                    ];
-        })->toArray();
+        $ContactUs = ContactUs::with('user')->get();
+
+        if (!$ContactUs) {
+            return response()->json([
+                'message' => "ContactUs not found."
+            ], 404);
+        }
 
         return response()->json([
-            'data' => $usersArray,
-            'message' => "Show All Users With Messages Of Contact Us Successfully."
+            'data' =>ContactUsResource::collection($ContactUs),
+            'message' => "Show all contact with user ContactUs By ID Successfully."
         ]);
-
 
     }
 

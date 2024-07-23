@@ -32,9 +32,11 @@ class NewsRequest extends FormRequest
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
+            'status' => 'required|string',
             'keyWords' => 'required|array',
             'keyWords.*' => 'string',
-             'category_id'=>'required|exists:categories,id'
+             'category_id'=>'required|exists:categories,id',
+            //  'admin_id'=>'required|exists:admins,id'
 
         ];
     }

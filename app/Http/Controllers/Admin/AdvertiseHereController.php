@@ -15,29 +15,22 @@ class AdvertiseHereController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-        $usersWithAdvertisments = User::whereHas('AdvertiseHere')->get();
 
-        $usersArray = $usersWithAdvertisments->map(function ($user) {
-            return [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-                'AdvertiseHere' => $user->AdvertiseHere->map(function ($advertise) {
-                    return [
-                        'id' => $advertise->id,
-                        'phone' => $advertise->phone,
-                        'message' => $advertise->message
-                            ];
-                        }),
-                    ];
-        })->toArray();
+        $this->authorize('manage_users');
+
+        $advertiseHere = AdvertiseHere::with('user')->get();
+
+        if ($advertiseHere->isEmpty()) {
+            return response()->json([
+                'message' => "No AdvertiseHere messages found."
+            ], 404);
+        }
 
         return response()->json([
-            'data' => $usersArray,
-            'message' => "Show All Users With Messages Of Advertise Here Successfully."
+            'data' => AdvertiseHereResource::collection($advertiseHere),
+            'message' => "Show all AdvertiseHere messages with user details successfully."
         ]);
+
 
 
     }

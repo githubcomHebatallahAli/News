@@ -18,6 +18,7 @@ class NewsController extends Controller
 
     public function showAll()
     {
+        $this->authorize('manage_users');
         // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
         $news = News::withCount('views')->get();
 
@@ -29,8 +30,11 @@ class NewsController extends Controller
 
     public function create(NewsRequest $request)
     {
-        // $this->authorize('manage_users');
-        $this->authorize('create', News::class);
+        $this->authorize('manage_users');
+
+
+        // $this->authorize('create', News::class);
+
            $News =News::create ([
                 "title" => $request->title,
                 "writer" => $request->writer,
@@ -58,24 +62,22 @@ class NewsController extends Controller
 
     public function edit($id, Request $request)
     {
+        $this->authorize('manage_users');
+
         $news = News::withCount('views')->findOrFail($id);
         if (!$news) {
             return response()->json([
                 'message' => "News not found."
             ], 404);
         }
-        $this->authorize('edit', News::class);
+        // $this->authorize('edit', News::class);
         $category = $news->category;
         $category->increment('views_count');
 
         // إعادة تحميل عدد الزيارات للقسم بعد التحديث
         $category->refresh();
-
-
-
         return response()->json([
-
-                    'data' =>new NewsResource($news),
+            'data' =>new NewsResource($news),
             'message' => "News Edit By Id Successfully."
         ]);
     }
@@ -90,7 +92,7 @@ class NewsController extends Controller
             'message' => "News not found."
         ], 404);
     }
-    $this->authorize('update', News::class);
+    // $this->authorize('update', News::class);
        $News->update([
         "title" => $request->title,
         "writer" => $request->writer,
@@ -122,47 +124,130 @@ class NewsController extends Controller
     ]);
 }
 
-public function destroy(string $id){
+public function destroy(string $id)
+{
+    $this->authorize('manage_users');
+    // $this->authorize('softDelete', News::class);
 
-    return $this->destroyModel(News::class, NewsResource::class, $id);
-    }
-
-        public function showDeleted(){
-
-        return $this->showDeletedModels(News::class, NewsResource::class);
-    }
-
-    public function restore(string $id)
-    {
-
-        return $this->restoreModel(News::class, $id);
-    }
-
-    public function forceDelete(string $id){
-
-        return $this->forceDeleteModel(News::class, $id);
-    }
-
-    public function review(Request $request, News $news)
-    {
-        $this->authorize('review', $news);
-
-        $news->update(['status' => 'reviewed']);
-
+    $news = News::find($id);
+    if (!$news) {
         return response()->json([
-            'data' => new NewsResource($news),
+            'message' => "News not found."
+        ], 404);
+    }
+
+    $news->delete();
+    return response()->json([
+        'data' => new NewsResource($news),
+        'message' => "Soft Delete News By Id Successfully."
+    ]);
+}
+
+public function showDeleted(){
+    $this->authorize('manage_users');
+    // $this->authorize('showDeleted', News::class);
+
+    $Newss=News::onlyTrashed()->with('user')->get();
+    return response()->json([
+        'data' =>NewsResource::collection($Newss),
+        'message' => "Show Deleted News Successfully."
+    ]);
+}
+
+public function restore(string $id)
+{
+    $this->authorize('manage_users');
+    // $this->authorize('restore', News::class);
+
+    $news = News::withTrashed()->where('id', $id)->first();
+    if (!$news) {
+        return response()->json([
+            'message' => "News not found."
+        ], 404);
+    }
+
+    $news->restore();
+    return response()->json([
+        'message' => "Restore News By Id Successfully."
+    ]);
+}
+
+
+public function forceDelete(string $id)
+{
+    $this->authorize('manage_users');
+    $news = News::withTrashed()->where('id', $id)->first();
+    if (!$news) {
+        return response()->json([
+            'message' => "News not found."
+        ], 404);
+    }
+
+    // $this->authorize('forceDelete', $news);
+
+    $news->forceDelete();
+    return response()->json([
+        'message' => "Force Delete News By Id Successfully."
+    ]);
+}
+
+
+    public function review(string $id)
+    {
+        // $this->authorize('review', $news);
+
+        $this->authorize('manage_users');
+        $News =News::findOrFail($id);
+
+        if (!$News) {
+         return response()->json([
+             'message' => "News not found."
+         ], 404);
+     }
+
+        $News->update(['status' => 'reviewed']);
+        return response()->json([
+            'data' => new NewsResource($News),
             'message' => "News Reviewed Successfully."
         ]);
     }
 
-    public function publish(Request $request, News $news)
+    public function reject(string $id)
     {
-        $this->authorize('publish', $news);
+        // $this->authorize('reject', $news);
+        $this->authorize('manage_users');
+        $News =News::findOrFail($id);
 
-        $news->update(['status' => 'published']);
+        if (!$News) {
+         return response()->json([
+             'message' => "News not found."
+         ], 404);
+     }
+
+        $News->update(['status' => 'rejected']);
 
         return response()->json([
-            'data' => new NewsResource($news),
+            'data' => new NewsResource($News),
+            'message' => 'News has been rejected.'
+        ]);
+    }
+
+    public function publish(string $id)
+    {
+        $this->authorize('manage_users');
+        // $this->authorize('publish', $news);
+        $News =News::findOrFail($id);
+
+        if (!$News) {
+         return response()->json([
+             'message' => "News not found."
+         ], 404);
+     }
+
+        $News->update(['status' => 'published']);
+
+        return response()->json([
+            'data' => new NewsResource($News),
             'message' => "News Published Successfully."
         ]);
     }

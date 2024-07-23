@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Http\Resources\Auth\AdminRegisterResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,6 +27,9 @@ class NewsResource extends JsonResource
             'part3' => $this -> part3,
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
+            'status' => $this -> status,
+            // 'admin' => AdminRegisterResource::collection($this->admin),
+            'admin' => new AdminRegisterResource($this->admin), 
             'category' => new CategoryResource($this->category)
         ];
     }
