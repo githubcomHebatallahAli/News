@@ -19,22 +19,47 @@ class CategoryController extends Controller
         $this->authorize('manage_users');
 
         $categories = Category::with(['news'])->withCount('news')->get();
+
+        // تحويل الأقسام والأخبار إلى تنسيق مناسب
+        $result = $categories->map(function ($category) {
+            return [
+                'category' => [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'views_count' => $category->views_count,
+                    'news_count' => $category->news_count,
+                    'url' => $category->url,
+                ],
+                'news' => $category->news->map(function ($newsItem) {
+                    return [
+                        'id' => $newsItem->id,
+                        'title' => $newsItem->title,
+                        'writer' => $newsItem->writer,
+                        'event_date' => $newsItem->event_date,
+                        'img' => $newsItem->img,
+                        'url' => $newsItem->url,
+                        'part1' => $newsItem->part1,
+                        'part2' => $newsItem->part2,
+                        'part3' => $newsItem->part3,
+                        'keyWords' => $newsItem->keyWords,
+                        'news_views_count' => $newsItem->news_views_count,
+                        'status' => $newsItem->status,
+                    ];
+                })
+            ];
+        });
+
         return response()->json([
-            // 'data' => CategoryResource::collection($categories),
-            'data' => AdminProfileResource::collection($categories->news),
-            'message' => "Show All Categories With News Count Successfully."
+            'data' => $result,
+            'message' => "All Categories with their news retrieved successfully."
         ]);
     }
 
 
     public function create(CategoryRequest $request)
     {
-        // $this->authorize('manage_users');
-        if (Gate::denies('manage_users', auth()->guard('admin')->user())) {
-            return response()->json([
-                'message' => 'Unauthorized User'
-            ], 403);
-        }
+        $this->authorize('manage_users');
+
 
            $Category =Category::create ([
 
