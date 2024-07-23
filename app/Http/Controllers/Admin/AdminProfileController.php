@@ -46,37 +46,11 @@ class AdminProfileController extends Controller
 
     public function edit(string $id)
     {
-        // $this->authorize('manage_users');
-        // $AdminProfile = AdminProfile::with(['admin.news'])->find($id);
-        // if (!$AdminProfile) {
-        //     return response()->json([
-        //         'message' => "AdminProfile not found."
-        //     ], 404);
-        // }
-        // return response()->json([
-        //     'data' =>new AdminProfileResource($AdminProfile),
-        //     'message' => "Show Admin Profile By ID Successfully."
-        // ]);
-
-        // {
-
-
-            // $admin = Admin::with('news.category','role')->findOrFail($id);
-
-            // return response()->json([
-
-            //     'name' => $admin->name,
-            //     'email' => $admin->email,
-            //     'role' =>$admin->role,
-            //     'news' => $admin->news
-            // ]);
-
-
             $admin = Admin::with(['news.category', 'role'])->findOrFail($id);
 
             return response()->json([
 
-                'data' => NewsResource::collection($admin->news)
+                'data' => AdminProfileResource::collection($admin->news)
             ]);
         }
 

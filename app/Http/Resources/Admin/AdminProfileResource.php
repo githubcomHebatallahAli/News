@@ -16,14 +16,22 @@ class AdminProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this -> id,
             'admin' => new AdminRegisterResource($this->admin),
-            // 'news' => new NewsResource($this->news),
+            "id" => $this -> id,
+            'title' => $this -> title,
+            'writer' => $this -> writer,
+            'event_date' => $this -> event_date,
+            'img' => $this -> img,
+            'url' => $this -> url,
+            'part1' => $this -> part1,
+            'part2' => $this -> part2,
+            'part3' => $this -> part3,
+            'keyWords' => $this -> keyWords,
+            'news_views_count' => $this->news_views_count,
+            'status' => $this -> status,
 
-            // 'name' => $this->name,
-            // 'email' => $this->email,
-            // 'role' => new RoleResource($this->role),
-            'news' => NewsResource::collection($this->whenLoaded('news')),
+
+            'category' => new CategoryResource($this->category)
         ];
     }
 }
