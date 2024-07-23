@@ -25,7 +25,7 @@ class AdminProfileController extends Controller
     {
         $this->authorize('manage_users');
            $AdminProfile =AdminProfile::create ([
-                'admin_id' => $request->admin_id,
+            "admin_id" => auth()->id(),
             ]);
             if ($request->hasFile('photo')) {
                 $photoPath = $request->file('photo')->store(AdminProfile::storageFolder);
@@ -67,7 +67,7 @@ class AdminProfileController extends Controller
         ], 404);
     }
        $AdminProfile->update([
-        'admin_id' => $request->admin_id,
+        "admin_id" => auth()->id(),
         ]);
         if ($request->hasFile('photo')) {
             if ($AdminProfile->photo) {
