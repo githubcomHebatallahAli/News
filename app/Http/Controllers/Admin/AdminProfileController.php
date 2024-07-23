@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\Admin\NewsResource;
+use App\Http\Resources\Admin\CategoryResource;
 use App\Http\Requests\Admin\AdminProfileRequest;
 use App\Http\Resources\Admin\AdminProfileResource;
 use App\Http\Resources\Auth\AdminRegisterResource;
@@ -74,8 +75,9 @@ class AdminProfileController extends Controller
         return response()->json([
             'name' => $admin->name,
             'email' => $admin->email,
-            'role' => new AdminRegisterResource($admin->role),
-            'news' => NewsResource::collection($admin->news)
+            // 'role' => new AdminRegisterResource($admin->role),
+            'news' => NewsResource::collection($admin->news),
+            'category'=>new CategoryResource($admin->category)
         ]);
     }
 
