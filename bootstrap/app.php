@@ -18,10 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'superAdmin' => \App\Http\Middleware\SuperAdminMiddleware::class,
+            'role' => \App\Http\Middleware\CheckRoleMiddleware::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'reviewer' => \App\Http\Middleware\ReviewerMiddleware::class,
-            'writer' => \App\Http\Middleware\WriterMiddleware::class,
+
             'auth' => \App\Http\Middleware\AuthenticateMiddleware::class,
         ]);
     })
