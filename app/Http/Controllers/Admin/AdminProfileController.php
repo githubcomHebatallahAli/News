@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin;
 use App\Models\AdminProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -42,17 +43,27 @@ class AdminProfileController extends Controller
 
     public function edit(string $id)
     {
-        $this->authorize('manage_users');
-        $AdminProfile = AdminProfile::with(['admin.news'])->find($id);
-        if (!$AdminProfile) {
+        // $this->authorize('manage_users');
+        // $AdminProfile = AdminProfile::with(['admin.news'])->find($id);
+        // if (!$AdminProfile) {
+        //     return response()->json([
+        //         'message' => "AdminProfile not found."
+        //     ], 404);
+        // }
+        // return response()->json([
+        //     'data' =>new AdminProfileResource($AdminProfile),
+        //     'message' => "Show Admin Profile By ID Successfully."
+        // ]);
+
+        {
+            $admin = Admin::with('news')->findOrFail($id);
+
             return response()->json([
-                'message' => "AdminProfile not found."
-            ], 404);
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'news' => $admin->news
+            ]);
         }
-        return response()->json([
-            'data' =>new AdminProfileResource($AdminProfile),
-            'message' => "Show Admin Profile By ID Successfully."
-        ]);
     }
 
 
