@@ -60,8 +60,10 @@ class AdminProfileController extends Controller
             $admin = Admin::with('news','role')->findOrFail($id);
 
             return response()->json([
+
                 'name' => $admin->name,
                 'email' => $admin->email,
+                'role' =>$admin->role,
                 'news' => $admin->news
             ]);
         }
