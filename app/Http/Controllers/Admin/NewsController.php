@@ -18,7 +18,8 @@ class NewsController extends Controller
 
     public function showAll()
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
+        $this->authorize('showAll', News::class);
         // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
         $news = News::withCount('views')->get();
 
@@ -30,10 +31,10 @@ class NewsController extends Controller
 
     public function create(NewsRequest $request)
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
 
 
-        // $this->authorize('create', News::class);
+        $this->authorize('create', News::class);
 
            $News =News::create ([
                 "title" => $request->title,
@@ -62,7 +63,7 @@ class NewsController extends Controller
 
     public function edit($id, Request $request)
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
 
         $news = News::withCount('views')->findOrFail($id);
         if (!$news) {
@@ -70,7 +71,7 @@ class NewsController extends Controller
                 'message' => "News not found."
             ], 404);
         }
-        // $this->authorize('edit', News::class);
+        $this->authorize('edit', $news);
         $category = $news->category;
         $category->increment('views_count');
 
@@ -84,7 +85,7 @@ class NewsController extends Controller
 
     public function update(NewsRequest $request, string $id)
     {
-        $this->authorize('manage_users');
+        // $this->authorize('manage_users');
        $News =News::findOrFail($id);
 
        if (!$News) {
@@ -92,7 +93,7 @@ class NewsController extends Controller
             'message' => "News not found."
         ], 404);
     }
-    // $this->authorize('update', News::class);
+    $this->authorize('update', $News);
        $News->update([
         "title" => $request->title,
         "writer" => $request->writer,
@@ -127,7 +128,6 @@ class NewsController extends Controller
 public function destroy(string $id)
 {
     // $this->authorize('manage_users');
-    $this->authorize('softDelete', News::class);
 
     $news = News::find($id);
     if (!$news) {
@@ -135,6 +135,7 @@ public function destroy(string $id)
             'message' => "News not found."
         ], 404);
     }
+        $this->authorize('softDelete', $news);
 
     $news->delete();
     return response()->json([
@@ -194,8 +195,6 @@ public function forceDelete(string $id)
 
     public function review(string $id)
     {
-
-
         // $this->authorize('manage_users');
         $News =News::findOrFail($id);
 
@@ -204,7 +203,7 @@ public function forceDelete(string $id)
              'message' => "News not found."
          ], 404);
      }
-    //   $this->authorize('review', News::class);
+       $this->authorize('review', $News);
 
         $News->update(['status' => 'reviewed']);
         return response()->json([
@@ -215,7 +214,7 @@ public function forceDelete(string $id)
 
     public function reject(string $id)
     {
-        // $this->authorize('reject',News::class);
+
         // $this->authorize('manage_users');
         $News =News::findOrFail($id);
 
@@ -224,6 +223,7 @@ public function forceDelete(string $id)
              'message' => "News not found."
          ], 404);
      }
+        $this->authorize('reject',$News);
 
         $News->update(['status' => 'rejected']);
 
@@ -236,14 +236,16 @@ public function forceDelete(string $id)
     public function publish(string $id)
     {
         // $this->authorize('manage_users');
-        $this->authorize('publish', News::class);
+
         $News =News::findOrFail($id);
+
 
         if (!$News) {
          return response()->json([
              'message' => "News not found."
          ], 404);
      }
+     $this->authorize('publish', $News);
 
         $News->update(['status' => 'published']);
 

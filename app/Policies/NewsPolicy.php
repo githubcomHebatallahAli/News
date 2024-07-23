@@ -5,82 +5,87 @@ namespace App\Policies;
 use App\Models\News;
 use App\Models\Role;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class NewsPolicy
 {
 use HandlesAuthorization;
+protected $rolesCache = [];
+
 protected function getRoleNameById($id)
 {
-    return Role::find($id)->name ?? '';
+    // Cache roles to avoid multiple DB queries
+    if (!isset($this->rolesCache[$id])) {
+        $role = Role::find($id);
+        $this->rolesCache[$id] = $role ? $role->name : '';
+    }
+    return $this->rolesCache[$id];
 }
 
- public function showAll(Admin $admin)
+protected function checkRole(Admin $admin, array $allowedRoles)
 {
     $roleName = $this->getRoleNameById($admin->role_id);
-    // Define the roles that are allowed to show all
-    return in_array($roleName, ['Super Admin', 'Admin','Reviewer','Writer']);
+    Log::info('Admin role checking:', ['role' => $roleName]);
+    return in_array($roleName, $allowedRoles);
 }
+
+public function showAll(Admin $admin)
+{
+    return $this->checkRole($admin, ['Super Admin', 'Admin', 'Reviewer', 'Writer']);
+}
+
 public function create(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
+    return $this->checkRole($admin, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
 }
 
 public function edit(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
+    return $this->checkRole($admin, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
 }
 
 public function update(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
+    return $this->checkRole($admin, ['Writer', 'Super Admin', 'Admin', 'Reviewer']);
 }
 
 public function softDelete(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Super Admin', 'Admin']);
+    return $this->checkRole($admin, ['Super Admin', 'Admin']);
 }
 
 public function showDeleted(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Super Admin', 'Admin']);
+    return $this->checkRole($admin, ['Super Admin', 'Admin']);
 }
 
 public function restore(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Super Admin', 'Admin']);
+    return $this->checkRole($admin, ['Super Admin', 'Admin']);
 }
 
 public function forceDelete(Admin $admin)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Super Admin', 'Admin']);
+    return $this->checkRole($admin, ['Super Admin', 'Admin']);
 }
 
 public function review(Admin $admin, News $news)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Reviewer', 'Admin', 'Super Admin']);
+    return $this->checkRole($admin, ['Reviewer', 'Admin', 'Super Admin']);
 }
 
 public function reject(Admin $admin, News $news)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Reviewer', 'Admin', 'Super Admin']);
+    return $this->checkRole($admin, ['Reviewer', 'Admin', 'Super Admin']);
 }
 
 public function publish(Admin $admin, News $news)
 {
-    $roleName = $this->getRoleNameById($admin->role_id);
-    return in_array($roleName, ['Admin', 'Super Admin']);
+    return $this->checkRole($admin, ['Admin', 'Super Admin']);
+}
 }
 
 
 
-}
+

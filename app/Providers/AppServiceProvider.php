@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
             return    Auth::guard('admin')->check();
         });
 
-        Gate::policy(News::class, NewsPolicy::class);
+        // Gate::policy(News::class, NewsPolicy::class);
 
 
         Schema::defaultStringLength(191);
