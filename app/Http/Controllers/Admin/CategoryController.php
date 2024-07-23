@@ -88,9 +88,16 @@ class CategoryController extends Controller
             }
 
             $category->incrementViews();
+            if ($category->news->isEmpty()) {
+                // يمكنك تنفيذ منطق تحرير القسم هنا
+                return response()->json([
+                    'message' => "Category is empty and can be edited.",
+                    // ضع هنا منطق التعديل
+                ]);
+            }
 
             return response()->json([
-                // 'data' => new CategoryResource($category),
+                 'data' => new CategoryResource($category),
                 'data' => AdminProfileResource::collection($category->news),
                 'message' => "Edit Category  With News Count By ID Successfully."
             ]);
