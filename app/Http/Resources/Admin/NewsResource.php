@@ -16,6 +16,7 @@ class NewsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'admin' => new AdminRegisterResource($this->admin),
             "id" => $this -> id,
             'title' => $this -> title,
             'writer' => $this -> writer,
@@ -28,8 +29,8 @@ class NewsResource extends JsonResource
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
             'status' => $this -> status,
-            
-            'admin' => new AdminRegisterResource($this->admin),
+
+
             'category' => new CategoryResource($this->category)
         ];
     }
