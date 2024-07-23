@@ -18,95 +18,77 @@ class AdminProfileController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-        $adminProfiles = AdminProfile::with(['admin.news'])->get();
+        $admins = Admin::with(['news.category', 'role'])->get();
+
+        // تحويل البيانات إلى استجابة JSON
         return response()->json([
-            'data' => AdminProfileResource::collection( $adminProfiles),
-            'message' => "Show All Admin Profile Successfully."
+            'admins' => $admins->map(function ($admin) {
+                return [
+                    'author' => new AdminRegisterResource($admin),
+                    'news' => AdminProfileResource::collection($admin->news)
+                ];
+            })
         ]);
     }
 
-    public function create(AdminProfileRequest $request)
-    {
-        $this->authorize('manage_users');
-           $AdminProfile =AdminProfile::create ([
-            "admin_id" => auth()->id(),
-            ]);
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store(AdminProfile::storageFolder);
-                $AdminProfile->photo =  $photoPath;
-            }
-           $AdminProfile->save();
-           return response()->json([
-            'data' =>new AdminProfileResource($AdminProfile),
-            'message' => "Admin Profile Created Successfully."
-        ]);
 
-        }
 
 
     public function edit(string $id)
     {
+        $this->authorize('manage_users');
             $admin = Admin::with(['news.category', 'role'])->findOrFail($id);
 
             return response()->json([
                 'auther' => new AdminRegisterResource($admin),
-
                 'news' => AdminProfileResource::collection($admin->news)
             ]);
         }
 
+        public function destroy(string $id)
+{
+    $admin = Admin::findOrFail($id);
+    $admin->delete();
 
-
-
-
-
-
-
-    public function update(Request $request, string $id)
-    {
-        $this->authorize('manage_users');
-       $AdminProfile =AdminProfile::findOrFail($id);
-       if (!$AdminProfile) {
-        return response()->json([
-            'message' => "Admin Profile not found."
-        ], 404);
-    }
-       $AdminProfile->update([
-        "admin_id" => auth()->id(),
-        ]);
-        if ($request->hasFile('photo')) {
-            if ($AdminProfile->photo) {
-                Storage::disk('public')->delete($AdminProfile->photo);
-            }
-            $photoPath = $request->file('photo')->store('AdminProfile', 'public');
-            $AdminProfile->photo = $photoPath;
-        }
-
-       $AdminProfile->save();
-       return response()->json([
-        'data' =>new AdminProfileResource($AdminProfile),
-        'message' => " Update Admin Profile By Id Successfully."
+    return response()->json([
+        'message' => 'Admin soft deleted successfully'
     ]);
 }
 
-public function destroy(string $id){
+    public function showDeleted()
+    {
+        $admins = Admin::onlyTrashed()->with(['news.category', 'role'])->get();
 
-    return $this->destroyModel(AdminProfile::class, AdminProfileResource::class, $id);
+        return response()->json([
+            'admins' => $admins->map(function ($admin) {
+                return [
+                    'author' => new AdminRegisterResource($admin),
+                    'news' => AdminProfileResource::collection($admin->news)
+                ];
+            })
+        ]);
     }
 
-        public function showDeleted(){
-
-        return $this->showDeletedModels(AdminProfile::class, AdminProfileResource::class);
-    }
 
     public function restore(string $id)
-    {
+{
+    $admin = Admin::onlyTrashed()->findOrFail($id);
+    $admin->restore();
 
-        return $this->restoreModel(AdminProfile::class, $id);
-    }
+    return response()->json([
+        'message' => 'Admin restored successfully'
+    ]);
+}
 
-    public function forceDelete(string $id){
 
-        return $this->forceDeleteModel(AdminProfile::class, $id);
-    }
+public function forceDelete(string $id)
+{
+    $admin = Admin::onlyTrashed()->findOrFail($id);
+    $admin->forceDelete();
+
+    return response()->json([
+        'message' => 'Admin force deleted successfully'
+    ]);
+}
+
 }
