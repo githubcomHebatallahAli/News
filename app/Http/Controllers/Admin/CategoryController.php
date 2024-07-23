@@ -97,7 +97,7 @@ class CategoryController extends Controller
             }
 
             return response()->json([
-                 'data' => new CategoryResource($category),
+                 'category' => new CategoryResource($category),
                 'data' => AdminProfileResource::collection($category->news),
                 'message' => "Edit Category  With News Count By ID Successfully."
             ]);
