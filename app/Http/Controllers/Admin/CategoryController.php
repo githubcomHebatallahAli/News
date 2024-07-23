@@ -18,9 +18,10 @@ class CategoryController extends Controller
     {
         $this->authorize('manage_users');
 
-        $categories = Category::withCount('news')->get();
+        $categories = Category::with(['news'])->withCount('news')->get();
         return response()->json([
-            'data' => CategoryResource::collection($categories),
+            // 'data' => CategoryResource::collection($categories),
+            'data' => AdminProfileResource::collection($categories->news),
             'message' => "Show All Categories With News Count Successfully."
         ]);
     }
