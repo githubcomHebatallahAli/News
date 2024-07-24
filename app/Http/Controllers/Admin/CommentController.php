@@ -64,8 +64,6 @@ class CommentController extends Controller
             return $this->forceDeleteModel(Comment::class, $id);
         }
 
-
-
 }
 
 

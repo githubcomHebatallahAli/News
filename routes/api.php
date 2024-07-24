@@ -19,5 +19,7 @@ require __DIR__ . '/Apis/Admin/news.php';
 require __DIR__ . '/Apis/Admin/bestNews.php';
 require __DIR__ . '/Apis/Admin/adminProfile.php';
 require __DIR__ . '/Apis/Admin/comment.php';
+require __DIR__ . '/Apis/Admin/user.php';
+require __DIR__ . '/Apis/Admin/admin.php';
 require __DIR__ . '/Apis/User/showAll.php';
 require __DIR__ . '/Apis/User/create.php';

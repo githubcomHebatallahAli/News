@@ -13,7 +13,7 @@ use App\Http\Resources\Admin\RoleResource;
 class RoleController extends Controller
 {
     use ManagesModelsTrait;
-    
+
       public function showAll()
     {
         $this->authorize('manage_users');
@@ -105,7 +105,5 @@ class RoleController extends Controller
     {
         return $this->forceDeleteModel(Role::class, $id);
     }
-
-
 
 }
