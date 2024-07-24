@@ -27,7 +27,7 @@ class ContactUsController extends Controller
 
         return response()->json([
             'data' =>ContactUsResource::collection($ContactUs),
-            'message' => "Show all contact with user ContactUs By ID Successfully."
+            'message' => "Show all contact with user  Successfully."
         ]);
 
     }

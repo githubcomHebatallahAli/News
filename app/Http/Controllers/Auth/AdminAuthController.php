@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Auth\AdminRegisterRequest;
@@ -15,7 +16,7 @@ class AdminAuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin',
-         ['except' => ['login','verify']]);
+         ['except' => ['register','login','verify']]);
     }
 
     /**
@@ -55,6 +56,9 @@ class AdminAuthController extends Controller
     // Register an Admin.
     public function register(AdminRegisterRequest $request)
     {
+        if (!Gate::allows('create', Admin::class)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
         $validator = Validator::make($request->all(), $request->rules());
 

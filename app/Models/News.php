@@ -68,10 +68,7 @@ class News extends Model
         });
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+
 
     protected static function boote()
     {
@@ -89,6 +86,11 @@ class News extends Model
         return $this->hasMany(NewsView::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function bestNews()
     {
         return $this->hasOne(BestNews::class);
@@ -98,4 +100,10 @@ class News extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

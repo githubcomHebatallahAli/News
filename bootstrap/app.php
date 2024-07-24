@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\News;
+use App\Models\Admin;
 use App\Policies\NewsPolicy;
 use Illuminate\Http\Request;
+use App\Policies\AdminPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Application;
 use Illuminate\Auth\AuthenticationException;
@@ -18,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            
+
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
 
             'auth' => \App\Http\Middleware\AuthenticateMiddleware::class,
@@ -35,6 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->booted(function() {
         Gate::policy(News::class, NewsPolicy::class);
+        Gate::policy(Admin::class, AdminPolicy::class);
     })
     ->create();
 

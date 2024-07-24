@@ -5,10 +5,12 @@ namespace App\Http\Controllers\User;
 use App\Models\News;
 use App\Models\TNews;
 use App\Models\Slider;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Advertisment;
 use App\Models\TrendingNews;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
@@ -77,6 +79,15 @@ class ShowAllController extends Controller
 
         return response()->json([
             'news' => NewsResource::collection($news),
+        ]);
+    }
+
+    public function showAllComments()
+    {
+        $Comments = Comment::get();
+        return response()->json([
+            'data' => CommentResource::collection($Comments),
+            'message' => "Show All Comments Successfully."
         ]);
     }
 

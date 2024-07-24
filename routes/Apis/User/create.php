@@ -12,5 +12,6 @@ Route::group([
 ], function () {
 Route::post('create/contactUs',[CreateController::class,'createContactUs']);
 Route::post('create/advertiseHere',[CreateController::class,'createAdvertiseHere']);
+Route::post('create/comment',[CreateController::class,'createComment']);
 
 });

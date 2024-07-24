@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Comment;
 use App\Models\ContactUs;
 use App\Models\AdvertiseHere;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CommentRequest;
 use App\Http\Requests\ContactUsRequest;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\ContactUsResource;
 use App\Http\Requests\AdvertiseHereRequest;
 use App\Http\Resources\AdvertiseHereResource;
@@ -49,6 +52,23 @@ class CreateController extends Controller
                     'message' => 'AdvertiseHere Created Successfully.'
                 ]);
             }
+
+            public function createComment(CommentRequest $request)
+            {
+
+                   $Comment =Comment::create ([
+                        'user_id' => $request->user_id,
+                        'news_id' => $request->news_id,
+                        "comment" => $request->comment,
+                        "status" => $request->status
+                    ]);
+                    $Comment->save();
+
+                    return response()->json([
+                        'data' => new CommentResource( $Comment),
+                        'message' => 'Comment Created Successfully.'
+                    ]);
+                }
 
 
 }
