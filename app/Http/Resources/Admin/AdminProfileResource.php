@@ -21,6 +21,7 @@ class AdminProfileResource extends JsonResource
             'title' => $this -> title,
             'writer' => $this -> writer,
             'event_date' => $this -> event_date,
+            'formatted_date' => $this->formatted_date,
             'img' => $this -> img,
             'url' => $this -> url,
             'part1' => $this -> part1,
