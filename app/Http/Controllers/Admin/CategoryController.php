@@ -90,11 +90,9 @@ class CategoryController extends Controller
             }
 
             $category->incrementViews();
-
-
             return response()->json([
                 //  'category' => new CategoryResource($category),
-                'data' =>  CategoryBestNewsResource::collection($category),
+                'data' => new CategoryBestNewsResource($category),
                 'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
             ]);
         }

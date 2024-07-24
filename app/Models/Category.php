@@ -26,9 +26,14 @@ class Category extends Model
     //     return $this->hasMany(BestNews::class);
     // }
 
+    // public function bestNews()
+    // {
+    //     return $this->hasManyThrough(BestNews::class, News::class);
+    // }
+
     public function bestNews()
     {
-        return $this->hasManyThrough(BestNews::class, News::class);
+        return $this->hasManyThrough(BestNews::class, News::class, 'category_id', 'news_id');
     }
 
 
