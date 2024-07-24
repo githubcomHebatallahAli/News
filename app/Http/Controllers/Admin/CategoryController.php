@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
 use App\Http\Resources\Admin\AdminProfileResource;
+use App\Http\Resources\Admin\CategoryBestNewsResource;
 
 class CategoryController extends Controller
 {
@@ -79,7 +80,8 @@ class CategoryController extends Controller
         public function edit(string $id)
         {
             $this->authorize('manage_users');
-            $category = Category::with(['news'])->withCount('news')->find($id);
+  $category = Category::with(['news.admin', 'bestNews.news.admin'])
+  ->withCount('news')->find($id);
 
             if (!$category) {
                 return response()->json([
@@ -98,8 +100,8 @@ class CategoryController extends Controller
 
             return response()->json([
                 //  'category' => new CategoryResource($category),
-                'data' => AdminProfileResource::collection($category->news),
-                'message' => "Edit Category  With News Count By ID Successfully."
+                'data' =>  CategoryBestNewsResource::collection($category->news),
+                'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
             ]);
         }
 

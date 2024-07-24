@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Traits\ManagesModelsTrait;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CommentResource;
 
 
 class CommentController extends Controller
@@ -12,19 +15,13 @@ class CommentController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-
-        $Comment = Comment::with('user')->get();
-
-        if (!$Comment) {
-            return response()->json([
-                'message' => "Comment not found."
-            ], 404);
-        }
-
+        $Comments = Comment::with('user')->get();
         return response()->json([
-            'data' =>CommentResource::collection($Comment),
-            'message' => "Show all comments with user Successfully."
+            'data' => CommentResource::collection($Comments),
+            'message' => "Show All Comments Successfully."
         ]);
+
+
 
     }
 
@@ -32,7 +29,7 @@ class CommentController extends Controller
     {
         $this->authorize('manage_users');
 
-        $Comment = Comment::with('user')->find($id);
+        $Comment = Comment::find($id);
 
         if (!$Comment) {
             return response()->json([

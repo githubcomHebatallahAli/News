@@ -21,6 +21,15 @@ class Category extends Model
     {
         return $this->hasMany(News::class);
     }
+    // public function bestNews()
+    // {
+    //     return $this->hasMany(BestNews::class);
+    // }
+
+    public function bestNews()
+    {
+        return $this->hasManyThrough(BestNews::class, News::class);
+    }
 
 
 

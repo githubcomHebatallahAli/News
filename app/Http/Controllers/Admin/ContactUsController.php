@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+
 use App\Models\ContactUs;
-use Illuminate\Http\Request;
+
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContactUsRequest;
+
 use App\Http\Resources\ContactUsResource;
 
 class ContactUsController extends Controller

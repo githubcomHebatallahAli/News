@@ -24,7 +24,7 @@ class CommentRequest extends FormRequest
         return [
             'comment'  =>'required|string',
             'status' => 'nullable|string',
-            'user_id'  =>'required|exists:users,id',
+            // 'user_id'  =>'required|exists:users,id',
             'news_id'  =>'required|exists:news,id'
 
 

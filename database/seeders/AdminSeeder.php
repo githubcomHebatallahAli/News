@@ -15,13 +15,13 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         DB::table('admins')->insert([
-            'name' => ' Super Admin',
+            'name' => 'Super Admin',
             'email' => 'superAdmin@mail.com',
             'password' => Hash::make('superAdmin@123'),
             'role_id' => '1', // يمكنك تغيير هذا إلى ID دور معين إذا كنت ترغب في ذلك
         ]);
         DB::table('admins')->insert([
-            'name' => ' Admin',
+            'name' => 'Admin',
             'email' => 'Admin@mail.com',
             'password' => Hash::make('Admin@123'),
             'role_id' => '2', // يمكنك تغيير هذا إلى ID دور معين إذا كنت ترغب في ذلك
@@ -38,6 +38,6 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('Reviewer@123'),
             'role_id' => '4', // يمكنك تغيير هذا إلى ID دور معين إذا كنت ترغب في ذلك
         ]);
-      
+
     }
 }

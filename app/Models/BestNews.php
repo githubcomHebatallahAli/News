@@ -12,8 +12,14 @@ class BestNews extends Model
     protected $fillable = [
         'news_id'
     ];
+    
     public function news()
     {
         return $this->belongsTo(News::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

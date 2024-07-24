@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('comment');
-            $table->foreignId('users_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending')->nullable();
             $table->softDeletes();
