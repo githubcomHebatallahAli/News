@@ -27,8 +27,8 @@ class NewsResource extends JsonResource
             'part3' => $this -> part3,
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
+            'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
-
             'admin' => new AdminRegisterResource($this->admin),
             'category' => new CategoryResource($this->category)
         ];
