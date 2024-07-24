@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\UserRegisterRequest;
+
+use App\Http\Resources\Admin\UserResource;
 use App\Http\Resources\Auth\UserRegisterResource;
 
 class UserController extends Controller
@@ -28,7 +29,7 @@ class UserController extends Controller
   public function edit(string $id)
   {
       $this->authorize('manage_users');
-      $User = User::find($id);
+      $User = User::with(['comments', 'contactUs', 'advertiseHere'])->find($id);
 
       if (!$User) {
           return response()->json([
@@ -37,7 +38,7 @@ class UserController extends Controller
       }
 
       return response()->json([
-          'data' =>new UserRegisterResource($User),
+          'data' =>new UserResource($User),
           'message' => "Edit User By ID Successfully."
       ]);
   }
