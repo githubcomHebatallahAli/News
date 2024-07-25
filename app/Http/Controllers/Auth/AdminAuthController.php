@@ -89,7 +89,7 @@ class AdminAuthController extends Controller
      */
     public function logout()
     {
-        auth()->guard('admin')->logout();
+        auth()->logout();
         return response()->json([
             'message' => 'Admin successfully signed out']);
     }
@@ -101,7 +101,7 @@ class AdminAuthController extends Controller
      */
     public function refresh()
     {
-        return $this->createNewToken(auth()->guard('admin')->refresh());
+        return $this->createNewToken(auth()->refresh());
     }
 
     /**
@@ -111,7 +111,7 @@ class AdminAuthController extends Controller
      */
     public function userProfile()
     {
-        return response()->json(["data" => auth()->guard('admin')->user()]);
+        return response()->json(["data" => auth()->user()]);
     }
 
     /**
@@ -123,12 +123,15 @@ class AdminAuthController extends Controller
      */
     protected function createNewToken($token)
     {
+        $admin = Admin::with('role:id,name')->find(auth()->guard('admin')->id());
         return response()->json([
+
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('admin')->factory()->getTTL() * 60,
-            'admin' => auth()->guard('admin')->user(),
-              'admin' => Admin::with('role:id,name')->find(auth()->id()),
+            // 'admin' => auth()->guard('admin')->user(),
+            //   'admin' => Admin::with('role:id,name')->find(auth()->id()),
+            'admin' => $admin,
         ]);
     }
 }

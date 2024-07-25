@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AdminAuthController;
 
-Route::controller(AdminAuthController::class)->prefix('/admin')->group(
+Route::controller(AdminAuthController::class)->prefix('/admin')->middleware('admin')->group(
     function () {
 Route::post('/login', 'login');
 Route::post('/register',  'register');
