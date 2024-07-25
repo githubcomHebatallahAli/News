@@ -43,6 +43,47 @@ class CommentController extends Controller
         ]);
     }
 
+
+    public function approve(string $id)
+    {
+        $this->authorize('manage_users');
+        $Comment =Comment::findOrFail($id);
+
+        if (!$Comment) {
+         return response()->json([
+             'message' => "Comment not found."
+         ], 404);
+     }
+    //    $this->authorize('review', $Comment);
+
+        $Comment->update(['status' => 'approved']);
+        return response()->json([
+            'data' => new CommentResource($Comment),
+            'message' => "Comment Approved Successfully."
+        ]);
+    }
+
+    public function reject(string $id)
+    {
+
+        $this->authorize('manage_users');
+        $Comment =Comment::findOrFail($id);
+
+        if (!$Comment) {
+         return response()->json([
+             'message' => "Comment not found."
+         ], 404);
+     }
+        // $this->authorize('reject',$Comment);
+
+        $Comment->update(['status' => 'rejected']);
+
+        return response()->json([
+            'data' => new CommentResource($Comment),
+            'message' => 'Comment has been rejected.'
+        ]);
+    }
+
     public function destroy(string $id){
 
         return $this->destroyModel(Comment::class, CommentResource::class, $id);
