@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\BestNews;
 use Illuminate\Http\Request;
+use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BestNewsRequest;
 use App\Http\Resources\Admin\BestNewsResource;
 
 class BestNewsController extends Controller
 {
+    use ManagesModelsTrait;
     public function showAll()
     {
         $this->authorize('manage_users');
