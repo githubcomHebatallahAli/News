@@ -35,7 +35,7 @@ class ShowByIdController extends Controller
 
     public function showNews($id, Request $request)
     {
-        $news = News::with(['comments', 'comments.user']) // تحميل التعليقات والمستخدمين المرتبطين بها
+        $news = News::with(['comments.user']) // تحميل التعليقات والمستخدمين المرتبطين بها
                     ->withCount('views')
                     ->findOrFail($id);
 
