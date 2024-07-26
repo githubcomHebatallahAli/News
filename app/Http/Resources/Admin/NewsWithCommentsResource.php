@@ -33,7 +33,7 @@ class NewsWithCommentsResource extends JsonResource
 
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
-            'comments' => NewsUserCommentsResource::collection($this->whenLoaded('comments'))
+            'comments' =>new NewsUserCommentsResource($this->whenLoaded('comments'))
         ];
     }
 }
