@@ -10,6 +10,7 @@ Route::controller(AdminProfileController::class)->prefix('/admin')->middleware('
 
    Route::get('/edit/adminProfile/{id}','edit');
    Route::patch('notActive/admin/{id}', 'notActive');
+   Route::patch('active/admin/{id}', 'active');
 
    Route::delete('/delete/adminProfile/{id}', 'destroy');
    Route::get('/showDeleted/adminProfile', 'showDeleted');
