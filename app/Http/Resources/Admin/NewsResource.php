@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources\Admin;
 
-use App\Http\Resources\Auth\AdminRegisterResource;
 use Illuminate\Http\Request;
+use App\Http\Resources\CommentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Auth\AdminRegisterResource;
 
 class NewsResource extends JsonResource
 {
@@ -31,7 +32,8 @@ class NewsResource extends JsonResource
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
             'admin' => new AdminRegisterResource($this->admin),
-            'category' => new CategoryResource($this->category)
+            'category' => new CategoryResource($this->category),
+            'comments' => CommentResource::collection($this->comments)
         ];
     }
 }

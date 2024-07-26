@@ -52,7 +52,7 @@ class ShowByIdController extends Controller
         $category->refresh();
 
         return response()->json([
-            'data' => new CommentResource($news),
+            'data' => new NewsResource($news),
             'message' => "News Show By Id Successfully."
         ]);
     }
