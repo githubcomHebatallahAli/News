@@ -37,7 +37,7 @@ class ShowAllController extends Controller
 
     public function showAll()
     {
-        $this->authorize('manage_users');
+     
 
         $categories = Category::with(['news'])->withCount('news')->get();
 
