@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;
 use App\Http\Resources\Admin\CommentNewsResource;
+use App\Http\Resources\CommentResource;
 
 class ShowByIdController extends Controller
 {
@@ -51,7 +52,7 @@ class ShowByIdController extends Controller
         $category->refresh();
 
         return response()->json([
-            'data' => new CommentNewsResource($news),
+            'data' => new CommentResource($news),
             'message' => "News Show By Id Successfully."
         ]);
     }
