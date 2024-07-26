@@ -73,11 +73,11 @@ class NewsController extends Controller
             ], 404);
         }
         $this->authorize('edit', $news);
-        $category = $news->category;
-        $category->increment('views_count');
+        // $category = $news->category;
+        // $category->increment('views_count');
 
-        // إعادة تحميل عدد الزيارات للقسم بعد التحديث
-        $category->refresh();
+    //    إعادة تحميل عدد الزيارات للقسم بعد التحديث
+        // $category->refresh();
         return response()->json([
             'data' =>new NewsResource($news),
             'message' => "News Edit By Id Successfully."

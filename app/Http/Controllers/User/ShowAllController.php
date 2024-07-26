@@ -24,11 +24,15 @@ class ShowAllController extends Controller
     public function showAllCategory()
     {
 
-        $Categorys = Category::get();
+        $categories = Category::with(['news.admin', 'bestNews.news.admin'])
+            ->withCount('news')
+            ->get();
+
         return response()->json([
-            'data' => CategoryResource::collection($Categorys),
-            'message' => "Show All Categorys Successfully."
+            'data' => CategoryBestNewsResource::collection($categories),
+            'message' => "Show All Categories With News, BestNews, and News Count Successfully."
         ]);
+    }
     }
 
     public function showAllSlider()
