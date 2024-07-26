@@ -10,13 +10,18 @@ class TNews extends Model
 {
     use HasFactory , SoftDeletes ;
     protected $fillable = [
-        'content',
-        'trending_news_id'
+        'trending_news_id',
+        'news_id'
     ];
 
     public function trendingNews()
     {
         return $this->belongsTo(TrendingNews::class);
+    }
+
+    public function news()
+    {
+        return $this->belongsTo(News::class);
     }
 
 }

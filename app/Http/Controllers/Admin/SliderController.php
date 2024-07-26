@@ -31,13 +31,8 @@ class SliderController extends Controller
       $this->authorize('manage_users');
 
          $Slider =Slider::create ([
-              "title" => $request-> title,
-              "content" => $request-> content,
+              "news_id" => $request-> news_id
           ]);
-          if ($request->hasFile('img')) {
-            $imgPath = $request->file('img')->store(Slider::storageFolder);
-            $Slider->img =  $imgPath;
-        }
          $Slider->save();
          return response()->json([
           'data' =>new SliderResource($Slider),
@@ -77,18 +72,10 @@ class SliderController extends Controller
       ], 404);
   }
      $Slider->update([
-        "title" => $request-> title,
-        "content" => $request-> content,
+        "news_id" => $request-> news_id
 
       ]);
-      if ($request->hasFile('img')) {
-        if ($Slider->img) {
-            Storage::disk('public')->delete($Slider->img);
-        }
-        $imgPath = $request->file('img')->store('Sliders', 'public');
-        $Slider->img = $imgPath;
 
-    }
 
      $Slider->save();
      return response()->json([

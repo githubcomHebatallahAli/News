@@ -24,8 +24,8 @@ class TNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' =>'string|required',
-            'trending_news_id'=>'required|exists:trending_news,id'
+            'trending_news_id'=>'required|exists:trending_news,id',
+            'news_id' => 'required|exists:news,id',
         ];
     }
 

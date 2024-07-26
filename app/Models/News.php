@@ -107,4 +107,14 @@ class News extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function slider()
+    {
+        return $this->hasMany(Slider::class);
+    }
+
+    public function trNews()
+    {
+        return $this->hasMany(TNews::class);
+    }
+
 }

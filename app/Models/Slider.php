@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Slider extends Model
 {
     use HasFactory , SoftDeletes ;
-    const storageFolder= 'Sliders';
+    
     protected $fillable = [
-        'title',
-        'content',
-        'img',
+        'news_id'
     ];
+
+    public function news()
+    {
+        return $this->belongsTo(News::class);
+    }
 }

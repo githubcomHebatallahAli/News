@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('t_news', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
             $table->foreignId('trending_news_id')->constrained('trending_news')->cascadeOnDelete();
+            $table->foreignId('news_id')->constrained('news')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

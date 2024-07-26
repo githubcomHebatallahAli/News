@@ -28,8 +28,8 @@ class TNewsController extends Controller
         $this->authorize('manage_users');
 
            $TNews =TNews::create ([
-                "content" => $request->content,
-                "trending_news_id" => $request-> trending_news_id
+                "trending_news_id" => $request-> trending_news_id,
+                "news_id" => $request-> news_id
             ]);
            $TNews->save();
            return response()->json([
@@ -68,8 +68,8 @@ class TNewsController extends Controller
         ], 404);
     }
        $TNews->update([
-        "content" => $request->content,
-        "trending_news_id" => $request-> trending_news_id
+        "trending_news_id" => $request-> trending_news_id,
+        "news_id" => $request-> news_id
         ]);
 
        $TNews->save();

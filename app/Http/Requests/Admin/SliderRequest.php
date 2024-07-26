@@ -24,9 +24,7 @@ class SliderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' =>'string|required',
-            'content' =>'string|required',
-            'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
+            'news_id' => 'required|exists:news,id',
         ];
     }
     public function failedValidation(Validator $validator)
