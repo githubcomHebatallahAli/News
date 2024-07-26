@@ -44,6 +44,25 @@ class AdminProfileController extends Controller
             ]);
         }
 
+        public function notActive(string $id)
+        {
+            $admin =Admin::findOrFail($id);
+
+            if (!$admin) {
+             return response()->json([
+                 'message' => "Admin not found."
+             ], 404);
+         }
+            $this->authorize('notActive',$admin);
+
+            $admin->update(['status' => 'notActive']);
+
+            return response()->json([
+                'data' => new AdminRegisterResource($admin),
+                'message' => 'Admin has been Not Active.'
+            ]);
+        }
+
         public function destroy(string $id)
 {
     $admin = Admin::findOrFail($id);
