@@ -11,9 +11,32 @@ use App\Http\Resources\Admin\CategoryBestNewsResource;
 
 class ShowByIdController extends Controller
 {
+    // public function showNews($id, Request $request)
+    // {
+    //     $news = News::withCount('views')->findOrFail($id);
+    //     if (!$news) {
+    //         return response()->json([
+    //             'message' => "News not found."
+    //         ], 404);
+    //     }
+
+    //     $category = $news->category;
+    //     $category->increment('views_count');
+
+    //     // إعادة تحميل عدد الزيارات للقسم بعد التحديث
+    //     $category->refresh();
+    //     return response()->json([
+    //         'data' =>new NewsResource($news),
+    //         'message' => "News Show By Id Successfully."
+    //     ]);
+    // }
+
     public function showNews($id, Request $request)
     {
-        $news = News::withCount('views')->findOrFail($id);
+        $news = News::with(['comments', 'comments.user']) // تحميل التعليقات والمستخدمين المرتبطين بها
+                    ->withCount('views')
+                    ->findOrFail($id);
+
         if (!$news) {
             return response()->json([
                 'message' => "News not found."
@@ -25,8 +48,9 @@ class ShowByIdController extends Controller
 
         // إعادة تحميل عدد الزيارات للقسم بعد التحديث
         $category->refresh();
+
         return response()->json([
-            'data' =>new NewsResource($news),
+            'data' => new NewsResource($news),
             'message' => "News Show By Id Successfully."
         ]);
     }

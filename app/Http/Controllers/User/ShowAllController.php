@@ -35,46 +35,7 @@ class ShowAllController extends Controller
         ]);
     }
 
-    //    public function showAllCategory()
-    // {
 
-
-    //     $categories = Category::with(['news'])->withCount('news')->get();
-
-    //     // تحويل الأقسام والأخبار إلى تنسيق مناسب
-    //     $result = $categories->map(function ($category) {
-    //         return [
-    //             'category' => [
-    //                 'id' => $category->id,
-    //                 'name' => $category->name,
-    //                 'views_count' => $category->views_count,
-    //                 'news_count' => $category->news_count,
-    //                 'url' => $category->url,
-    //             ],
-    //             'news' => $category->news->map(function ($newsItem) {
-    //                 return [
-    //                     'id' => $newsItem->id,
-    //                     'title' => $newsItem->title,
-    //                     'writer' => $newsItem->writer,
-    //                     'event_date' => $newsItem->event_date,
-    //                     'img' => $newsItem->img,
-    //                     'url' => $newsItem->url,
-    //                     'part1' => $newsItem->part1,
-    //                     'part2' => $newsItem->part2,
-    //                     'part3' => $newsItem->part3,
-    //                     'keyWords' => $newsItem->keyWords,
-    //                     'news_views_count' => $newsItem->news_views_count,
-    //                     'status' => $newsItem->status,
-    //                 ];
-    //             })
-    //         ];
-    //     });
-
-    //     return response()->json([
-    //         'data' => $result,
-    //         'message' => "All Categories with their news retrieved successfully."
-    //     ]);
-    // }
 
     public function showAllSlider()
     {
