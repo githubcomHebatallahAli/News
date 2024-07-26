@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Admin\NewsResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Auth\UserRegisterResource;
 
-class CommentResource extends JsonResource
+class NewsUserCommentsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,14 +15,13 @@ class CommentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-          return [
-
+        return [
             'comment' => [
                 'id' => $this->id,
                 'comment' => $this->comment,
                 'status' => $this->status,
                 'user' => new UserRegisterResource($this->user),
-                'news'=> new NewsResource($this->news),
+
             ],
         ];
     }

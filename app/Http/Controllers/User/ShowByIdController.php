@@ -6,10 +6,11 @@ use App\Models\News;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\NewsResource;
-use App\Http\Resources\Admin\CategoryBestNewsResource;
-use App\Http\Resources\Admin\CommentNewsResource;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\Admin\NewsResource;
+use App\Http\Resources\Admin\CommentNewsResource;
+use App\Http\Resources\Admin\CategoryBestNewsResource;
+use App\Http\Resources\Admin\NewsWithCommentsResource;
 
 class ShowByIdController extends Controller
 {
@@ -52,7 +53,7 @@ class ShowByIdController extends Controller
         $category->refresh();
 
         return response()->json([
-            'data' => new NewsResource($news),
+            'data' => new NewsWithCommentsResource($news),
             'message' => "News Show By Id Successfully."
         ]);
     }

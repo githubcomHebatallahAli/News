@@ -3,11 +3,10 @@
 namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\CommentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Auth\AdminRegisterResource;
 
-class NewsResource extends JsonResource
+class NewsWithCommentsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -34,7 +33,7 @@ class NewsResource extends JsonResource
 
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
-            
+            'comments' => NewsUserCommentsResource::collection($this->whenLoaded('comments'))
         ];
     }
 }
