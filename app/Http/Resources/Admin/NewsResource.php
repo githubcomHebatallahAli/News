@@ -31,9 +31,12 @@ class NewsResource extends JsonResource
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
-            'admin' => new AdminRegisterResource($this->admin),
-            'category' => new CategoryResource($this->category),
-            'comments' => CommentResource::collection($this->comments)
+            // 'admin' => new AdminRegisterResource($this->admin),
+            // 'category' => new CategoryResource($this->category),
+            // 'comments' => CommentResource::collection($this->comments)
+            'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'comments' => CommentResource::collection($this->whenLoaded('comments')) 
         ];
     }
 }
