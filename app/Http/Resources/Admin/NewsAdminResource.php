@@ -29,6 +29,7 @@ class NewsAdminResource extends JsonResource
             'news_views_count' => $this->news_views_count,
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
+            'adsenseCode' => $this -> adsenseCode ,
             'admin' => new AdminRegisterResource($this->admin),
         ] ;
     }

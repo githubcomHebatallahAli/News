@@ -20,6 +20,8 @@ class AdminRegisterResource extends JsonResource
             'name'=>$this->name,
             'email'=>$this->email,
             'role' => new RoleResource($this->role),
+            'adsenseCode' => $this -> adsenseCode ,
+            'status' => $this -> status
         ];
     }
 }

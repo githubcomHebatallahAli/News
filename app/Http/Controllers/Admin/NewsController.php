@@ -47,7 +47,8 @@ class NewsController extends Controller
                 'keyWords' => $request->keyWords,
                 "category_id" => $request->category_id,
                 "admin_id" => auth()->id(),
-                "status" => $request-> status
+                "status" => $request-> status,
+                "adsenseCode" => $request -> adsenseCode
             ]);
             if ($request->hasFile('img')) {
                 $imgPath = $request->file('img')->store(News::storageFolder);
@@ -105,9 +106,8 @@ class NewsController extends Controller
         "keyWords" => $request->keyWords,
         "category_id" => $request->category_id,
         "admin_id" => auth()->id(),
-         "status" => $request-> status
-
-
+        "status" => $request-> status,
+        "adsenseCode" => $request -> adsenseCode
         ]);
 
         if ($request->hasFile('img')) {

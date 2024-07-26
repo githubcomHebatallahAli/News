@@ -18,6 +18,8 @@ class Admin extends Authenticatable  implements JWTSubject
         'email',
         'password',
         'role_id',
+        'adsenseCode',
+        'status',
         'email_verified_at'
     ];
 

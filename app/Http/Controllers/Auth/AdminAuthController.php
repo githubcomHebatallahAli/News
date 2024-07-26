@@ -16,7 +16,7 @@ class AdminAuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin',
-         ['except' => ['register','login','verify']]);
+         ['except' => ['register','login','verify','notActive']]);
     }
 
     /**
@@ -78,6 +78,25 @@ class AdminAuthController extends Controller
         return response()->json([
             'message' => 'Admin Registration successful',
             'admin' =>new AdminRegisterResource($admin)
+        ]);
+    }
+
+    public function notActive(string $id)
+    {
+        $admin =Admin::findOrFail($id);
+
+        if (!$admin) {
+         return response()->json([
+             'message' => "Admin not found."
+         ], 404);
+     }
+        $this->authorize('notActive',$admin);
+
+        $admin->update(['status' => 'notActive']);
+
+        return response()->json([
+            'data' => new AdminRegisterResource($admin),
+            'message' => 'Admin has been Not Active.'
         ]);
     }
 

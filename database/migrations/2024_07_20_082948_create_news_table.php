@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('part2')->nullable();
             $table->text('part3')->nullable();
             $table->json('keyWords')->nullable();
+            $table->string('adsenseCode')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->enum('status', ['pending', 'reviewed', 'rejected', 'published'])->nullable();
             $table->unsignedBigInteger('news_views_count')->default(0);

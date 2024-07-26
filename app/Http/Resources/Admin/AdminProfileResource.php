@@ -30,7 +30,8 @@ class AdminProfileResource extends JsonResource
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
             'status' => $this -> status,
-            
+            'adsenseCode' => $this -> adsenseCode ,
+
 
         ];
     }

@@ -23,7 +23,8 @@ class News extends Model
         'keyWords',
         'category_id',
         'admin_id',
-        'status'
+        'status',
+        'adsenseCode',
     ];
 
     protected $casts = [

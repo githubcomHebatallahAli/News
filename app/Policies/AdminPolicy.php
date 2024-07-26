@@ -13,6 +13,11 @@ class AdminPolicy
         // return $admin->role_id === 1;
         return $admin->role->name === 'Super Admin';
     }
+    public function notActive(Admin $admin)
+    {
+        // return $admin->role_id === 1;
+        return $admin->role->name === 'Super Admin';
+    }
 
     public function logout(Admin $admin)
     {

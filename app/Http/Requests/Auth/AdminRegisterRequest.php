@@ -28,6 +28,8 @@ class AdminRegisterRequest extends FormRequest
             'email' => 'required|string|email|max:100|unique:admins',
             'password' => 'required|string|confirmed|min:6',
             'role_id' => 'required|string',
+            'adsenseCode' => 'nullable|string',
+            'status' => 'nullable|string',
         ];
     }
 
