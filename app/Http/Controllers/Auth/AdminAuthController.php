@@ -13,11 +13,11 @@ use App\Http\Resources\Auth\AdminRegisterResource;
 
 class AdminAuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin',
-         ['except' => ['register','login','verify','notActive']]);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:admin',
+    //      ['except' => ['register','login','verify','notActive','logout']]);
+    // }
 
     /**
      * Get a JWT via given credentials.
@@ -108,7 +108,10 @@ class AdminAuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        if (!Gate::allows('logout', Admin::class)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        auth()->guard('admin')->logout();
         return response()->json([
             'message' => 'Admin successfully signed out']);
     }

@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\UserAuthController;
 
 
-    Route::controller(UserAuthController::class)->prefix('/user')->middleware('api')->group(
+    Route::controller(UserAuthController::class)->prefix('/user')
+    ->middleware('api')->group(
         function () {
     Route::post('/login', 'login');
     Route::post('/register',  'register');
