@@ -35,9 +35,9 @@ class ShowAllController extends Controller
     //     ]);
     // }
 
-    public function showAll()
+       public function showAllCategory()
     {
-     
+
 
         $categories = Category::with(['news'])->withCount('news')->get();
 
