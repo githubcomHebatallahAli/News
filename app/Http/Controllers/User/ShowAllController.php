@@ -39,7 +39,7 @@ class ShowAllController extends Controller
     public function showAllSlider()
     {
 
-        $Sliders = Slider::get();
+        $Sliders = Slider::with('news.category', 'news.admin')->get();
         return response()->json([
             'data' => SliderResource::collection(  $Sliders),
             'message' => "Show All Sliders Successfully."
@@ -49,7 +49,7 @@ class ShowAllController extends Controller
 
     public function showAllTNews()
     {
-        $TNews = TNews::get();
+        $TNews = TNews::with('news.category', 'news.admin')->get();
         return response()->json([
             'data' => TNewsResource::collection($TNews),
             'message' => "Show All TNews Successfully."
