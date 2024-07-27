@@ -67,8 +67,7 @@ trait ManagesModelsTrait
     {
         $this->authorize('manage_users');
 
-        // إضافة رسالة تتبع للتحقق من الوصول إلى هذه النقطة
-        Log::info('Reached forceDeleteModel method');
+        \Log::info('Reached forceDeleteModel method for model: ' . $modelClass . ' with ID: ' . $id);
 
         $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
 
@@ -81,15 +80,6 @@ trait ManagesModelsTrait
 
         \Log::info('Model found, attempting to force delete: ' . $id);
 
-        // Check if there are related records that might prevent deletion
-        if ($modelInstance->news()->withTrashed()->exists()) {
-            \Log::info('Related news records exist for model: ' . $id);
-            return response()->json([
-                'message' => 'Cannot force delete ' . class_basename($modelClass) . ' because related news records exist.'
-            ], 400);
-        }
-
-        // Add debugging information
         try {
             $modelInstance->forceDelete();
             \Log::info('Force delete called for model: ' . $id);
@@ -109,12 +99,13 @@ trait ManagesModelsTrait
             ], 500);
         }
 
-        Log::info('Force delete successful for model: ' . $id);
+        \Log::info('Force delete successful for model: ' . $id);
 
         return response()->json([
             'message' => "Force Delete " . class_basename($modelClass) . " By Id Successfully."
         ]);
     }
+
 
 
 }
