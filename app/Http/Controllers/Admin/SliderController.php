@@ -18,7 +18,7 @@ class SliderController extends Controller
   {
       $this->authorize('manage_users');
 
-      $Sliders = Slider::get();
+      $Sliders = Slider::with('news.category', 'news.admin')->get();
       return response()->json([
           'data' => SliderResource::collection($Sliders),
           'message' => "Show All Sliders Successfully."
