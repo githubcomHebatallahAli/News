@@ -15,7 +15,7 @@ class TNewsController extends Controller
     {
         $this->authorize('manage_users');
 
-        $TNews = TNews::get();
+        $TNews = TNews::with('news.category', 'news.admin')->get();
         return response()->json([
             'data' => TNewsResource::collection($TNews),
             'message' => "Show All TNews Successfully."
