@@ -136,24 +136,10 @@ public function restore(string $id)
     return $this->restoreModel(Category::class, $id);
 }
 
-// public function forceDelete(string $id){
+public function forceDelete(string $id){
 
-//     return $this->forceDeleteModel(Category::class, $id);
-// }
-
-public function forceDelete(string $id)
-{
-    $this->authorize('manage_users');
-    $Category = Category::withTrashed()->where('id', $id)->first();
-    if (!$Category) {
-        return response()->json([
-            'message' => "Category not found."
-        ], 404);
-    }
-
-    $Category->forceDelete();
-    return response()->json([
-        'message' => "Force Delete Category By Id Successfully."
-    ]);
+    return $this->forceDeleteModel(Category::class, $id);
 }
+
+
 }
