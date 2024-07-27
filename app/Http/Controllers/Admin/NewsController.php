@@ -21,7 +21,8 @@ class NewsController extends Controller
         // $this->authorize('manage_users');
         $this->authorize('showAll', News::class);
         // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
-        $news = News::withCount('views')->get();
+        $news = News::with(['admin', 'category'])->
+        withCount('views')->get();
 
 
         return response()->json([

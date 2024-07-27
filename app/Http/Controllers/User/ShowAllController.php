@@ -79,7 +79,8 @@ class ShowAllController extends Controller
     public function showAllNews()
     {
         // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
-        $news = News::withCount('views')->get();
+        $news = News::with(['admin', 'category'])->
+        withCount('views')->get();
 
 
         return response()->json([
