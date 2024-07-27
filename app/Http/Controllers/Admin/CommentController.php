@@ -29,7 +29,7 @@ class CommentController extends Controller
     {
         $this->authorize('manage_users');
 
-        $Comment = Comment::find($id);
+        $Comment = Comment::with('news.category', 'news.admin')->find($id);
 
         if (!$Comment) {
             return response()->json([

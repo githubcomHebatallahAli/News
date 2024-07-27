@@ -62,6 +62,7 @@ class CreateController extends Controller
                         "comment" => $request->comment,
                         "status" => $request->status
                     ]);
+                    $Comment->load('news.category', 'news.admin');
                     $Comment->save();
 
                     return response()->json([
