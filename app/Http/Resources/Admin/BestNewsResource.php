@@ -16,7 +16,8 @@ class BestNewsResource extends JsonResource
     {
         return [
             "id" => $this ->id,
-            'news'=> new NewsResource($this->news),
+            // 'news'=> new NewsResource($this->news),
+            'news' => new NewsResource($this->whenLoaded('news')),
         ];
     }
 }

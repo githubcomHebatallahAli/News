@@ -29,6 +29,7 @@ class BestNewsController extends Controller
            $BestNews =BestNews::create ([
                 'news_id' => $request->news_id,
             ]);
+            $BestNews->load('news.category', 'news.admin');
            $BestNews->save();
            return response()->json([
             'data' =>new BestNewsResource($BestNews),
@@ -56,7 +57,7 @@ class BestNewsController extends Controller
     public function edit(string $id)
     {
         $this->authorize('manage_users');
-        $BestNews = BestNews::with('news')->find($id);
+        $BestNews = BestNews::with('news.category', 'news.admin')->find($id);
         if (!$BestNews) {
             return response()->json([
                 'message' => "BestNews not found."
