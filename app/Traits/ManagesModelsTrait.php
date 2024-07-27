@@ -46,18 +46,52 @@ trait ManagesModelsTrait
         ]);
     }
 
-    public function forceDeleteModel(string $modelClass, string $id){
-        $this->authorize('manage_users');
-        $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
-        if (!$modelInstance) {
-            return response()->json([
-                'message' => class_basename($modelClass) . " not found."
-            ], 404);
-        }
+    // public function forceDeleteModel(string $modelClass, string $id){
+    //     $this->authorize('manage_users');
+    //     $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
+    //     if (!$modelInstance) {
+    //         return response()->json([
+    //             'message' => class_basename($modelClass) . " not found."
+    //         ], 404);
+    //     }
 
-        $modelInstance->forceDelete();
+    //     $modelInstance->forceDelete();
+    //     return response()->json([
+    //         'message' => "Force Delete " . class_basename($modelClass) . " By Id Successfully."
+    //     ]);
+    // }
+
+    public function forceDeleteModel(string $modelClass, string $id)
+{
+    $this->authorize('manage_users');
+
+    $modelInstance = $modelClass::withTrashed()->where('id', $id)->first();
+
+    if (!$modelInstance) {
         return response()->json([
-            'message' => "Force Delete " . class_basename($modelClass) . " By Id Successfully."
-        ]);
+            'message' => class_basename($modelClass) . " not found."
+        ], 404);
     }
+
+    // Check if there are related records that might prevent deletion
+    if ($modelInstance->news()->withTrashed()->exists()) {
+        return response()->json([
+            'message' => 'Cannot force delete ' . class_basename($modelClass) . ' because related news records exist.'
+        ], 400);
+    }
+
+    // Add debugging information
+    try {
+        $modelInstance->forceDelete();
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Error: ' . $e->getMessage(),
+        ], 500);
+    }
+
+    return response()->json([
+        'message' => "Force Delete " . class_basename($modelClass) . " By Id Successfully."
+    ]);
+}
+
 }
