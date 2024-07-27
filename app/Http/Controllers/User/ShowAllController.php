@@ -14,7 +14,6 @@ use App\Http\Resources\CommentResource;
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
-use App\Http\Resources\Admin\CategoryResource;
 use App\Http\Resources\Admin\AdvertismentResource;
 use App\Http\Resources\Admin\TrendingNewsResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;

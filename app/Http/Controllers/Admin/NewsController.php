@@ -54,6 +54,8 @@ class NewsController extends Controller
                 $imgPath = $request->file('img')->store(News::storageFolder);
                 $News->img =  $imgPath;
             }
+
+            $News->load('admin', 'category');
            $News->save();
            return response()->json([
             'data' =>new NewsResource($News),

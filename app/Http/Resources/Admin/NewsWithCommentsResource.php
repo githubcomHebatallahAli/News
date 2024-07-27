@@ -30,7 +30,6 @@ class NewsWithCommentsResource extends JsonResource
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
-
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
             'comments' =>new NewsUserCommentsResource($this->whenLoaded('comments'))
