@@ -31,6 +31,8 @@ class TNewsController extends Controller
                 "trending_news_id" => $request-> trending_news_id,
                 "news_id" => $request-> news_id
             ]);
+
+            $TNews->load('news.category', 'news.admin');
            $TNews->save();
            return response()->json([
             'data' =>new TNewsResource($TNews),
@@ -43,7 +45,7 @@ class TNewsController extends Controller
     public function edit(string $id)
     {
         $this->authorize('manage_users');
-        $TNews = TNews::find($id);
+        $TNews = TNews::with('news.category', 'news.admin')->find($id);
 
         if (!$TNews) {
             return response()->json([

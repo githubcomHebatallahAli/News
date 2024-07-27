@@ -16,8 +16,10 @@ class TNewsResource extends JsonResource
     {
         return [
             "id" => $this -> id,
-            'trending_news' => new TrendingNewsResource($this->TrendingNews),
-            'news' => new NewsResource($this->News),
+            // 'trending_news' => new TrendingNewsResource($this->TrendingNews),
+            // 'news' => new NewsResource($this->News),
+            'trending_news' => new TrendingNewsResource($this->whenLoaded('trendingNews')),
+            'news' => new NewsResource($this->whenLoaded('news')),
 
         ];
     }

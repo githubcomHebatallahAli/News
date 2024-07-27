@@ -33,6 +33,7 @@ class SliderController extends Controller
          $Slider =Slider::create ([
               "news_id" => $request-> news_id
           ]);
+          $Slider->load('news.category', 'news.admin');
          $Slider->save();
          return response()->json([
           'data' =>new SliderResource($Slider),
@@ -45,7 +46,7 @@ class SliderController extends Controller
   public function edit(string $id)
   {
       $this->authorize('manage_users');
-      $Slider = Slider::find($id);
+      $Slider = Slider::with('news.category', 'news.admin')->find($id);
 
       if (!$Slider) {
           return response()->json([
