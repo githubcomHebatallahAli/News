@@ -36,18 +36,24 @@ class Category extends Model
         $this->increment('views_count');
     }
 
-    protected static function booted()
-    {
-        static::created(function ($category) {
-            $category->news_count = $category->news()->count();
-            $category->save();
-        });
 
-        static::deleted(function ($category) {
+
+    protected static function booted()
+{
+    static::created(function ($category) {
+        $category->news_count = $category->news()->count();
+        $category->save();
+    });
+
+    static::deleted(function ($category) {
+        // فقط التعامل مع الحذف اللين
+        if (!$category->trashed()) {
             $category->news_count = $category->news()->count();
             $category->save();
-        });
-    }
+        }
+    });
+}
+
 
        /**
      * Accessor for the news count.
