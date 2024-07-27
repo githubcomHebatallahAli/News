@@ -106,6 +106,4 @@ trait ManagesModelsTrait
         ]);
     }
 
-
-
 }

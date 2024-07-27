@@ -68,7 +68,8 @@ class NewsController extends Controller
     {
         // $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category'])->withCount('views')->findOrFail($id);
+        $news = News::with(['admin', 'category'])
+        ->withCount('views')->findOrFail($id);
         if (!$news) {
             return response()->json([
                 'message' => "News not found."
