@@ -17,15 +17,12 @@ class Category extends Model
 
     ];
 
-    // public function news()
-    // {
-    //     return $this->hasMany(News::class);
-    // }
-
     public function news()
     {
-        return $this->hasMany(News::class, 'category_id')->withTrashed();
+        return $this->hasMany(News::class);
     }
+
+
 
     public function bestNews()
     {
