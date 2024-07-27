@@ -74,6 +74,8 @@ class TNewsController extends Controller
         "news_id" => $request-> news_id
         ]);
 
+        $TNews->load('news.category', 'news.admin');
+
        $TNews->save();
        return response()->json([
         'data' =>new TNewsResource($TNews),

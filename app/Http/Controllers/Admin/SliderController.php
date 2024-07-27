@@ -77,6 +77,8 @@ class SliderController extends Controller
 
       ]);
 
+      $Slider->load('news.category', 'news.admin');
+
 
      $Slider->save();
      return response()->json([

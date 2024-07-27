@@ -122,6 +122,9 @@ class NewsController extends Controller
         }
 
 
+        $News->load('admin', 'category');
+
+
        $News->save();
        return response()->json([
         'data' =>new NewsResource($News),

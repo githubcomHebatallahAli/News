@@ -82,6 +82,7 @@ class BestNewsController extends Controller
        $BestNews->update([
         'news_id' => $request->news_id,
         ]);
+        $BestNews->load('news.category', 'news.admin');
 
        $BestNews->save();
        return response()->json([
