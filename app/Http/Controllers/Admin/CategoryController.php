@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Category;
 
 use App\Traits\ManagesModelsTrait;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
-use App\Http\Resources\Admin\AdminProfileResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;
 
 class CategoryController extends Controller

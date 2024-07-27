@@ -38,13 +38,13 @@ class News extends Model
         $this->increment('news_views_count');
     }
 
-    protected static function booted()
-    {
-        static::retrieved(function ($news) {
-            // زيادة عدد المشاهدات تلقائيًا عند استرجاع الخبر
-            $news->incrementViews();
-        });
-    }
+    // protected static function booted()
+    // {
+    //     static::retrieved(function ($news) {
+    //         // زيادة عدد المشاهدات تلقائيًا عند استرجاع الخبر
+    //         $news->incrementViews();
+    //     });
+    // }
 
     protected $dates = ['event_date'];
 

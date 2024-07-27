@@ -25,6 +25,8 @@ class ShowByIdController extends Controller
             ], 404);
         }
 
+        $news->incrementViews();
+
         $category = $news->category;
         $category->increment('views_count');
 
