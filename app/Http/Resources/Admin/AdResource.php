@@ -17,7 +17,7 @@ class AdResource extends JsonResource
         return [
             "id" => $this -> id,
             'code' => $this -> code,
-            'ad_positions' => new AdPositionResource($this->whenLoaded('ad_positions')),
+            'position' => new AdPositionResource($this->whenLoaded('position')),
 
 
         ];

@@ -16,6 +16,6 @@ class Ad extends Model
 
     public function position()
     {
-        return $this->belongsTo(AdPosition::class);
+        return $this->belongsTo(AdPosition::class, 'ad_position_id');
     }
 }

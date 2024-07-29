@@ -17,7 +17,7 @@ class AdController extends Controller
   {
       $this->authorize('manage_users');
 
-      $Ads = Ad::get();
+      $Ads = Ad::with('position')->get();
       return response()->json([
           'data' => AdResource::collection($Ads),
           'message' => "Show All Ads Successfully."
@@ -34,6 +34,8 @@ class AdController extends Controller
               "ad_position_id" => $request-> ad_position_id,
           ]);
 
+          $Ad->load('position');
+
          $Ad->save();
          return response()->json([
           'data' =>new AdResource($Ad),
@@ -46,7 +48,7 @@ class AdController extends Controller
   public function edit(string $id)
   {
       $this->authorize('manage_users');
-      $Ad = Ad::find($id);
+      $Ad = Ad::with('position')->find($id);
 
       if (!$Ad) {
           return response()->json([
