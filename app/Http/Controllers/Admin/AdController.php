@@ -80,6 +80,8 @@ class AdController extends Controller
           "ad_position_id" => $request-> ad_position_id,
       ]);
 
+
+      $Ad->load('position');
       $Ad->save();
 
       return response()->json([
