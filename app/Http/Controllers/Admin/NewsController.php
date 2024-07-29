@@ -18,8 +18,8 @@ class NewsController extends Controller
 
     public function showAll()
     {
-        // $this->authorize('manage_users');
-        $this->authorize('showAll', News::class);
+        $this->authorize('manage_users');
+        // $this->authorize('showAll', News::class);
 
         $news = News::with(['admin', 'category'])->get();
         return response()->json([
@@ -29,9 +29,9 @@ class NewsController extends Controller
 
     public function create(NewsRequest $request)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
 
-        $this->authorize('create', News::class);
+        // $this->authorize('create', News::class);
 
            $News =News::create ([
                 "title" => $request->title,
@@ -63,7 +63,7 @@ class NewsController extends Controller
 
     public function edit($id, Request $request)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
 
         $news = News::with(['admin', 'category'])->findOrFail($id);
 
@@ -72,7 +72,7 @@ class NewsController extends Controller
                 'message' => "News not found."
             ], 404);
         }
-        $this->authorize('edit', $news);
+        // $this->authorize('edit', $news);
         return response()->json([
             'data' =>new NewsResource($news),
             'message' => "News Edit By Id Successfully."
@@ -81,7 +81,7 @@ class NewsController extends Controller
 
     public function update(NewsRequest $request, string $id)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
        $News =News::findOrFail($id);
 
        if (!$News) {
@@ -89,7 +89,7 @@ class NewsController extends Controller
             'message' => "News not found."
         ], 404);
     }
-    $this->authorize('update', $News);
+    // $this->authorize('update', $News);
        $News->update([
         "title" => $request->title,
         "writer" => $request->writer,
@@ -126,7 +126,7 @@ class NewsController extends Controller
 
 public function destroy(string $id)
 {
-    // $this->authorize('manage_users');
+    $this->authorize('manage_users');
 
     $news = News::find($id);
     if (!$news) {
@@ -134,7 +134,7 @@ public function destroy(string $id)
             'message' => "News not found."
         ], 404);
     }
-        $this->authorize('softDelete', $news);
+        // $this->authorize('softDelete', $news);
 
     $news->delete();
     return response()->json([
@@ -144,20 +144,20 @@ public function destroy(string $id)
 }
 
 public function showDeleted(){
-    // $this->authorize('manage_users');
-    $this->authorize('showDeleted', News::class);
+    $this->authorize('manage_users');
+    // $this->authorize('showDeleted', News::class);
 
-    $Newss=News::onlyTrashed()->with('user')->get();
+    $News=News::onlyTrashed()->with('user')->get();
     return response()->json([
-        'data' =>NewsResource::collection($Newss),
+        'data' =>NewsResource::collection($News),
         'message' => "Show Deleted News Successfully."
     ]);
 }
 
 public function restore(string $id)
 {
-    // $this->authorize('manage_users');
-    $this->authorize('restore', News::class);
+    $this->authorize('manage_users');
+    // $this->authorize('restore', News::class);
 
     $news = News::withTrashed()->where('id', $id)->first();
     if (!$news) {
@@ -175,7 +175,7 @@ public function restore(string $id)
 
 public function forceDelete(string $id)
 {
-    // $this->authorize('manage_users');
+    $this->authorize('manage_users');
     $news = News::withTrashed()->where('id', $id)->first();
     if (!$news) {
         return response()->json([
@@ -183,7 +183,7 @@ public function forceDelete(string $id)
         ], 404);
     }
 
-    $this->authorize('forceDelete', $news);
+    // $this->authorize('forceDelete', $news);
 
     $news->forceDelete();
     return response()->json([
@@ -194,7 +194,7 @@ public function forceDelete(string $id)
 
     public function review(string $id)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
         $News =News::findOrFail($id);
 
         if (!$News) {
@@ -202,7 +202,7 @@ public function forceDelete(string $id)
              'message' => "News not found."
          ], 404);
      }
-       $this->authorize('review', $News);
+    //    $this->authorize('review', $News);
 
         $News->update(['status' => 'reviewed']);
         return response()->json([
@@ -213,8 +213,7 @@ public function forceDelete(string $id)
 
     public function reject(string $id)
     {
-
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
         $News =News::findOrFail($id);
 
         if (!$News) {
@@ -222,7 +221,7 @@ public function forceDelete(string $id)
              'message' => "News not found."
          ], 404);
      }
-        $this->authorize('reject',$News);
+        // $this->authorize('reject',$News);
 
         $News->update(['status' => 'rejected']);
 
@@ -234,7 +233,7 @@ public function forceDelete(string $id)
 
     public function publish(string $id)
     {
-        // $this->authorize('manage_users');
+        $this->authorize('manage_users');
 
         $News =News::findOrFail($id);
 
@@ -244,7 +243,7 @@ public function forceDelete(string $id)
              'message' => "News not found."
          ], 404);
      }
-     $this->authorize('publish', $News);
+    //  $this->authorize('publish', $News);
 
         $News->update(['status' => 'published']);
 

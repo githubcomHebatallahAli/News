@@ -110,4 +110,5 @@ class AdController extends Controller
   {
       return $this->forceDeleteModel(Ad::class, $id);
   }
+  
 }
