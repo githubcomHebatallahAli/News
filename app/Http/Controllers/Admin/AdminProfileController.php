@@ -3,13 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
-use App\Models\AdminProfile;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\Admin\NewsResource;
-use App\Http\Resources\Admin\CategoryResource;
-use App\Http\Requests\Admin\AdminProfileRequest;
 use App\Http\Resources\Admin\AdminProfileResource;
 use App\Http\Resources\Auth\AdminRegisterResource;
 
