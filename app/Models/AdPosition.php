@@ -6,12 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Advertisment extends Model
+class AdPosition extends Model
 {
     use HasFactory , SoftDeletes ;
-    const storageFolder= 'Advertisments';
+
     protected $fillable = [
-        'img',
-        'url'
+        'position'
+
     ];
+
+    public function ads()
+    {
+        return $this->hasMany(Ad::class);
+    }
+
+
+
 }
