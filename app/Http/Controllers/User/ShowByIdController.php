@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Ad;
 use App\Models\News;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\AdResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;
 use App\Http\Resources\Admin\NewsWithCommentsResource;
 
@@ -55,4 +57,23 @@ $category = Category::with(['news.admin', 'bestNews.news.admin'])
             'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
         ]);
     }
+
+    public function showAd(string $id)
+    {
+
+        $Ad = Ad::with('position')->find($id);
+
+        if (!$Ad) {
+            return response()->json([
+                'message' => "Ad not found."
+            ], 404);
+        }
+
+        return response()->json([
+            'data' =>new AdResource($Ad),
+            'message' => "Show Ad By ID Successfully."
+        ]);
+    }
+
+
 }
