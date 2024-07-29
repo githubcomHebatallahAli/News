@@ -147,7 +147,7 @@ public function showDeleted(){
     $this->authorize('manage_users');
     // $this->authorize('showDeleted', News::class);
 
-    $News=News::onlyTrashed()->with('user')->get();
+    $News=News::onlyTrashed()->get();
     return response()->json([
         'data' =>NewsResource::collection($News),
         'message' => "Show Deleted News Successfully."
