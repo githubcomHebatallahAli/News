@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Admin;
 use Ichtrojan\Otp\Otp;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use App\Rules\EmailExistsInUsersOrAdmins;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 
 class ResetPasswordController extends Controller
@@ -37,7 +35,6 @@ class ResetPasswordController extends Controller
                 $user->update(['password' => Hash::make($request->password)]);
             }
 
-            // $user->tokens()->delete();
 
 
             return response()->json([

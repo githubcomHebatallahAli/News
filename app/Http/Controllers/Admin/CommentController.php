@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Comment;
-use Illuminate\Http\Request;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
@@ -20,8 +19,6 @@ class CommentController extends Controller
             'data' => CommentResource::collection($Comments),
             'message' => "Show All Comments Successfully."
         ]);
-
-
 
     }
 
@@ -54,7 +51,7 @@ class CommentController extends Controller
              'message' => "Comment not found."
          ], 404);
      }
-    //    $this->authorize('review', $Comment);
+
 
         $Comment->update(['status' => 'approved']);
         return response()->json([
@@ -74,7 +71,7 @@ class CommentController extends Controller
              'message' => "Comment not found."
          ], 404);
      }
-        // $this->authorize('reject',$Comment);
+       
 
         $Comment->update(['status' => 'rejected']);
 

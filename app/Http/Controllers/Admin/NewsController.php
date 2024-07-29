@@ -20,11 +20,8 @@ class NewsController extends Controller
     {
         // $this->authorize('manage_users');
         $this->authorize('showAll', News::class);
-        // الحصول على جميع الأخبار مع عدد المشاهدات لكل خبر
-        $news = News::with(['admin', 'category'])->
-        withCount('views')->get();
 
-
+        $news = News::with(['admin', 'category'])->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
@@ -33,7 +30,6 @@ class NewsController extends Controller
     public function create(NewsRequest $request)
     {
         // $this->authorize('manage_users');
-
 
         $this->authorize('create', News::class);
 
@@ -69,19 +65,14 @@ class NewsController extends Controller
     {
         // $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category'])
-        ->withCount('views')->findOrFail($id);
+        $news = News::with(['admin', 'category'])->findOrFail($id);
+
         if (!$news) {
             return response()->json([
                 'message' => "News not found."
             ], 404);
         }
         $this->authorize('edit', $news);
-        // $category = $news->category;
-        // $category->increment('views_count');
-
-    //    إعادة تحميل عدد الزيارات للقسم بعد التحديث
-        // $category->refresh();
         return response()->json([
             'data' =>new NewsResource($news),
             'message' => "News Edit By Id Successfully."

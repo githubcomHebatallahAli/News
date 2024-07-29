@@ -71,6 +71,4 @@ class ContactUsController extends Controller
             return $this->forceDeleteModel(ContactUs::class, $id);
         }
 
-
-
 }

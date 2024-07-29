@@ -19,7 +19,7 @@ class CategoryController extends Controller
 
         $categories = Category::with(['news'])->withCount('news')->get();
 
-        // تحويل الأقسام والأخبار إلى تنسيق مناسب
+
         $result = $categories->map(function ($category) {
             return [
                 'category' => [
@@ -138,12 +138,6 @@ public function forceDelete(string $id){
 
     return $this->forceDeleteModel(Category::class, $id);
 }
-
-
-
-
-
-
 
 
 }

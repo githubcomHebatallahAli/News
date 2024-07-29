@@ -82,10 +82,10 @@ class News extends Model
         });
     }
 
-    public function views()
-    {
-        return $this->hasMany(NewsView::class);
-    }
+    // public function views()
+    // {
+    //     return $this->hasMany(NewsView::class);
+    // }
 
     public function category()
     {

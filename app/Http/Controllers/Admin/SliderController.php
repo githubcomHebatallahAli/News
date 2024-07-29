@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Slider;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\SliderRequest;
 use App\Http\Resources\Admin\SliderResource;
 

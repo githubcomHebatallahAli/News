@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Admin;
-use App\Rules\EmailExistsInUsersOrAdmins;
 use App\Http\Controllers\Controller;
 use App\Notifications\ResetPasswordNotification;
 use App\Http\Requests\Auth\ForgetPasswordRequest;
@@ -29,7 +28,7 @@ class ForgetPasswordController extends Controller
         if ($admin) {
              $admin->notify(new ResetPasswordNotification());
         }
-       
+
         return response()->json([
             'message' => "Please check your email."
         ]);

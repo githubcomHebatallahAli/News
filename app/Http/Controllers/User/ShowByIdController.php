@@ -15,8 +15,7 @@ class ShowByIdController extends Controller
 
     public function showNews($id, Request $request)
     {
-        $news = News::with(['comments.user', 'category', 'admin']) // تحميل التعليقات والمستخدمين المرتبطين بها
-                    ->withCount('views')
+        $news = News::with(['comments.user', 'category', 'admin'])
                     ->findOrFail($id);
 
         if (!$news) {
@@ -29,8 +28,6 @@ class ShowByIdController extends Controller
 
         $category = $news->category;
         $category->increment('views_count');
-
-        // إعادة تحميل عدد الزيارات للقسم بعد التحديث
         $category->refresh();
 
         return response()->json([
