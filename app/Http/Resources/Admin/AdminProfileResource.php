@@ -19,6 +19,7 @@ class AdminProfileResource extends JsonResource
             'category' => new CategoryResource($this->category),
             "id" => $this -> id,
             'title' => $this -> title,
+            'description' => $this -> description,
             'writer' => $this -> writer,
             'event_date' => $this -> event_date,
             'formatted_date' => $this->formatted_date,

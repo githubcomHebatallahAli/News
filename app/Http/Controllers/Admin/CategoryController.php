@@ -33,6 +33,7 @@ class CategoryController extends Controller
                     return [
                         'id' => $newsItem->id,
                         'title' => $newsItem->title,
+                        'description' => $newsItem-> description,
                         'writer' => $newsItem->writer,
                         'event_date' => $newsItem->event_date,
                         'img' => $newsItem->img,

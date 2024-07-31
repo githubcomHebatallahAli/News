@@ -18,6 +18,7 @@ class NewsWithCommentsResource extends JsonResource
         return [
             "id" => $this -> id,
             'title' => $this -> title,
+            'description' => $this -> description,
             'writer' => $this -> writer,
             'event_date' => $this -> event_date,
             'img' => $this -> img,

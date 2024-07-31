@@ -17,4 +17,5 @@ Route::get('showAll/slider',[ShowAllController::class,'showAllSlider']);
 Route::get('showAll/news',[ShowAllController::class,'showAllNews']);
 Route::get('showAll/comments',[ShowAllController::class,'showAllComments']);
 Route::get('showAll/ads',[ShowAllController::class,'showAllAds']);
+Route::get('showAll/mostReadNews', [ShowAllController::class, 'mostReadNews']);
 });

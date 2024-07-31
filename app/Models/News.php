@@ -13,6 +13,7 @@ class News extends Model
     const storageFolder= 'News';
     protected $fillable = [
         'title',
+        'description',
         'writer',
         'event_date',
         'img',

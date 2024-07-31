@@ -25,6 +25,7 @@ class NewsRequest extends FormRequest
     {
         return [
             'title' =>'nullable|string',
+            'description' =>'nullable|string',
             'writer' =>'nullable|string',
             'event_date' => 'nullable|date_format:Y-m-d',
             'url' =>'string|nullable',

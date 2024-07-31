@@ -35,6 +35,7 @@ class NewsController extends Controller
 
            $News =News::create ([
                 "title" => $request->title,
+                "description" => $request -> description,
                 "writer" => $request->writer,
                 "event_date" => $request->event_date,
                 "url" => $request->url,
@@ -92,6 +93,7 @@ class NewsController extends Controller
     // $this->authorize('update', $News);
        $News->update([
         "title" => $request->title,
+        "description" => $request -> description,
         "writer" => $request->writer,
         "event_date" => $request->event_date,
         "url" => $request->url,
@@ -251,5 +253,14 @@ public function forceDelete(string $id)
             'data' => new NewsResource($News),
             'message' => "News Published Successfully."
         ]);
+    }
+
+    public function mostReadNews()
+    {
+        $this->authorize('manage_users');
+        $mostReadNews = News::orderBy('news_views_count', 'desc')
+        ->take(5)->get();
+
+        return response()->json($mostReadNews);
     }
 }
