@@ -259,7 +259,7 @@ public function forceDelete(string $id)
     {
         $this->authorize('manage_users');
         $mostReadNews = News::orderBy('news_views_count', 'desc')
-        ->take(5)->get();
+        ->take(6)->get();
 
         return response()->json($mostReadNews);
     }

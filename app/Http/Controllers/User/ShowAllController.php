@@ -110,7 +110,8 @@ class ShowAllController extends Controller
 
     public function mostReadNews()
     {
-        $mostReadNews = News::orderBy('news_views_count', 'desc')->take(5)->get();
+        $mostReadNews = News::orderBy('news_views_count', 'desc')
+        ->take(6)->get();
 
         return response()->json($mostReadNews);
     }
