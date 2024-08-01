@@ -324,7 +324,8 @@ public function forceDelete(string $id)
     public function mostReadNews()
     {
         $this->authorize('manage_users');
-        $mostReadNews = News::orderBy('news_views_count', 'desc')
+        $mostReadNews = News::where('status', 'published')
+        ->orderBy('news_views_count', 'desc')
         ->take(6)->get();
 
         return response()->json($mostReadNews);
