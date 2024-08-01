@@ -33,7 +33,6 @@ class NewsAdminResource extends JsonResource
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
-            'suggestedNews' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
             'admin' => new AdminRegisterResource($this->admin),
         ] ;
     }

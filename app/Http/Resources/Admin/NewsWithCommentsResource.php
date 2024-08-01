@@ -35,7 +35,6 @@ class NewsWithCommentsResource extends JsonResource
             'adsenseCode' => $this -> adsenseCode ,
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
-            'suggestedNews' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
           'comments' => $this->whenLoaded('comments', function () {
             return NewsUserCommentsResource::collection($this->comments);
         }),

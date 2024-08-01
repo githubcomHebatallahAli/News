@@ -17,7 +17,7 @@ class ShowByIdController extends Controller
 
     public function showNews($id, Request $request)
     {
-        $news = News::with(['comments.user', 'category', 'admin','suggestedNews'])
+        $news = News::with(['comments.user', 'category', 'admin'])
                     ->findOrFail($id);
 
         if (!$news) {
@@ -42,7 +42,7 @@ class ShowByIdController extends Controller
     public function showCategory(string $id)
     {
 
-$category = Category::with(['news.admin','news.suggestedNews','bestNews.news.admin','bestNews.news.suggestedNews'])
+$category = Category::with(['news.admin','bestNews.news.admin'])
 ->withCount('news')->find($id);
 
         if (!$category) {
