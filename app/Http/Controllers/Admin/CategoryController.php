@@ -17,7 +17,7 @@ class CategoryController extends Controller
     {
         $this->authorize('manage_users');
 
-        $category = Category::with(['news.admin','news.suggestedNews','bestNews.news.admin','bestNews.news.suggestedNews'])
+        $category = Category::with(['news.admin','bestNews.news.admin'])
         ->withCount('news')->get();
 
 

@@ -25,7 +25,7 @@ class ShowAllController extends Controller
     public function showAllCategory()
     {
 
-        $categories = Category::with(['news.admin','news.suggestedNews','bestNews.news.admin','bestNews.news.suggestedNews'])
+        $categories = Category::with(['news.admin','bestNews.news.admin'])
             ->withCount('news')
             ->get();
 
@@ -40,7 +40,7 @@ class ShowAllController extends Controller
     public function showAllSlider()
     {
 
-        $Sliders = Slider::with('news.category', 'news.suggestedNews', 'news.admin')->get();
+        $Sliders = Slider::with('news.category', 'news.admin')->get();
         return response()->json([
             'data' => SliderResource::collection(  $Sliders),
             'message' => "Show All Sliders Successfully."
@@ -50,7 +50,7 @@ class ShowAllController extends Controller
 
     public function showAllTNews()
     {
-        $TNews = TNews::with('news.category','news.suggestedNews','news.admin')->get();
+        $TNews = TNews::with('news.category','news.admin')->get();
         return response()->json([
             'data' => TNewsResource::collection($TNews),
             'message' => "Show All TNews Successfully."
@@ -80,7 +80,7 @@ class ShowAllController extends Controller
     public function showAllNews()
     {
 
-        $news = News::with(['admin', 'category','suggestedNews'])->get();
+        $news = News::with(['admin', 'category'])->get();
 
         return response()->json([
             'news' => NewsResource::collection($news),
