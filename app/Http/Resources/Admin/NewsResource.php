@@ -24,6 +24,8 @@ class NewsResource extends JsonResource
             'event_date' => $this -> event_date,
             'img' => $this -> img,
             'url' => $this -> url,
+            'videoUrl' => $this -> videoUrl,
+            'videoLabel' => $this -> videoLabel,
             'part1' => $this -> part1,
             'part2' => $this -> part2,
             'part3' => $this -> part3,
@@ -32,9 +34,9 @@ class NewsResource extends JsonResource
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
-
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
+            'suggestedNews' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
 
         ];
     }

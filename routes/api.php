@@ -24,6 +24,7 @@ require __DIR__ . '/Apis/Admin/user.php';
 require __DIR__ . '/Apis/Admin/admin.php';
 require __DIR__ . '/Apis/Admin/statistics.php';
 require __DIR__ . '/Apis/Admin/adImg.php';
+require __DIR__ . '/Apis/Admin/suggestedNews.php';
 require __DIR__ . '/Apis/User/showAll.php';
 require __DIR__ . '/Apis/User/create.php';
 require __DIR__ . '/Apis/User/showById.php';

@@ -17,42 +17,14 @@ class CategoryController extends Controller
     {
         $this->authorize('manage_users');
 
-        $categories = Category::with(['news'])->withCount('news')->get();
+        $category = Category::with(['news.admin','news.suggestedNews','bestNews.news.admin','bestNews.news.suggestedNews'])
+        ->withCount('news')->get();
 
 
-        $result = $categories->map(function ($category) {
-            return [
-                'category' => [
-                    'id' => $category->id,
-                    'name' => $category->name,
-                    'views_count' => $category->views_count,
-                    'news_count' => $category->news_count,
-                    'url' => $category->url,
-                ],
-                'news' => $category->news->map(function ($newsItem) {
-                    return [
-                        'id' => $newsItem->id,
-                        'title' => $newsItem->title,
-                        'description' => $newsItem-> description,
-                        'writer' => $newsItem->writer,
-                        'event_date' => $newsItem->event_date,
-                        'img' => $newsItem->img,
-                        'url' => $newsItem->url,
-                        'part1' => $newsItem->part1,
-                        'part2' => $newsItem->part2,
-                        'part3' => $newsItem->part3,
-                        'keyWords' => $newsItem->keyWords,
-                        'news_views_count' => $newsItem->news_views_count,
-                        'status' => $newsItem->status,
-                    ];
-                })
-            ];
-        });
-
-        return response()->json([
-            'data' => $result,
-            'message' => "All Categories with their news retrieved successfully."
-        ]);
+                  return response()->json([
+                      'data' =>  CategoryBestNewsResource::collection($category),
+                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+                  ]);
     }
 
 
@@ -79,7 +51,7 @@ class CategoryController extends Controller
         public function edit(string $id)
         {
             $this->authorize('manage_users');
-  $category = Category::with(['news.admin', 'bestNews.news.admin'])
+  $category = Category::with(['news.admin','news.suggestedNews','bestNews.news.admin','bestNews.news.suggestedNews'])
   ->withCount('news')->find($id);
 
             if (!$category) {

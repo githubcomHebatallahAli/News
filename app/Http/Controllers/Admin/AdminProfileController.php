@@ -12,7 +12,7 @@ class AdminProfileController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-        $admins = Admin::with(['news.category', 'role'])->get();
+        $admins = Admin::with(['news.category','news.suggestedNews', 'role'])->get();
 
         return response()->json([
             'admins' => $admins->map(function ($admin) {
@@ -30,7 +30,7 @@ class AdminProfileController extends Controller
     public function edit(string $id)
     {
         $this->authorize('manage_users');
-            $admin = Admin::with(['news.category', 'role'])->findOrFail($id);
+            $admin = Admin::with(['news.category','news.suggestedNews', 'role'])->findOrFail($id);
 
             return response()->json([
                 'auther' => new AdminRegisterResource($admin),
@@ -88,7 +88,7 @@ class AdminProfileController extends Controller
     public function showDeleted()
     {
         $this->authorize('manage_users');
-        $admins = Admin::onlyTrashed()->with(['news.category', 'role'])->get();
+        $admins = Admin::onlyTrashed()->with(['news.category','news.suggestedNews' ,'role'])->get();
 
         return response()->json([
             'admins' => $admins->map(function ($admin) {

@@ -23,6 +23,8 @@ class NewsAdminResource extends JsonResource
             'event_date' => $this -> event_date,
             'img' => $this -> img,
             'url' => $this -> url,
+            'videoUrl' => $this -> videoUrl,
+            'videoLabel' => $this -> videoLabel,
             'part1' => $this -> part1,
             'part2' => $this -> part2,
             'part3' => $this -> part3,
@@ -31,6 +33,7 @@ class NewsAdminResource extends JsonResource
             'formatted_date' => $this->formatted_date,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
+            'suggestedNews' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
             'admin' => new AdminRegisterResource($this->admin),
         ] ;
     }

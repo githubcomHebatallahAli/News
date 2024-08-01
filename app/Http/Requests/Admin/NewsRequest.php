@@ -30,6 +30,9 @@ class NewsRequest extends FormRequest
             'event_date' => 'nullable|date_format:Y-m-d',
             'url' =>'string|nullable',
             'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
+            'videoUrl' => 'nullable|url',
+            'videoLabel' => 'nullable|string',
+
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
             'part1'=>'nullable|string',
@@ -38,6 +41,8 @@ class NewsRequest extends FormRequest
             'keyWords' => 'nullable|array',
             'keyWords.*' => 'string|nullable',
              'category_id'=>'nullable|exists:categories,id',
+            //  'suggestedNews_ids' => 'nullable|array',
+            //  'suggestedNews_ids.*' => 'exists:suggested_news,id',
             //  'admin_id'=>'required|exists:admins,id'
 
         ];

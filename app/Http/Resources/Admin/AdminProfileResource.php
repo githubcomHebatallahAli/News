@@ -24,6 +24,8 @@ class AdminProfileResource extends JsonResource
             'event_date' => $this -> event_date,
             'formatted_date' => $this->formatted_date,
             'img' => $this -> img,
+            'videoUrl' => $this -> videoUrl,
+            'videoLabel' => $this -> videoLabel,
             'url' => $this -> url,
             'part1' => $this -> part1,
             'part2' => $this -> part2,
@@ -32,8 +34,7 @@ class AdminProfileResource extends JsonResource
             'news_views_count' => $this->news_views_count,
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
-
-
+            'suggestedNews' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
         ];
     }
 }

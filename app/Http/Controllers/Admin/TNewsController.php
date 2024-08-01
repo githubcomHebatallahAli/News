@@ -15,7 +15,7 @@ class TNewsController extends Controller
     {
         $this->authorize('manage_users');
 
-        $TNews = TNews::with('news.category', 'news.admin')->get();
+        $TNews = TNews::with('news.category','news.suggestedNews' ,'news.admin')->get();
         return response()->json([
             'data' => TNewsResource::collection($TNews),
             'message' => "Show All TNews Successfully."
@@ -32,7 +32,7 @@ class TNewsController extends Controller
                 "news_id" => $request-> news_id
             ]);
 
-            $TNews->load('news.category', 'news.admin');
+            $TNews->load('news.category','news.suggestedNews' ,'news.admin');
            $TNews->save();
            return response()->json([
             'data' =>new TNewsResource($TNews),
@@ -45,7 +45,7 @@ class TNewsController extends Controller
     public function edit(string $id)
     {
         $this->authorize('manage_users');
-        $TNews = TNews::with('news.category', 'news.admin')->find($id);
+        $TNews = TNews::with('news.category','news.suggestedNews' ,'news.admin')->find($id);
 
         if (!$TNews) {
             return response()->json([
@@ -74,7 +74,7 @@ class TNewsController extends Controller
         "news_id" => $request-> news_id
         ]);
 
-        $TNews->load('news.category', 'news.admin');
+        $TNews->load('news.category','news.suggestedNews' ,'news.admin');
 
        $TNews->save();
        return response()->json([

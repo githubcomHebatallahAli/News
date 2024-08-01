@@ -17,7 +17,7 @@ class SliderController extends Controller
   {
       $this->authorize('manage_users');
 
-      $Sliders = Slider::with('news.category', 'news.admin')->get();
+      $Sliders = Slider::with('news.category', 'news.suggestedNews','news.admin')->get();
       return response()->json([
           'data' => SliderResource::collection($Sliders),
           'message' => "Show All Sliders Successfully."
@@ -32,7 +32,7 @@ class SliderController extends Controller
          $Slider =Slider::create ([
               "news_id" => $request-> news_id
           ]);
-          $Slider->load('news.category', 'news.admin');
+          $Slider->load('news.category','news.suggestedNews' ,'news.admin');
          $Slider->save();
          return response()->json([
           'data' =>new SliderResource($Slider),
@@ -45,7 +45,7 @@ class SliderController extends Controller
   public function edit(string $id)
   {
       $this->authorize('manage_users');
-      $Slider = Slider::with('news.category', 'news.admin')->find($id);
+      $Slider = Slider::with('news.category','news.suggestedNews','news.admin')->find($id);
 
       if (!$Slider) {
           return response()->json([
@@ -76,7 +76,7 @@ class SliderController extends Controller
 
       ]);
 
-      $Slider->load('news.category', 'news.admin');
+      $Slider->load('news.category', 'news.suggestedNews','news.admin');
 
 
      $Slider->save();

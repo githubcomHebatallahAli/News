@@ -17,6 +17,8 @@ class News extends Model
         'writer',
         'event_date',
         'img',
+        'videoUrl',
+        'videoLabel',
         'url',
         'part1',
         'part2',
@@ -29,8 +31,13 @@ class News extends Model
     ];
 
     protected $casts = [
-        'keyWords' => 'array', // تحويل البيانات إلى مصفوفة تلقائيًا عند الاسترجاع
+        'keyWords' => 'array',
+
     ];
+    public function suggestedNews()
+    {
+        return $this->belongsToMany(SuggestedNews::class, 'news_suggested_news','news_id', 'suggested_news_id');
+    }
 
 
 

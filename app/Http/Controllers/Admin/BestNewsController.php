@@ -15,7 +15,7 @@ class BestNewsController extends Controller
     public function showAll()
     {
         $this->authorize('manage_users');
-        $BestNews = BestNews::with('news')->get();
+        $BestNews = BestNews::with('news.category','news.suggestedNews', 'news.admin')->get();
         return response()->json([
             'data' => BestNewsResource::collection($BestNews),
             'message' => "Show All Best news Successfully."
@@ -29,7 +29,7 @@ class BestNewsController extends Controller
            $BestNews =BestNews::create ([
                 'news_id' => $request->news_id,
             ]);
-            $BestNews->load('news.category', 'news.admin');
+            $BestNews->load('news.category','news.suggestedNews' ,'news.admin');
            $BestNews->save();
            return response()->json([
             'data' =>new BestNewsResource($BestNews),
@@ -39,25 +39,13 @@ class BestNewsController extends Controller
         }
 
 
-    public function show(string $id)
-    {
-        $this->authorize('manage_users');
-        $BestNews = BestNews::with('news')->find($id);
-        if (!$BestNews) {
-            return response()->json([
-                'message' => "BestNews not found."
-            ], 404);
-        }
-        return response()->json([
-            'data' =>new BestNewsResource($BestNews),
-            'message' => "Show Best News By ID Successfully."
-        ]);
-    }
+
+
 
     public function edit(string $id)
     {
         $this->authorize('manage_users');
-        $BestNews = BestNews::with('news.category', 'news.admin')->find($id);
+        $BestNews = BestNews::with('news.category','news.suggestedNews', 'news.admin')->find($id);
         if (!$BestNews) {
             return response()->json([
                 'message' => "BestNews not found."
@@ -82,7 +70,7 @@ class BestNewsController extends Controller
        $BestNews->update([
         'news_id' => $request->news_id,
         ]);
-        $BestNews->load('news.category', 'news.admin');
+        $BestNews->load('news.category','news.suggestedNews' ,'news.admin');
 
        $BestNews->save();
        return response()->json([

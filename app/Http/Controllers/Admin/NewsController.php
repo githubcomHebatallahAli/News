@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\News;
-use App\Models\NewsView;
 use Illuminate\Http\Request;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
@@ -21,7 +20,7 @@ class NewsController extends Controller
         $this->authorize('manage_users');
         // $this->authorize('showAll', News::class);
 
-        $news = News::with(['admin', 'category'])->get();
+        $news = News::with(['admin', 'category','suggestedNews'])->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
@@ -38,6 +37,8 @@ class NewsController extends Controller
                 "description" => $request -> description,
                 "writer" => $request->writer,
                 "event_date" => $request->event_date,
+                "videoUrl"=> $request-> videoUrl,
+                "videoLabel" => $request-> videoLabel,
                 "url" => $request->url,
                 "part1" => $request->part1,
                 "part2" => $request->part2,
@@ -55,18 +56,78 @@ class NewsController extends Controller
 
             $News->load('admin', 'category');
            $News->save();
+        //    if ($request->filled('suggestedNews_ids')) {
+        //     $News->suggestedNews()->sync($request->suggestedNews_ids);
+        // }
            return response()->json([
             'data' =>new NewsResource($News),
             'message' => "News Created Successfully."
         ]);
+        }
 
+
+
+
+
+public function addNewsToSuggested($newsId, Request $request)
+{
+    $this->authorize('manage_users');
+
+    $news = News::findOrFail($newsId);
+
+    $request->validate([
+        'suggestedNews_ids' => 'required|array',
+        'suggestedNews_ids.*' => 'exists:suggested_news,id',
+    ]);
+
+
+
+    $news->suggestedNews()->sync($request->suggestedNews_ids);
+
+    $news->load('suggestedNews');
+
+    return response()->json([
+        'data' => new NewsResource($news),
+        'message' => "Suggested News add to News successfully."
+    ], 200);
+}
+
+        public function addSingleSuggestedNews($newsId, $suggestedNewsId)
+{
+    $this->authorize('manage_users');
+
+    $news = News::findOrFail($newsId);
+    $suggestedNews = News::findOrFail($suggestedNewsId);
+
+    $news->suggestedNews()->attach($suggestedNews->id);
+
+    $news->load('suggestedNews');
+
+    return response()->json([
+        'data' => new NewsResource($news),
+        'message' => "News added To Suggested News successfully."
+    ], 200);
+}
+
+
+        public function uploadImage(Request $request)
+        {
+            $this->authorize('manage_users');
+            $request->validate([
+                'subImg' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            $image = $request->file('subImg');
+            $path = $image->store('subImg', 'public');
+
+            return response()->json(['url' => Storage::url($path)], 201);
         }
 
     public function edit($id, Request $request)
     {
         $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category'])->findOrFail($id);
+        $news = News::with(['admin', 'category','suggestedNews' ])->findOrFail($id);
 
         if (!$news) {
             return response()->json([
@@ -96,6 +157,8 @@ class NewsController extends Controller
         "description" => $request -> description,
         "writer" => $request->writer,
         "event_date" => $request->event_date,
+        "videoUrl"=> $request-> videoUrl,
+        "videoLabel" => $request-> videoLabel,
         "url" => $request->url,
         "part1" => $request->part1,
         "part2" => $request->part2,
@@ -120,6 +183,9 @@ class NewsController extends Controller
 
 
        $News->save();
+       if ($request->filled('suggestedNews_ids')) {
+        $News->suggestedNews()->sync($request->suggestedNews_ids);
+    }
        return response()->json([
         'data' =>new NewsResource($News),
         'message' => " Update News By Id Successfully."
