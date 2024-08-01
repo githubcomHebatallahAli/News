@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('suggested_news', function (Blueprint $table) {
             $table->id();
-            $table->string('label');
-            $table->string('url');
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

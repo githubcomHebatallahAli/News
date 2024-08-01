@@ -22,6 +22,8 @@ class NewsWithCommentsResource extends JsonResource
             'writer' => $this -> writer,
             'event_date' => $this -> event_date,
             'img' => $this -> img,
+            'videoUrl' => $this -> videoUrl,
+            'videoLabel' => $this -> videoLabel,
             'url' => $this -> url,
             'part1' => $this -> part1,
             'part2' => $this -> part2,

@@ -11,8 +11,7 @@ class SuggestedNews extends Model
     use HasFactory, SoftDeletes ;
 
     protected $fillable = [
-        'label',
-        'url',
+       'news_id'
     ];
 
     public function news()
