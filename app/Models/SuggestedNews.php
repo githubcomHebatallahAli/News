@@ -11,11 +11,18 @@ class SuggestedNews extends Model
     use HasFactory, SoftDeletes ;
 
     protected $fillable = [
-       'news_id'
+       'news_id',
+        'suggested_news_id'
     ];
 
     public function news()
     {
-        return $this->belongsToMany(News::class, 'news_suggested_news','news_id', 'suggested_news_id');
+        return $this->belongsTo(News::class, 'news_id');
+    }
+
+    // الحصول على الأخبار المقترحة
+    public function suggestedNews()
+    {
+        return $this->belongsTo(News::class, 'suggested_news_id');
     }
 }

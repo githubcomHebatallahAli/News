@@ -24,8 +24,7 @@ class SuggestedNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'label' =>'required|required',
-            'url' =>'nullable|required',
+            'news_id' => 'required|exists:news,id',
 
         ];
     }

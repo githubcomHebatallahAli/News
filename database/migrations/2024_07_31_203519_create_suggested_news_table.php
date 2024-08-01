@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('suggested_news', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
-            $table->softDeletes();
+            $table->foreignId('news_id')->constrained('news')->onDelete('cascade'); 
+            $table->foreignId('suggested_news_id')->constrained('news')->onDelete('cascade');
             $table->timestamps();
         });
     }

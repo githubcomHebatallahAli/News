@@ -16,8 +16,8 @@ class SuggestedNewsResource extends JsonResource
     {
         return [
             "id" => $this -> id,
-            'label' => $this -> label,
-            'url' => $this -> url
+            'news_id' => $this->news_id,
+            'news' =>  NewsResource::collection($this->whenLoaded('news')),
         ];
     }
 }

@@ -34,9 +34,16 @@ class News extends Model
         'keyWords' => 'array',
 
     ];
+    // الحصول على الأخبار المقترحة لهذا الخبر
     public function suggestedNews()
     {
-        return $this->belongsToMany(SuggestedNews::class, 'news_suggested_news','news_id', 'suggested_news_id');
+        return $this->hasMany(SuggestedNews::class, 'news_id');
+    }
+
+    // الحصول على الأخبار المقترحة الأخرى
+    public function suggestions()
+    {
+        return $this->hasMany(SuggestedNews::class, 'suggested_news_id');
     }
 
 

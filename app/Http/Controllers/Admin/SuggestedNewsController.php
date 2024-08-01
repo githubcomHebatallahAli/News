@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\SuggestedNews;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\NewsResource;
 use App\Http\Requests\Admin\SuggestedNewsRequest;
 use App\Http\Resources\Admin\SuggestedNewsResource;
 
@@ -34,9 +35,13 @@ class SuggestedNewsController extends Controller
 
            $SuggestedNews =SuggestedNews::create ([
 
-                "label" => $request-> label,
-                "url" => $request-> url
+                'news_id'=> $request->news_id,
             ]);
+            // $SuggestedNews->load('news');
+                // تحميل البيانات المرتبطة
+    $SuggestedNews->load('suggestedNews');
+
+            // $SuggestedNews->load('news.category','news.suggestedNews' ,'news.admin');
            $SuggestedNews->save();
            return response()->json([
             'data' =>new SuggestedNewsResource($SuggestedNews),
@@ -76,8 +81,7 @@ class SuggestedNewsController extends Controller
         ], 404);
     }
        $SuggestedNews->update([
-        "label" => $request-> label,
-        "url" => $request-> url
+        'news_id'=> $request->news_id,
         ]);
 
        $SuggestedNews->save();

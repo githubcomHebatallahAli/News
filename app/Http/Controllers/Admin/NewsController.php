@@ -183,9 +183,9 @@ public function addNewsToSuggested($newsId, Request $request)
 
 
        $News->save();
-       if ($request->filled('suggestedNews_ids')) {
-        $News->suggestedNews()->sync($request->suggestedNews_ids);
-    }
+    //    if ($request->filled('suggestedNews_ids')) {
+    //     $News->suggestedNews()->sync($request->suggestedNews_ids);
+    // }
        return response()->json([
         'data' =>new NewsResource($News),
         'message' => " Update News By Id Successfully."
