@@ -23,7 +23,7 @@ class NewsController extends Controller
         $this->authorize('manage_users');
         // $this->authorize('showAll', News::class);
 
-        $news = News::with(['admin', 'category','suggestedNews'])->get();
+        $news = News::with(['admin', 'category'])->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
