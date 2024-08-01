@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use App\Models\SuggestedNews;
+use Illuminate\Http\JsonResponse;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
 use App\Http\Resources\Admin\NewsResource;
+use App\Http\Requests\Admin\SuggestedNewsRequest;
 
 
 class NewsController extends Controller
@@ -69,27 +72,47 @@ class NewsController extends Controller
 
 
 
-public function addNewsToSuggested($newsId, Request $request)
+// public function addNewsToSuggested($newsId, Request $request)
+// {
+//     $this->authorize('manage_users');
+
+//     $news = News::findOrFail($newsId);
+
+//     $request->validate([
+//         'suggestedNews_ids' => 'required|array',
+//         'suggestedNews_ids.*' => 'exists:suggested_news,id',
+//     ]);
+
+
+
+//     $news->suggestedNews()->sync($request->suggestedNews_ids);
+
+//     $news->load('suggestedNews');
+
+//     return response()->json([
+//         'data' => new NewsResource($news),
+//         'message' => "Suggested News add to News successfully."
+//     ], 200);
+// }
+public function addNewsToSuggested(SuggestedNewsRequest $request): JsonResponse
 {
     $this->authorize('manage_users');
+$newsId = $request->news_id;
+$suggestedNewsIds = $request->suggested_news_ids;
 
-    $news = News::findOrFail($newsId);
-
-    $request->validate([
-        'suggestedNews_ids' => 'required|array',
-        'suggestedNews_ids.*' => 'exists:suggested_news,id',
+// إضافة البيانات إلى قاعدة البيانات
+foreach ($suggestedNewsIds as $suggestedNewsId) {
+    SuggestedNews::create([
+        'news_id' => $newsId,
+        'suggested_news_id' => $suggestedNewsId,
     ]);
+}
 
 
+return response()->json([
 
-    $news->suggestedNews()->sync($request->suggestedNews_ids);
-
-    $news->load('suggestedNews');
-
-    return response()->json([
-        'data' => new NewsResource($news),
-        'message' => "Suggested News add to News successfully."
-    ], 200);
+    'message' => "Suggested News Created Successfully."
+]);
 }
 
         public function addSingleSuggestedNews($newsId, $suggestedNewsId)

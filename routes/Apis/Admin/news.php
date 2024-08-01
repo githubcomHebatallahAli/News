@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\NewsController;
 
    Route::get('/showAll/news','showAll');
    Route::post('/create/news', 'create');
-   Route::post('/add/suggested/to/news/{newsId}', 'addNewsToSuggested');
+   Route::post('/add/suggested/to/news', 'addNewsToSuggested');
 
    Route::post('/add/news/{newsId}/to/suggestedNews/{suggestedNewsId}', 'addSingleSuggestedNews');
    Route::post('/upload-subImg',  'uploadImage');

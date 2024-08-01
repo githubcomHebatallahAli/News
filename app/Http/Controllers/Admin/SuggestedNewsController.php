@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\SuggestedNews;
+use Illuminate\Http\JsonResponse;
 use App\Traits\ManagesModelsTrait;
+
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\NewsResource;
 use App\Http\Requests\Admin\SuggestedNewsRequest;
 use App\Http\Resources\Admin\SuggestedNewsResource;
 
@@ -28,25 +31,34 @@ class SuggestedNewsController extends Controller
         ]);
     }
 
+    public function create(SuggestedNewsRequest $request): JsonResponse
+{
+    $this->authorize('manage_users'); // Adjust as per your authorization logic
 
-    public function create(SuggestedNewsRequest $request)
-    {
-        $this->authorize('manage_users');
+    $newsId = $request->news_id;
+    $suggestedNewsIds = $request->suggested_news_ids;
 
-        $newsId = $request->news_id; // ID الخاص بالخبر الأساسي
-        $suggestedNewsIds = $request->suggested_news_ids; // مصفوفة من IDs الخاصة بالأخبار المقترحة
-
-        foreach ($suggestedNewsIds as $suggestedNewsId) {
-            SuggestedNews::create([
-                'news_id' => $newsId,
-                'suggested_news_id' => $suggestedNewsId,
-            ]);
-        }
-
-        return response()->json([
-            'message' => "Suggested News Created Successfully."
+    // إضافة البيانات إلى قاعدة البيانات
+    foreach ($suggestedNewsIds as $suggestedNewsId) {
+        SuggestedNews::create([
+            'news_id' => $newsId,
+            'suggested_news_id' => $suggestedNewsId,
         ]);
     }
+
+
+
+    // إرجاع الاستجابة
+    return response()->json([
+       
+        'message' => "Suggested News Created Successfully."
+    ]);
+}
+
+
+
+
+
 
 
     public function edit(string $id)

@@ -34,7 +34,6 @@ class News extends Model
         'keyWords' => 'array',
 
     ];
-    // الحصول على الأخبار المقترحة لهذا الخبر
     public function suggestedNews()
     {
         return $this->hasMany(SuggestedNews::class, 'news_id');

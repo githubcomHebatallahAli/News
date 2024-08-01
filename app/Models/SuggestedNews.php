@@ -15,13 +15,14 @@ class SuggestedNews extends Model
         'suggested_news_id'
     ];
 
+
     public function news()
     {
         return $this->belongsTo(News::class, 'news_id');
     }
 
     // الحصول على الأخبار المقترحة
-    public function suggestedNews()
+    public function suggested()
     {
         return $this->belongsTo(News::class, 'suggested_news_id');
     }
