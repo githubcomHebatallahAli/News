@@ -127,7 +127,7 @@ public function addNewsToSuggested($newsId, Request $request)
     {
         $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category','suggestedNews' ])->findOrFail($id);
+        $news = News::with(['admin', 'category' ])->findOrFail($id);
 
         if (!$news) {
             return response()->json([

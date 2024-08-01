@@ -25,6 +25,8 @@ class SuggestedNewsRequest extends FormRequest
     {
         return [
             'news_id' => 'required|exists:news,id',
+            'suggested_news_ids' => 'required|array',
+            'suggested_news_ids.*' => 'exists:news,id',
 
         ];
     }

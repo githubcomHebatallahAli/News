@@ -33,22 +33,20 @@ class SuggestedNewsController extends Controller
     {
         $this->authorize('manage_users');
 
-           $SuggestedNews =SuggestedNews::create ([
+        $newsId = $request->news_id; // ID الخاص بالخبر الأساسي
+        $suggestedNewsIds = $request->suggested_news_ids; // مصفوفة من IDs الخاصة بالأخبار المقترحة
 
-                'news_id'=> $request->news_id,
+        foreach ($suggestedNewsIds as $suggestedNewsId) {
+            SuggestedNews::create([
+                'news_id' => $newsId,
+                'suggested_news_id' => $suggestedNewsId,
             ]);
-            // $SuggestedNews->load('news');
-                // تحميل البيانات المرتبطة
-    $SuggestedNews->load('suggestedNews');
+        }
 
-            // $SuggestedNews->load('news.category','news.suggestedNews' ,'news.admin');
-           $SuggestedNews->save();
-           return response()->json([
-            'data' =>new SuggestedNewsResource($SuggestedNews),
+        return response()->json([
             'message' => "Suggested News Created Successfully."
         ]);
-
-        }
+    }
 
 
     public function edit(string $id)

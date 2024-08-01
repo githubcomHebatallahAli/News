@@ -15,9 +15,11 @@ class SuggestedNewsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this -> id,
+'id' => $this->id,
             'news_id' => $this->news_id,
-            'news' =>  NewsResource::collection($this->whenLoaded('news')),
+            'suggested_news_id' => $this->suggested_news_id,
+            'news' => new NewsResource($this->whenLoaded('news')),
+            'suggested_news' => new NewsResource($this->whenLoaded('suggestedNews')),
         ];
     }
 }
