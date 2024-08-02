@@ -95,7 +95,7 @@ class AdvertisementController extends Controller
     }
 
 
-      $Advertisement->loAdvertisement('position');
+      $Advertisement->load('position');
       $Advertisement->save();
 
       return response()->json([
