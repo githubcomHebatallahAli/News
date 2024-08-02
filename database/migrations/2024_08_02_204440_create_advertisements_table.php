@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('news_suggested_news', function (Blueprint $table) {
+        Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
-            $table->foreignId('suggested_news_id')->constrained('suggested_news')->onDelete('cascade');
+            $table->string('img')->nullabel();
+            $table->string('url')->nullabel();
+            $table->foreignId('ad_position_id')->constrained('ad_positions')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('news_suggested_news');
+        Schema::dropIfExists('advertisements');
     }
 };
