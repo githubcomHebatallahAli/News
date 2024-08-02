@@ -80,8 +80,8 @@ class ShowAllController extends Controller
     public function showAllNews()
     {
 
-        $news = News::with(['admin', 'category'])->get();
 
+        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category'])->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
@@ -109,7 +109,8 @@ class ShowAllController extends Controller
 
     public function mostReadNews()
     {
-        $mostReadNews = News::orderBy('news_views_count', 'desc')
+        $mostReadNews = News::where('status', 'published')
+        ->orderBy('news_views_count', 'desc')
         ->take(6)->get();
 
         return response()->json($mostReadNews);

@@ -23,7 +23,6 @@ class CommentResource extends JsonResource
                 'comment' => $this->comment,
                 'status' => $this->status,
                 'user' => new UserRegisterResource($this->user),
-                // 'news'=> new NewsResource($this->news),
                 'news' => new NewsResource($this->whenLoaded('news')),
             ],
         ];
