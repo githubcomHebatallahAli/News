@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
-            $table->string('img')->nullabel();
-            $table->string('url')->nullabel();
+            $table->string('img')->nullable();
+            $table->string('url')->nullable();
             $table->foreignId('ad_position_id')->constrained('ad_positions')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
