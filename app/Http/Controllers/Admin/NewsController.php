@@ -56,7 +56,7 @@ class NewsController extends Controller
     if ($request->hasFile('img')) {
         $imgPath = $request->file('img')->store(News::storageFolder);
         $news->img =  $imgPath;
-        // $news->save();
+  
     }
 
     $suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
@@ -67,6 +67,8 @@ class NewsController extends Controller
                 SuggestedNews::create([
                     'news_id' => $news->id,
                     'suggested_news_id' => $suggestedNewsId,
+
+
                 ]);
             }
         }

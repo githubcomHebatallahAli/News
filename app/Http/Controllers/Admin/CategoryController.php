@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Traits\ManagesModelsTrait;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CategoryRequest;
 use App\Http\Resources\Admin\CategoryResource;
@@ -57,7 +56,11 @@ class CategoryController extends Controller
         public function edit(string $id)
         {
             $this->authorize('manage_users');
-  $category = Category::with(['news.admin', 'news.suggestedNews.suggestedNews.admin', 'news.suggestedNews.suggestedNews.category', 'bestNews.news.admin'])
+  $category = Category::with(['news.admin',
+  'news.suggestedNews.suggestedNews.admin',
+  'news.suggestedNews.suggestedNews.category',
+  'bestNews.news.admin',
+  'bestNews.news.suggestedNews.suggestedNews'])
   ->withCount('news')->find($id);
 
             if (!$category) {
