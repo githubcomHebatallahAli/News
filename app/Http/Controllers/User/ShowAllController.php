@@ -73,7 +73,7 @@ class ShowAllController extends Controller
         ]);
     }
 
-    public function showAllAdvertisment()
+    public function showAllAdvertisement()
     {
             $Advertisements = Advertisement::with('position')
             ->get();

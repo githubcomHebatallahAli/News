@@ -12,7 +12,7 @@ Route::group([
 Route::get('showAll/category',[ShowAllController::class,'showAllCategory']);
 Route::get('showAll/TNews',[ShowAllController::class,'showAllTNews']);
 Route::get('showAll/trendingNews',[ShowAllController::class,'showAllTrendingNews']);
-Route::get('showAll/advertisement',[ShowAllController::class,'showAllAdvertisment']);
+Route::get('showAll/advertisement',[ShowAllController::class,'showAllAdvertisement']);
 Route::get('showAll/slider',[ShowAllController::class,'showAllSlider']);
 Route::get('showAll/news',[ShowAllController::class,'showAllNews']);
 Route::get('showAll/comments',[ShowAllController::class,'showAllComments']);
