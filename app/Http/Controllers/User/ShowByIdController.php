@@ -15,9 +15,11 @@ class ShowByIdController extends Controller
 {
 
 
-    public function showNews($id, Request $request)
+    public function showNews($id)
     {
-        $news = News::with(['comments.user', 'category', 'admin'])
+        $news = News::with(['comments.user', 'category', 'admin',
+        'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'])
                     ->findOrFail($id);
 
         if (!$news) {
@@ -42,7 +44,11 @@ class ShowByIdController extends Controller
     public function showCategory(string $id)
     {
 
-$category = Category::with(['news.admin','bestNews.news.admin'])
+$category = Category::with(['news.admin',
+  'news.suggestedNews.suggestedNews.admin',
+  'news.suggestedNews.suggestedNews.category',
+  'bestNews.news.admin',
+  'bestNews.news.suggestedNews.suggestedNews'])
 ->withCount('news')->find($id);
 
         if (!$category) {

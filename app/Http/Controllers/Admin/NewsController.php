@@ -25,7 +25,10 @@ class NewsController extends Controller
         $this->authorize('manage_users');
         // $this->authorize('showAll', News::class);
 
-        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category'])->get();
+        $news = News::with(['admin', 'category',
+         'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'])
+        ->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
@@ -56,7 +59,7 @@ class NewsController extends Controller
     if ($request->hasFile('img')) {
         $imgPath = $request->file('img')->store(News::storageFolder);
         $news->img =  $imgPath;
-  
+
     }
 
     $suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
@@ -110,7 +113,9 @@ class NewsController extends Controller
     {
         $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category' ])
+        $news = News::with(['admin', 'category',
+         'suggestedNews.suggestedNews.admin',
+          'suggestedNews.suggestedNews.category' ])
         ->findOrFail($id);
 
         if (!$news) {

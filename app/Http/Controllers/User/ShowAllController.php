@@ -24,15 +24,18 @@ class ShowAllController extends Controller
 {
     public function showAllCategory()
     {
+        $category = Category::with(['news.admin',
+        'news.suggestedNews.suggestedNews.admin',
+        'news.suggestedNews.suggestedNews.category',
+        'bestNews.news.admin',
+        'bestNews.news.suggestedNews.suggestedNews'])
+        ->withCount('news')->get();
 
-        $categories = Category::with(['news.admin','bestNews.news.admin'])
-            ->withCount('news')
-            ->get();
 
-        return response()->json([
-            'data' => CategoryBestNewsResource::collection($categories),
-            'message' => "Show All Categories With News, BestNews, and News Count Successfully."
-        ]);
+                  return response()->json([
+                      'data' =>  CategoryBestNewsResource::collection($category),
+                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+                  ]);
     }
 
 
@@ -81,7 +84,11 @@ class ShowAllController extends Controller
     {
 
 
-        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category'])->get();
+
+        $news = News::with(['admin', 'category',
+         'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'])
+        ->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
