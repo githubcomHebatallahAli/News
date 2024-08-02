@@ -40,7 +40,7 @@ class AdvertisementController extends Controller
             $Advertisement->img =  $imgPath;
         }
 
-          $Advertisement->loAdvertisement('position');
+          $Advertisement->load('position');
 
          $Advertisement->save();
          return response()->json([
