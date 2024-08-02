@@ -25,7 +25,7 @@ class AdvertisementRequest extends FormRequest
     {
         return [
             'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
-            'url' =>'string|nullabel',
+            'url' =>'string|nullable',
              'ad_position_id' => 'required|exists:ad_positions,id'
         ];
     }
