@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Models\SuggestedNews;
 use Illuminate\Http\JsonResponse;
 use App\Traits\ManagesModelsTrait;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
@@ -23,114 +25,68 @@ class NewsController extends Controller
         $this->authorize('manage_users');
         // $this->authorize('showAll', News::class);
 
-        $news = News::with(['admin', 'category'])->get();
+        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category'])->get();
         return response()->json([
             'news' => NewsResource::collection($news),
         ]);
     }
 
     public function create(NewsRequest $request)
-    {
-        $this->authorize('manage_users');
-
-        // $this->authorize('create', News::class);
-
-           $News =News::create ([
-                "title" => $request->title,
-                "description" => $request -> description,
-                "writer" => $request->writer,
-                "event_date" => $request->event_date,
-                "videoUrl"=> $request-> videoUrl,
-                "videoLabel" => $request-> videoLabel,
-                "url" => $request->url,
-                "part1" => $request->part1,
-                "part2" => $request->part2,
-                "part3" => $request->part3,
-                'keyWords' => $request->keyWords,
-                "category_id" => $request->category_id,
-                "admin_id" => auth()->id(),
-                "status" => $request-> status,
-                "adsenseCode" => $request -> adsenseCode
-            ]);
-            if ($request->hasFile('img')) {
-                $imgPath = $request->file('img')->store(News::storageFolder);
-                $News->img =  $imgPath;
-            }
-
-            $News->load('admin', 'category');
-           $News->save();
-        //    if ($request->filled('suggestedNews_ids')) {
-        //     $News->suggestedNews()->sync($request->suggestedNews_ids);
-        // }
-           return response()->json([
-            'data' =>new NewsResource($News),
-            'message' => "News Created Successfully."
-        ]);
-        }
-
-
-
-
-
-// public function addNewsToSuggested($newsId, Request $request)
-// {
-//     $this->authorize('manage_users');
-
-//     $news = News::findOrFail($newsId);
-
-//     $request->validate([
-//         'suggestedNews_ids' => 'required|array',
-//         'suggestedNews_ids.*' => 'exists:suggested_news,id',
-//     ]);
-
-
-
-//     $news->suggestedNews()->sync($request->suggestedNews_ids);
-
-//     $news->load('suggestedNews');
-
-//     return response()->json([
-//         'data' => new NewsResource($news),
-//         'message' => "Suggested News add to News successfully."
-//     ], 200);
-// }
-public function addNewsToSuggested(SuggestedNewsRequest $request): JsonResponse
 {
     $this->authorize('manage_users');
-$newsId = $request->news_id;
-$suggestedNewsIds = $request->suggested_news_ids;
 
-// إضافة البيانات إلى قاعدة البيانات
-foreach ($suggestedNewsIds as $suggestedNewsId) {
-    SuggestedNews::create([
-        'news_id' => $newsId,
-        'suggested_news_id' => $suggestedNewsId,
+    $news = News::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'writer' => $request->writer,
+        'event_date' => $request->event_date,
+        'url' => $request->url,
+        'videoUrl' => $request->videoUrl,
+        'videoLabel' => $request->videoLabel,
+        'part1' => $request->part1,
+        'part2' => $request->part2,
+        'part3' => $request->part3,
+        'status' => $request->status,
+        'adsenseCode' => $request->adsenseCode,
+        'keyWords' => $request->keyWords,
+        'category_id' => $request->category_id,
+        'admin_id' => auth()->id(),
+    ]);
+
+    if ($request->hasFile('img')) {
+        $imgPath = $request->file('img')->store(News::storageFolder);
+        $news->img =  $imgPath;
+    }
+
+    $suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
+    if (is_array($suggestedNewsIds)) {
+        foreach ($suggestedNewsIds as $suggestedNewsId) {
+
+            if (is_numeric($suggestedNewsId)) {
+                SuggestedNews::create([
+                    'news_id' => $news->id,
+                    'suggested_news_id' => $suggestedNewsId,
+                ]);
+            }
+        }
+    }
+
+    $news->load([
+        'admin',
+        'category',
+        'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'
+    ]);
+
+    return response()->json([
+        'data' =>new NewsResource ($news),
+        'message' => "News Created Successfully."
     ]);
 }
 
 
-return response()->json([
 
-    'message' => "Suggested News Created Successfully."
-]);
-}
 
-        public function addSingleSuggestedNews($newsId, $suggestedNewsId)
-{
-    $this->authorize('manage_users');
-
-    $news = News::findOrFail($newsId);
-    $suggestedNews = News::findOrFail($suggestedNewsId);
-
-    $news->suggestedNews()->attach($suggestedNews->id);
-
-    $news->load('suggestedNews');
-
-    return response()->json([
-        'data' => new NewsResource($news),
-        'message' => "News added To Suggested News successfully."
-    ], 200);
-}
 
 
         public function uploadImage(Request $request)
@@ -146,11 +102,12 @@ return response()->json([
             return response()->json(['url' => Storage::url($path)], 201);
         }
 
-    public function edit($id, Request $request)
+    public function edit($id)
     {
         $this->authorize('manage_users');
 
-        $news = News::with(['admin', 'category' ])->findOrFail($id);
+        $news = News::with(['admin', 'category', 'suggestedNews.suggestedNews.admin', 'suggestedNews.suggestedNews.category' ])
+        ->findOrFail($id);
 
         if (!$news) {
             return response()->json([
@@ -201,14 +158,27 @@ return response()->json([
             $News->img = $imgPath;
         }
 
+    $suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
+    if (is_array($suggestedNewsIds)) {
+        foreach ($suggestedNewsIds as $suggestedNewsId) {
+            if (is_numeric($suggestedNewsId)) {
+                SuggestedNews::create([
+                    'news_id' => $News->id,
+                    'suggested_news_id' => $suggestedNewsId,
+                ]);
+            }
+        }
+    }
 
-        $News->load('admin', 'category');
-
+    $News->load([
+        'admin',
+        'category',
+        'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'
+    ]);
 
        $News->save();
-    //    if ($request->filled('suggestedNews_ids')) {
-    //     $News->suggestedNews()->sync($request->suggestedNews_ids);
-    // }
+
        return response()->json([
         'data' =>new NewsResource($News),
         'message' => " Update News By Id Successfully."

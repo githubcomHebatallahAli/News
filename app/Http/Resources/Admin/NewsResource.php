@@ -36,7 +36,10 @@ class NewsResource extends JsonResource
             'adsenseCode' => $this -> adsenseCode ,
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),
             'category' => new CategoryResource($this->whenLoaded('category')),
- 
+            'suggested_news' => SuggestedNewsResource::collection($this->whenLoaded('suggestedNews')),
+          
+
+
 
         ];
     }

@@ -28,10 +28,12 @@ class News extends Model
         'admin_id',
         'status',
         'adsenseCode',
+        'suggested_news_ids'
     ];
 
     protected $casts = [
         'keyWords' => 'array',
+        'suggested_news_ids' => 'array',
 
     ];
     public function suggestedNews()
@@ -39,11 +41,7 @@ class News extends Model
         return $this->hasMany(SuggestedNews::class, 'news_id');
     }
 
-    // الحصول على الأخبار المقترحة الأخرى
-    public function suggestions()
-    {
-        return $this->hasMany(SuggestedNews::class, 'suggested_news_id');
-    }
+
 
 
 
@@ -52,13 +50,7 @@ class News extends Model
         $this->increment('news_views_count');
     }
 
-    // protected static function booted()
-    // {
-    //     static::retrieved(function ($news) {
-    //         // زيادة عدد المشاهدات تلقائيًا عند استرجاع الخبر
-    //         $news->incrementViews();
-    //     });
-    // }
+  
 
     protected $dates = ['event_date'];
 
