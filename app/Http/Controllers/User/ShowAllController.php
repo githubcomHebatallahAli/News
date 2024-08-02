@@ -10,6 +10,7 @@ use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Advertisment;
 use App\Models\TrendingNews;
+use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\Admin\AdResource;
@@ -17,6 +18,8 @@ use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
 use App\Http\Resources\Admin\TrendingNewsResource;
+
+use App\Http\Resources\Admin\AdvertisementResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;
 
 
@@ -72,13 +75,14 @@ class ShowAllController extends Controller
 
     public function showAllAdvertisment()
     {
+            $Advertisements = Advertisement::with('position')
+            ->get();
+            return response()->json([
+                'data' => AdvertisementResource::collection($Advertisements),
+                'message' => "Show All Advertisements Successfully."
+            ]);
+        }
 
-        $Advertisments = Ad::get();
-        return response()->json([
-            'data' => AdResource::collection($Advertisments),
-            'message' => "Show All Advertisments Successfully."
-        ]);
-    }
 
     public function showAllNews()
     {
