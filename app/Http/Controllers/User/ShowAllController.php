@@ -8,7 +8,6 @@ use App\Models\TNews;
 use App\Models\Slider;
 use App\Models\Comment;
 use App\Models\Category;
-use App\Models\Advertisment;
 use App\Models\TrendingNews;
 use App\Models\Advertisement;
 use App\Http\Controllers\Controller;
