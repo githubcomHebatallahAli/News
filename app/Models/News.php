@@ -50,7 +50,7 @@ class News extends Model
         $this->increment('news_views_count');
     }
 
-  
+
 
     protected $dates = ['event_date'];
 
@@ -60,7 +60,7 @@ class News extends Model
 
     public function getFormattedDateAttribute()
     {
-        return Carbon::parse($this->event_date)->format('M d, Y');
+        return Carbon::parse($this->event_date)->setTimezone('Africa/Cairo')->format('M d, Y H:i:s');
     }
 
     public static function boot()

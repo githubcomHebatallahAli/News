@@ -22,7 +22,8 @@
     "roles" => [
         "Super Admin",
         "Admin",
+        "Reviewer",
         "Writer",
-        "Reviewer"
+
     ]
 ];

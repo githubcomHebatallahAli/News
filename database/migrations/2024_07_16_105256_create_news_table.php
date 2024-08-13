@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('description')->nullable();
             $table->string('writer')->nullable();
-            $table->date('event_date')->nullable();
+            $table->datetime('event_date')->nullable();
             $table->string('img')->nullable();
             $table->string('videoUrl')->nullable();
             $table->string('videoLabel')->nullable();
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('part3')->nullable();
             $table->json('keyWords')->nullable();
             $table->text('adsenseCode')->nullable();
-            $table->json('suggested_news_ids')->nullable(); 
+            $table->json('suggested_news_ids')->nullable();
             $table->foreignId('admin_id')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->enum('status', ['pending', 'reviewed', 'rejected', 'published'])->nullable();
             $table->unsignedBigInteger('news_views_count')->default(0);

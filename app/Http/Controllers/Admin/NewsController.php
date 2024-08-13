@@ -6,14 +6,12 @@ namespace App\Http\Controllers\Admin;
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Models\SuggestedNews;
-use Illuminate\Http\JsonResponse;
 use App\Traits\ManagesModelsTrait;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
 use App\Http\Resources\Admin\NewsResource;
-use App\Http\Requests\Admin\SuggestedNewsRequest;
+
 
 
 class NewsController extends Controller
@@ -36,7 +34,9 @@ class NewsController extends Controller
 
     public function create(NewsRequest $request)
 {
+
     $this->authorize('manage_users');
+    // dd($request->all());
 
     $news = News::create([
         'title' => $request->title,
@@ -132,6 +132,7 @@ class NewsController extends Controller
 
     public function update(NewsRequest $request, string $id)
     {
+
         $this->authorize('manage_users');
        $News =News::findOrFail($id);
 

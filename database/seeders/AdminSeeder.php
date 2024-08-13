@@ -29,19 +29,20 @@ class AdminSeeder extends Seeder
              'status' => 'active'
         ]);
         DB::table('admins')->insert([
-            'name' => 'Writer',
-            'email' => 'Writer@mail.com',
-            'password' => Hash::make('Writer@123'),
+            'name' => 'Reviewer',
+            'email' => 'Reviewer@mail.com',
+            'password' => Hash::make('Reviewer@123'),
             'role_id' => '3', // يمكنك تغيير هذا إلى ID دور معين إذا كنت ترغب في ذلك
              'status' => 'active'
         ]);
         DB::table('admins')->insert([
-            'name' => 'Reviewer',
-            'email' => 'Reviewer@mail.com',
-            'password' => Hash::make('Reviewer@123'),
+            'name' => 'Writer',
+            'email' => 'Writer@mail.com',
+            'password' => Hash::make('Writer@123'),
             'role_id' => '4', // يمكنك تغيير هذا إلى ID دور معين إذا كنت ترغب في ذلك
              'status' => 'active'
         ]);
+
 
     }
 }

@@ -23,10 +23,7 @@ class Admin extends Authenticatable  implements JWTSubject
         'email_verified_at'
     ];
 
-    public function profile()
-    {
-        return $this->hasOne(AdminProfile::class);
-    }
+   
 
     public function role()
     {

@@ -24,10 +24,11 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         return [
+
             'title' =>'nullable|string',
             'description' =>'nullable|string',
             'writer' =>'nullable|string',
-            'event_date' => 'nullable|date_format:Y-m-d',
+            'event_date' => 'nullable|date_format:Y-m-d H:i:s',
             'url' =>'string|nullable',
             'img.*'=>'nullable|image|mimes:jpg,jpeg,png,gif,svg',
             'videoUrl' => 'nullable|url',
