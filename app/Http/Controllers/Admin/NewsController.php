@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
 use App\Http\Resources\Admin\NewsResource;
+use Carbon\Carbon;
 
 
 
@@ -32,17 +33,22 @@ class NewsController extends Controller
         ]);
     }
 
-    public function create(NewsRequest $request)
+
+
+
+public function create(NewsRequest $request)
 {
 
     $this->authorize('manage_users');
-    // dd($request->all());
+
+
+    $eventDate = $request->input('event_date') ?: Carbon::now('Africa/Cairo');
 
     $news = News::create([
         'title' => $request->title,
         'description' => $request->description,
         'writer' => $request->writer,
-        'event_date' => $request->event_date,
+        'event_date' => $eventDate,
         'url' => $request->url,
         'videoUrl' => $request->videoUrl,
         'videoLabel' => $request->videoLabel,
@@ -95,7 +101,6 @@ class NewsController extends Controller
 
 
 
-
         public function uploadImage(Request $request)
         {
             $this->authorize('manage_users');
@@ -134,6 +139,7 @@ class NewsController extends Controller
     {
 
         $this->authorize('manage_users');
+        $eventDate = $request->input('event_date') ?: Carbon::now('Africa/Cairo');
        $News =News::findOrFail($id);
 
        if (!$News) {
@@ -146,7 +152,7 @@ class NewsController extends Controller
         "title" => $request->title,
         "description" => $request -> description,
         "writer" => $request->writer,
-        "event_date" => $request->event_date,
+        'event_date' => $eventDate,
         "videoUrl"=> $request-> videoUrl,
         "videoLabel" => $request-> videoLabel,
         "url" => $request->url,
