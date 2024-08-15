@@ -105,7 +105,7 @@ public function create(NewsRequest $request)
         {
             $this->authorize('manage_users');
             $request->validate([
-                'subImg' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'subImg' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             $image = $request->file('subImg');
