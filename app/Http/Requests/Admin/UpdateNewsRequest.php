@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class NewsRequest extends FormRequest
+class UpdateNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class NewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-
             'title' =>'nullable|string',
             'description' =>'nullable|string',
             'writer' =>'nullable|string',
@@ -42,6 +41,7 @@ class NewsRequest extends FormRequest
             'keyWords.*' => 'string|nullable',
              'category_id'=>'nullable|exists:categories,id',
             'suggested_news_ids' => 'nullable|string',
+            'admin_id' => 'required|exists:admins,id',
 
         ];
     }

@@ -22,6 +22,7 @@ Route::delete('/forceDelete/news/{id}','forceDelete');
    Route::patch('review/news/{id}', 'review');
 Route::patch('reject/news/{id}', 'reject');
 Route::patch('publish/news/{id}', 'publish');
+Route::patch('updateAdminId/news/{id}', 'updateAdminId');
 Route::get('showAll/mostReadNews',  'mostReadNews');
 
 });

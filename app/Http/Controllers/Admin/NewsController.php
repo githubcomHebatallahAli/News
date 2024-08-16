@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use Carbon\Carbon;
 use App\Models\News;
 use Illuminate\Http\Request;
 use App\Models\SuggestedNews;
@@ -11,7 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
 use App\Http\Resources\Admin\NewsResource;
-use Carbon\Carbon;
+use App\Http\Requests\Admin\UpdateNewsRequest;
 
 
 
@@ -135,7 +136,7 @@ public function create(NewsRequest $request)
         ]);
     }
 
-    public function update(NewsRequest $request, string $id)
+    public function update(UpdateNewsRequest $request, string $id)
     {
 
         $this->authorize('manage_users');
@@ -161,7 +162,7 @@ public function create(NewsRequest $request)
         "part3" => $request->part3,
         "keyWords" => $request->keyWords,
         "category_id" => $request->category_id,
-        "admin_id" => auth()->id(),
+        "admin_id" => $request->admin_id,
         "status" => $request-> status,
         "adsenseCode" => $request -> adsenseCode
         ]);
@@ -329,6 +330,46 @@ public function forceDelete(string $id)
             'message' => "News Published Successfully."
         ]);
     }
+
+    public function updateAdminId(UpdateNewsRequest $request, string $id)
+{
+    $this->authorize('manage_users');
+
+    $News = News::findOrFail($id);
+
+    if (!$News) {
+        return response()->json([
+            'message' => "News not found."
+        ], 404);
+    }
+
+    // $request->validate([
+    //     'admin_id' => 'required|exists:admins,id',
+    // ]);
+
+    $News->update([
+        'admin_id' => $request->admin_id,
+    ]);
+
+
+    $News->load([
+        'admin',
+        'category',
+        'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'
+    ]);
+
+    $News->save();
+
+    return response()->json([
+        'data' => new NewsResource($News),
+        'message' => "Admin ID updated successfully."
+    ]);
+}
+
+
+
+
 
     public function mostReadNews()
     {
