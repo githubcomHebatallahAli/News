@@ -13,11 +13,7 @@ use App\Http\Resources\Auth\AdminRegisterResource;
 
 class AdminAuthController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:admin',
-    //      ['except' => ['register','login','verify','logout']]);
-    // }
+
 
     /**
      * Get a JWT via given credentials.
@@ -36,13 +32,7 @@ class AdminAuthController extends Controller
         if (!$token = auth()->guard('admin')->attempt($validator->validated())) {
             return response()->json(['message' => 'Invalid data'], 422);
 
-            $admin = auth()->guard('admin')->user();
-
-            // if (is_null($user->email_verified_at)) {
-            //     return response()->json([
-            //         'message' => 'Email not verified. Please verify it.'
-            //     ], 403);
-            // }
+            // $admin = auth()->guard('admin')->user();
         }
 
         return $this->createNewToken($token);
@@ -73,16 +63,11 @@ class AdminAuthController extends Controller
         ));
 
         $admin->save();
-        // $admin->notify(new EmailVerificationNotification());
-
         return response()->json([
             'message' => 'Admin Registration successful',
             'admin' =>new AdminRegisterResource($admin)
         ]);
     }
-
-
-
 
     /**
      * Log the admin out (Invalidate the token).
@@ -134,8 +119,6 @@ class AdminAuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->guard('admin')->factory()->getTTL() * 60,
-            // 'admin' => auth()->guard('admin')->user(),
-            //   'admin' => Admin::with('role:id,name')->find(auth()->id()),
             'admin' => $admin,
         ]);
     }

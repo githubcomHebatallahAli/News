@@ -343,9 +343,7 @@ public function forceDelete(string $id)
         ], 404);
     }
 
-    // $request->validate([
-    //     'admin_id' => 'required|exists:admins,id',
-    // ]);
+    
 
     $News->update([
         'admin_id' => $request->admin_id,

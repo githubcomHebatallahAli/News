@@ -2,10 +2,6 @@
 
 namespace App\Traits;
 
-
-use Log;
-use Illuminate\Http\Request;
-
 trait ManagesModelsTrait
 {
     public function destroyModel(string $modelClass, string $resourceClass, string $id){
