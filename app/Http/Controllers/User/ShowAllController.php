@@ -26,29 +26,30 @@ use App\Http\Resources\Admin\AdvertisementResource;
 
 class ShowAllController extends Controller
 {
-    // public function showAllCategory()
-    // {
-    //     $category = Category::with(['news.admin',
-    //     'news.suggestedNews.suggestedNews.admin',
-    //     'news.suggestedNews.suggestedNews.category',
-    //     'bestNews.news.admin',
-    //     'bestNews.news.suggestedNews.suggestedNews'])
-    //     ->withCount('news')->get();
+    public function showAllCategory()
+    {
+        $category = Category::with(['news.admin',
+        'news.suggestedNews.suggestedNews.admin',
+        'news.suggestedNews.suggestedNews.category',
+        'bestNews.news.admin',
+        'bestNews.news.suggestedNews.suggestedNews'])
+        ->withCount('news')->get();
 
-    //               return response()->json([
-    //                   'data' =>  CategoryBestNewsResource::collection($category),
-    //                   'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
-    //               ]);
-    // }
+                  return response()->json([
+                      'data' =>  CategoryBestNewsResource::collection($category),
+                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+                  ]);
+    }
 
-         public function showAllCategory()
-     {
-         $category = Category::get();
-                      return response()->json([
-                       'data' =>  CategoryUserResource::collection($category),
-                       'message' => "Show All Category Successfully."
-                   ]);
-     }
+
+    //      public function showAllCategory()
+    //  {
+    //      $category = Category::get();
+    //                   return response()->json([
+    //                    'data' =>  CategoryUserResource::collection($category),
+    //                    'message' => "Show All Category Successfully."
+    //                ]);
+    //  }
 
 
 
