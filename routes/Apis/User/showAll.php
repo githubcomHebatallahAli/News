@@ -10,6 +10,7 @@ Route::group([
     'prefix' => 'user'
 ], function () {
 Route::get('showAll/category',[ShowAllController::class,'showAllCategory']);
+Route::get('showAll/newCategory',[ShowAllController::class,'showAllNewCategory']);
 Route::get('showAll/TNews',[ShowAllController::class,'showAllTNews']);
 Route::get('showAll/trendingNews',[ShowAllController::class,'showAllTrendingNews']);
 Route::get('showAll/advertisement',[ShowAllController::class,'showAllAdvertisement']);

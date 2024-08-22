@@ -42,14 +42,14 @@ class ShowAllController extends Controller
     }
 
 
-    //      public function showAllCategory()
-    //  {
-    //      $category = Category::get();
-    //                   return response()->json([
-    //                    'data' =>  CategoryUserResource::collection($category),
-    //                    'message' => "Show All Category Successfully."
-    //                ]);
-    //  }
+         public function showAllNewCategory()
+     {
+         $category = Category::get();
+                      return response()->json([
+                       'data' =>  CategoryUserResource::collection($category),
+                       'message' => "Show All Category Successfully."
+                   ]);
+     }
 
 
 
