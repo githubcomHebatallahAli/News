@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use App\Models\News;
+use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Models\SuggestedNews;
 use App\Traits\ManagesModelsTrait;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
@@ -92,14 +94,44 @@ public function create(NewsRequest $request)
     ]);
     $news->save();
 
+    $this->updateSliders();
+
     return response()->json([
         'data' =>new NewsResource ($news),
         'message' => "News Created Successfully."
     ]);
 }
 
+protected function updateSliders()
+{
+    $latestNewsByCategory = DB::table('news')
+        ->select('id as news_id', 'title', 'description', 'img', 'category_id', DB::raw('MAX(created_at) as latest_created_at'))
+        ->groupBy('category_id', 'title', 'description', 'img', 'id')
+        ->where('status', 'published')
+        ->orderBy('latest_created_at', 'desc')
+        ->get();
 
 
+    foreach ($latestNewsByCategory as $news) {
+        $existingSlider = Slider::where('news_id', $news->news_id)->first();
+        if (!$existingSlider) {
+            Slider::create([
+                'news_id' => $news->news_id,
+                'title' => $news->title,
+                'description' => $news->description,
+                'img' => $news->img,
+                'category_id' => $news->category_id
+            ]);
+        } else {
+            $existingSlider->update([
+                'title' => $news->title,
+                'description' => $news->description,
+                'img' => $news->img,
+                'category_id' => $news->category_id
+            ]);
+        }
+    }
+}
 
 
         public function uploadImage(Request $request)
@@ -195,6 +227,8 @@ public function create(NewsRequest $request)
     ]);
 
        $News->save();
+
+       $this->updateSliders();
 
        return response()->json([
         'data' =>new NewsResource($News),
@@ -343,7 +377,7 @@ public function forceDelete(string $id)
         ], 404);
     }
 
-    
+
 
     $News->update([
         'admin_id' => $request->admin_id,

@@ -53,47 +53,33 @@ class ShowAllController extends Controller
 
 
 
-    // public function showAllSlider()
-    // {
-
-    //     $Sliders = Slider::with('news.category', 'news.admin')->get();
-    //     return response()->json([
-    //         'data' => SliderResource::collection(  $Sliders),
-    //         'message' => "Show All Sliders Successfully."
-    //     ]);
-    // }
-
-
-
-
     public function showAllSlider()
     {
-        // جلب آخر خبر لكل قسم باستخدام query builder
-        $latestNewsByCategory = DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->whereNull('news.deleted_at')
-            ->groupBy('categories.id')
-            ->select('news.*', DB::raw('MAX(news.created_at) as latest_created_at'))
-            ->orderBy('latest_created_at', 'desc')
-            ->get();
+        $latestNewsByCategory = News::select('id as news_id', 'title', 'description', 'img', 'category_id')
+        ->whereIn('id', function ($query) {
+            $query->selectRaw('MAX(id)')
+                ->from('news')
+                ->where('status', 'published')
+                ->groupBy('category_id');
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        // تحويل النتائج إلى collection من نماذج News
-        $newsIds = $latestNewsByCategory->pluck('id');
-        $latestNews = News::with('category', 'admin')
-            ->whereIn('id', $newsIds)
-            ->get();
 
-            dd($latestNewsByCategory);
+    $sliders = $latestNewsByCategory->map(function ($news) {
+        return [
+            'news_id' => $news->news_id,
+            'title' => $news->title,
+            'description' => $news->description,
+            'img' => $news->img,
+            'category_id' => $news->category_id
+        ];
+    });
 
-        // ربط الأخبار الأخيرة مع السلايدر
-        $Sliders = Slider::with(['news' => function ($query) use ($newsIds) {
-            $query->whereIn('id', $newsIds);
-        }, 'news.category', 'news.admin'])->get();
-
-        return response()->json([
-            'data' => SliderResource::collection($Sliders),
-            'message' => "Show All Sliders Successfully."
-        ]);
+    return response()->json([
+        'data' => $sliders,
+        'message' => "Sliders Retrieved Successfully."
+    ]);
     }
 
 

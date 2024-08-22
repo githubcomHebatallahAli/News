@@ -14,9 +14,20 @@ class SliderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // return [
+        //     "id" => $this -> id,
+        //     'news' => new NewsResource($this->whenLoaded('news')),
+        // ];
+
         return [
-            "id" => $this -> id,
-            'news' => new NewsResource($this->whenLoaded('news')),
+            'id' => $this->id,
+            'news' => [
+                'title' => $this->news->title,
+                'description' => $this->news->description,
+                'img' => $this->news->img,
+                'news_id' => $this->news->id,
+                'category_id' => $this->news->category_id,
+            ],
         ];
     }
 }
