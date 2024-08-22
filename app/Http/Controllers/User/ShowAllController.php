@@ -10,47 +10,93 @@ use App\Models\Comment;
 use App\Models\Category;
 use App\Models\TrendingNews;
 use App\Models\Advertisement;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\Admin\AdResource;
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
-use App\Http\Resources\Admin\TrendingNewsResource;
 
-use App\Http\Resources\Admin\AdvertisementResource;
 use App\Http\Resources\Admin\CategoryBestNewsResource;
+use App\Http\Resources\Admin\CategoryUserResource;
+use App\Http\Resources\Admin\TrendingNewsResource;
+use App\Http\Resources\Admin\AdvertisementResource;
 
 
 class ShowAllController extends Controller
 {
-    public function showAllCategory()
-    {
-        $category = Category::with(['news.admin',
-        'news.suggestedNews.suggestedNews.admin',
-        'news.suggestedNews.suggestedNews.category',
-        'bestNews.news.admin',
-        'bestNews.news.suggestedNews.suggestedNews'])
-        ->withCount('news')->get();
+    // public function showAllCategory()
+    // {
+    //     $category = Category::with(['news.admin',
+    //     'news.suggestedNews.suggestedNews.admin',
+    //     'news.suggestedNews.suggestedNews.category',
+    //     'bestNews.news.admin',
+    //     'bestNews.news.suggestedNews.suggestedNews'])
+    //     ->withCount('news')->get();
+
+    //               return response()->json([
+    //                   'data' =>  CategoryBestNewsResource::collection($category),
+    //                   'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+    //               ]);
+    // }
+
+         public function showAllCategory()
+     {
+         $category = Category::get();
+                      return response()->json([
+                       'data' =>  CategoryUserResource::collection($category),
+                       'message' => "Show All Category Successfully."
+                   ]);
+     }
 
 
-                  return response()->json([
-                      'data' =>  CategoryBestNewsResource::collection($category),
-                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
-                  ]);
-    }
+
+    // public function showAllSlider()
+    // {
+
+    //     $Sliders = Slider::with('news.category', 'news.admin')->get();
+    //     return response()->json([
+    //         'data' => SliderResource::collection(  $Sliders),
+    //         'message' => "Show All Sliders Successfully."
+    //     ]);
+    // }
+
 
 
 
     public function showAllSlider()
     {
+        // جلب آخر خبر لكل قسم باستخدام query builder
+        $latestNewsByCategory = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->whereNull('news.deleted_at')
+            ->groupBy('categories.id')
+            ->select('news.*', DB::raw('MAX(news.created_at) as latest_created_at'))
+            ->orderBy('latest_created_at', 'desc')
+            ->get();
 
-        $Sliders = Slider::with('news.category', 'news.admin')->get();
+        // تحويل النتائج إلى collection من نماذج News
+        $newsIds = $latestNewsByCategory->pluck('id');
+        $latestNews = News::with('category', 'admin')
+            ->whereIn('id', $newsIds)
+            ->get();
+
+            dd($latestNewsByCategory);
+
+        // ربط الأخبار الأخيرة مع السلايدر
+        $Sliders = Slider::with(['news' => function ($query) use ($newsIds) {
+            $query->whereIn('id', $newsIds);
+        }, 'news.category', 'news.admin'])->get();
+
         return response()->json([
-            'data' => SliderResource::collection(  $Sliders),
+            'data' => SliderResource::collection($Sliders),
             'message' => "Show All Sliders Successfully."
         ]);
     }
+
+
+
 
 
     public function showAllTNews()
@@ -85,8 +131,6 @@ class ShowAllController extends Controller
 
     public function showAllNews()
     {
-
-
 
         $news = News::with(['admin', 'category',
          'suggestedNews.suggestedNews.admin',
