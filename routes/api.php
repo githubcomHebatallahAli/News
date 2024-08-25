@@ -25,7 +25,7 @@ require __DIR__ . '/Apis/Admin/admin.php';
 require __DIR__ . '/Apis/Admin/statistics.php';
 require __DIR__ . '/Apis/Admin/adImg.php';
 require __DIR__ . '/Apis/Admin/advertisement.php';
-require __DIR__ . '/Apis/Admin/select6Categorieswith4News.php';
+require __DIR__ . '/Apis/Admin/select6CategoriesWith4News.php';
 require __DIR__ . '/Apis/Admin/select3CategoriesWith6News.php';
 require __DIR__ . '/Apis/Admin/3Category.php';
 require __DIR__ . '/Apis/User/showAll.php';
