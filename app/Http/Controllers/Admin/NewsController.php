@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\NewsRequest;
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Requests\Admin\UpdateNewsRequest;
+use App\Http\Resources\Admin\UserNewsResource;
 
 
 
@@ -40,6 +41,69 @@ class NewsController extends Controller
 
 
 public function create(NewsRequest $request)
+{
+
+    $this->authorize('manage_users');
+
+
+    $eventDate = $request->input('event_date') ?: Carbon::now('Africa/Cairo');
+
+    $news = News::create([
+        'title' => $request->title,
+        'description' => $request->description,
+        'writer' => $request->writer,
+        'event_date' => $eventDate,
+        'url' => $request->url,
+        'videoUrl' => $request->videoUrl,
+        'videoLabel' => $request->videoLabel,
+        'part1' => $request->part1,
+        'part2' => $request->part2,
+        'part3' => $request->part3,
+        'status' => $request->status,
+        'adsenseCode' => $request->adsenseCode,
+        'keyWords' => $request->keyWords,
+        'category_id' => $request->category_id,
+        'admin_id' => auth()->id(),
+    ]);
+
+    if ($request->hasFile('img')) {
+        $imgPath = $request->file('img')->store(News::storageFolder);
+        $news->img =  $imgPath;
+
+    }
+
+    $suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
+    if (is_array($suggestedNewsIds)) {
+        foreach ($suggestedNewsIds as $suggestedNewsId) {
+
+            if (is_numeric($suggestedNewsId)) {
+                SuggestedNews::create([
+                    'news_id' => $news->id,
+                    'suggested_news_id' => $suggestedNewsId,
+
+
+                ]);
+            }
+        }
+    }
+
+    $news->load([
+        'admin',
+        'category',
+        'suggestedNews.suggestedNews.admin',
+        'suggestedNews.suggestedNews.category'
+    ]);
+    $news->save();
+
+    $this->updateSliders();
+
+    return response()->json([
+        'data' =>new NewsResource ($news),
+        'message' => "News Created Successfully."
+    ]);
+}
+
+public function newCreate(NewsRequest $request)
 {
 
     $this->authorize('manage_users');
@@ -147,6 +211,10 @@ protected function updateSliders()
             return response()->json(['url' => Storage::url($path)], 201);
         }
 
+
+
+
+
     public function edit($id)
     {
         $this->authorize('manage_users');
@@ -228,12 +296,80 @@ protected function updateSliders()
 
        $News->save();
 
-       $this->updateSliders();
+    //    $this->updateSliders();
 
        return response()->json([
         'data' =>new NewsResource($News),
         'message' => " Update News By Id Successfully."
     ]);
+}
+
+public function newUpdate(UpdateNewsRequest $request, string $id)
+{
+
+    $this->authorize('manage_users');
+    $eventDate = $request->input('event_date') ?: Carbon::now('Africa/Cairo');
+   $News =News::findOrFail($id);
+
+   if (!$News) {
+    return response()->json([
+        'message' => "News not found."
+    ], 404);
+}
+
+   $News->update([
+    "title" => $request->title,
+    "description" => $request -> description,
+    "writer" => $request->writer,
+    'event_date' => $eventDate,
+    "videoUrl"=> $request-> videoUrl,
+    "videoLabel" => $request-> videoLabel,
+    "url" => $request->url,
+    "part1" => $request->part1,
+    "part2" => $request->part2,
+    "part3" => $request->part3,
+    "keyWords" => $request->keyWords,
+    "category_id" => $request->category_id,
+    "admin_id" => $request->admin_id,
+    "status" => $request-> status,
+    "adsenseCode" => $request -> adsenseCode
+    ]);
+
+    if ($request->hasFile('img')) {
+        if ($News->img) {
+            Storage::disk('public')->delete($News->img);
+        }
+        $imgPath = $request->file('img')->store('News', 'public');
+        $News->img = $imgPath;
+    }
+
+$suggestedNewsIds = json_decode($request->input('suggested_news_ids', '[]'), true);
+if (is_array($suggestedNewsIds)) {
+    foreach ($suggestedNewsIds as $suggestedNewsId) {
+        if (is_numeric($suggestedNewsId)) {
+            SuggestedNews::create([
+                'news_id' => $News->id,
+                'suggested_news_id' => $suggestedNewsId,
+            ]);
+        }
+    }
+}
+
+$News->load([
+    'admin',
+    'category',
+    'suggestedNews.suggestedNews.admin',
+    'suggestedNews.suggestedNews.category'
+]);
+
+   $News->save();
+
+   $this->updateSliders();
+
+   return response()->json([
+    'data' =>new NewsResource($News),
+    'message' => " Update News By Id Successfully."
+]);
 }
 
 public function destroy(string $id)

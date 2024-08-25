@@ -22,6 +22,16 @@ class Category extends Model
         return $this->hasMany(News::class);
     }
 
+    public function Category3()
+{
+    return $this->hasMany(Category3::class);
+}
+
+    public function Category6()
+{
+    return $this->hasMany(Category6::class);
+}
+
 
 
     public function bestNews()

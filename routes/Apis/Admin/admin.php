@@ -8,6 +8,7 @@ Route::controller(AdminController::class)->prefix('/admin')->middleware('admin')
 
    Route::get('/showAll/admin','showAll');
    Route::get('/edit/admin/{id}','edit');
+   Route::post('/update/admin/{id}','update');
    Route::delete('/delete/admin/{id}', 'destroy');
    Route::get('/showDeleted/admin', 'showDeleted');
 Route::get('/restore/admin/{id}','restore');

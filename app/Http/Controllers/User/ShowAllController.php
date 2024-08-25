@@ -9,20 +9,24 @@ use App\Models\Slider;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\TrendingNews;
+use Illuminate\Http\Request;
 use App\Models\Advertisement;
 use Illuminate\Support\Facades\DB;
+use App\Models\Selected3Categories;
+use App\Models\Selected6Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CommentResource;
 use App\Http\Resources\Admin\AdResource;
+
 use App\Http\Resources\Admin\NewsResource;
 use App\Http\Resources\Admin\TNewsResource;
 use App\Http\Resources\Admin\SliderResource;
-
-use App\Http\Resources\Admin\CategoryBestNewsResource;
+use App\Http\Resources\Admin\UserNewsResource;
+use App\Http\Resources\Admin\UserTNewsResource;
 use App\Http\Resources\Admin\CategoryUserResource;
 use App\Http\Resources\Admin\TrendingNewsResource;
 use App\Http\Resources\Admin\AdvertisementResource;
-
+use App\Http\Resources\Admin\CategoryBestNewsResource;
 
 class ShowAllController extends Controller
 {
@@ -82,9 +86,71 @@ class ShowAllController extends Controller
     ]);
     }
 
+    public function showAllLatest4NewsFrom6Selected()
+    {
+        $selectedCategories = Selected6Categories::first();
+
+        if (!$selectedCategories) {
+            return response()->json(['error' => 'No categories selected.'], 400);
+        }
+
+        $categoryIds = json_decode($selectedCategories->category_ids);
+        $categoriesWithNews = Category::whereIn('id', $categoryIds)
+            ->with(['news' => function ($query) {
+                $query->where('status', 'published')
+                    //   ->orderBy('updated_at', 'desc')
+                      ->orderBy('created_at', 'desc')
+                      ->take(4);
+            }])
+            ->get();
+
+            $categoriesWithNewsData = $categoriesWithNews->map(function ($category) {
+                return [
+                    'category_id' => $category->id,
+                    'category_name' => $category->name,
+                    'news' => UserNewsResource::collection($category->news)
+                ];
+            });
+
+            return response()->json([
+                'data' => $categoriesWithNewsData,
+                'message' => "Categories with Latest 4 News Retrieved Successfully."
+            ]);
+        }
 
 
 
+        public function showAllLatest6NewsFrom3Selected()
+        {
+            $selectedCategories = Selected3Categories::first();
+
+            if (!$selectedCategories) {
+                return response()->json(['error' => 'No categories selected.'], 400);
+            }
+
+            $categoryIds = json_decode($selectedCategories->category_ids);
+            $categoriesWithNews = Category::whereIn('id', $categoryIds)
+                ->with(['news' => function ($query) {
+                    $query->where('status', 'published')
+                        //   ->orderBy('updated_at', 'desc')
+                          ->orderBy('created_at', 'desc')
+                          ->take(6);
+                }])
+                ->get();
+
+                $categoriesWithNewsData = $categoriesWithNews->map(function ($category) {
+                    return [
+                        'category_id' => $category->id,
+                        'category_name' => $category->name,
+                        'news' => UserNewsResource::collection($category->news)
+                    ];
+                });
+
+                return response()->json([
+                    'data' => $categoriesWithNewsData,
+                    'message' => "Categories with Latest 6 News Retrieved Successfully."
+                ]);
+            }
 
     public function showAllTNews()
     {
@@ -92,6 +158,16 @@ class ShowAllController extends Controller
         return response()->json([
             'data' => TNewsResource::collection($TNews),
             'message' => "Show All TNews Successfully."
+        ]);
+    }
+
+    public function showAllNewTNews()
+    {
+        $tNews = TNews::with(['news:id,category_id,title'])->get();
+
+        return response()->json([
+            'data' => UserTNewsResource::collection($tNews),
+            'message' => "All TNews Retrieved Successfully."
         ]);
     }
 

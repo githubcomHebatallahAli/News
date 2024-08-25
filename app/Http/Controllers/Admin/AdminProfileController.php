@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdminProfileResource;
 use App\Http\Resources\Auth\AdminRegisterResource;
 
+
 class AdminProfileController extends Controller
 {
     public function showAll()

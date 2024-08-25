@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\UpdateAdminRegister;
 use App\Http\Resources\Auth\AdminRegisterResource;
+use App\Http\Requests\Auth\UpdateAdminRegisterRequest;
+use App\Http\Resources\Auth\EditAdminRegisterResource;
 
 class AdminController extends Controller
 {
@@ -39,6 +42,38 @@ class AdminController extends Controller
           'message' => "Edit Admin By ID Successfully."
       ]);
   }
+
+  public function update(UpdateAdminRegisterRequest $request, string $id)
+  {
+      $this->authorize('manage_users');
+      $Admin = Admin::findOrFail($id);
+
+      if (!$Admin) {
+          return response()->json([
+              'message' => "Admin not found."
+          ], 404);
+      }
+
+      
+      if ($request->filled('name')) {
+          $Admin->name = $request->name;
+      }
+
+      if ($request->filled('email')) {
+          $Admin->email = $request->email;
+      }
+
+      $Admin->role_id = $request->role_id;
+      $Admin->adsenseCode = $request->adsenseCode;
+      $Admin->status = $request->status;
+
+      $Admin->save();
+
+      return response()->json([
+          'data' => new AdminRegisterResource($Admin),
+          'message' => "Update Admin By Id Successfully."
+      ]);
+}
 
 
 
