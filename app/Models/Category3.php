@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category3 extends Model
 {
-    use HasFactory;
+    use HasFactory  , SoftDeletes;
     protected $fillable = [
         'category_id'
     ];
@@ -17,23 +18,10 @@ class Category3 extends Model
     return $this->belongsTo(Category::class);
 }
 
-protected static function boot()
+public function news()
 {
-    parent::boot();
-
-    static::created(function ($category3) {
-        // احصل على آخر 6 أخبار منشورة
-        $latestNews = News::where('status', 'published')
-                          ->orderBy('created_at', 'desc')
-                          ->take(6)
-                          ->get();
-
-        // اربط الأخبار بالفئة المرتبطة في Category3
-        foreach ($latestNews as $news) {
-            $news->category()->associate($category3->category);
-            $news->save();
-        }
-    });
+    return $this->belongsToMany(News::class, 'category3_news', 'category3_id', 'news_id');
 }
+
 
 }

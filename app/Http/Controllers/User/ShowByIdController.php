@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Ad;
+use Carbon\Carbon;
 use App\Models\News;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -80,5 +81,68 @@ $category = Category::with(['news.admin',
             'message' => "Show Ad By ID Successfully."
         ]);
     }
+
+
+// public function showNewsByCategory(Request $request, $categoryId)
+// {
+//     $limit = $request->input('limit', 6);
+//     $category = Category::select('id', 'name')->find($categoryId);
+//     if (!$category) {
+//         return response()->json(['message' => 'Category not found.'], 404);
+//     }
+
+
+//     $news = News::where('category_id', $categoryId)
+//                 ->where('status', 'Published')
+//                 ->select('id as news_id', 'title', 'img', 'writer')
+//                 ->orderBy('created_at', 'desc')
+//                 ->limit($limit)
+//                 ->get();
+
+//     return response()->json([
+//         'category' => [
+//             'id' => $category->id,
+//             'name' => $category->name,
+//         ],
+//         'news' => $news,
+//         'message' => "News Retrieved Successfully.",
+//     ]);
+// }
+
+
+public function showNewsByCategory(Request $request, $categoryId)
+{
+    $limit = $request->input('limit', 6);
+    $category = Category::select('id', 'name')->find($categoryId);
+    if (!$category) {
+        return response()->json(['message' => 'Category not found.'], 404);
+    }
+
+    $news = News::where('category_id', $categoryId)
+                ->where('status', 'Published')
+                ->select('id as news_id', 'title', 'img', 'writer','created_at')
+                ->orderBy('created_at', 'desc')
+                ->limit($limit)
+                ->get()
+                ->map(function ($newsItem) {
+                    return [
+                        'news_id' => $newsItem->news_id,
+                        'title' => $newsItem->title,
+                        'img' => $newsItem->img,
+                        'writer' => $newsItem->writer,
+                        'formatted_date' => Carbon::parse($newsItem->created_at)->format('M d, Y H:i:s'),
+                    ];
+                });
+
+    return response()->json([
+        'category' => [
+            'id' => $category->id,
+            'name' => $category->name,
+        ],
+        'news' => $news,
+        'message' => "News Retrieved Successfully.",
+    ]);
+}
+
 
 }

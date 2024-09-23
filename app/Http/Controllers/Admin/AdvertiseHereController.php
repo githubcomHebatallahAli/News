@@ -18,20 +18,24 @@ class AdvertiseHereController extends Controller
 
         $advertiseHere = AdvertiseHere::with('user')->get();
 
-        if ($advertiseHere->isEmpty()) {
+        // if ($advertiseHere->isEmpty()) {
+        //     return response()->json([
+        //         'message' => "No AdvertiseHere messages found."
+        //     ], 404);
+        // }
+
+
+        if (!$advertiseHere) {
             return response()->json([
                 'message' => "No AdvertiseHere messages found."
             ], 404);
         }
-
         return response()->json([
             'data' => AdvertiseHereResource::collection($advertiseHere),
             'message' => "Show all AdvertiseHere messages with user details successfully."
         ]);
-
-
-
     }
+
 
     public function edit(string $id)
     {

@@ -39,6 +39,153 @@ class NewsController extends Controller
 
 
 
+public function showAllNewsPginate(Request $request)
+{
+    $this->authorize('manage_users');
+    $limit = $request->input('limit', 15);
+    $news = News::whereIn('status', ['reviewed', 'rejected', 'published'])
+        ->with('category:id,name')
+        ->select('id as news_id', 'category_id', 'img','status','title', 'writer','created_at')
+        ->orderBy('created_at', 'desc')
+        ->paginate($limit);
+    $newsItems = $news->items();
+    $newsItems = collect($newsItems)->map(function ($item) {
+        return [
+            'news_id' => $item['news_id'],
+            'category_id' => $item['category_id'],
+            'category_name' => $item['category']['name'] ?? null,
+            'img' => $item['img'],
+            'status' => $item['status'],
+            'title' => $item['title'],
+            'writer' => $item['writer'],
+            'formatted_date' => Carbon::parse($item['created_at'])->format('M d, Y H:i:s'),
+        ];
+    })->all();
+
+    return response()->json([
+        'news' => $newsItems,
+        'pagination' => [
+            'total' => $news->total(),
+            'count' => $news->count(),
+            'per_page' => $news->perPage(),
+            'current_page' => $news->currentPage(),
+            'total_pages' => $news->lastPage(),
+        ],
+        'message' => "All News Accept pending Retrieved Successfully.",
+    ]);
+}
+
+    public function showAllNewsPginateReviewed(Request $request)
+{
+    $limit = $request->input('limit', 15);
+    $news = News::whereIn('status', ['reviewed'])
+                ->with('category:id,name')
+                ->select('id as news_id', 'category_id', 'img','status','title', 'writer' , 'created_at')
+                ->orderBy('created_at', 'desc')
+                ->paginate($limit);
+                $newsItems = $news->items();
+
+                $newsItems = collect($newsItems)->map(function ($item) {
+                    return [
+                        'news_id' => $item['news_id'],
+                        'category_id' => $item['category_id'],
+                        'category_name' => $item['category']['name'] ?? null,
+                        'img' => $item['img'],
+                        'status' => $item['status'],
+                        'title' => $item['title'],
+                        'writer' => $item['writer'],
+                        'formatted_date' => Carbon::parse($item['created_at'])->format('M d, Y H:i:s'),
+
+                    ];
+                })->all();
+
+    return response()->json([
+        'news' => $newsItems,
+        'pagination' => [
+            'total' => $news->total(),
+            'count' => $news->count(),
+            'per_page' => $news->perPage(),
+            'current_page' => $news->currentPage(),
+            'total_pages' => $news->lastPage(),
+        ],
+        'message' => "News reviewed Retrieved Successfully.",
+    ]);
+}
+
+    public function showAllNewsPginateRejected(Request $request)
+{
+    $limit = $request->input('limit', 15);
+    $news = News::whereIn('status', ['rejected'])
+                ->with('category:id,name')
+                ->select('id as news_id', 'category_id', 'img','status','title', 'writer', 'created_at')
+                ->orderBy('created_at', 'desc')
+                ->paginate($limit);
+                $newsItems = $news->items();
+
+                $newsItems = collect($newsItems)->map(function ($item) {
+                    return [
+                        'news_id' => $item['news_id'],
+                        'category_id' => $item['category_id'],
+                        'category_name' => $item['category']['name'] ?? null,
+                        'img' => $item['img'],
+                        'status' => $item['status'],
+                        'title' => $item['title'],
+                        'writer' => $item['writer'],
+                        'formatted_date' => Carbon::parse($item['created_at'])->format('M d, Y H:i:s'),
+                    ];
+                })->all();
+
+    return response()->json([
+        'news' => $newsItems,
+        'pagination' => [
+            'total' => $news->total(),
+            'count' => $news->count(),
+            'per_page' => $news->perPage(),
+            'current_page' => $news->currentPage(),
+            'total_pages' => $news->lastPage(),
+        ],
+        'message' => "News Rejected Retrieved Successfully.",
+    ]);
+
+}
+
+    public function showAllNewsPginatePublished(Request $request)
+{
+
+    $limit = $request->input('limit', 15);
+    $news = News::whereIn('status', ['published'])
+                ->select('id as news_id', 'category_id', 'img','status','title', 'writer','created_at')
+                ->orderBy('created_at', 'desc')
+                ->paginate($limit);
+                $newsItems = $news->items();
+
+                $newsItems = collect($newsItems)->map(function ($item) {
+                    return [
+                        'news_id' => $item['news_id'],
+                        'category_id' => $item['category_id'],
+                        'category_name' => $item['category']['name'] ?? null,
+                        'img' => $item['img'],
+                        'status' => $item['status'],
+                        'title' => $item['title'],
+                        'writer' => $item['writer'],
+                        'formatted_date' => Carbon::parse($item['created_at'])->format('M d, Y H:i:s'),
+
+                    ];
+                })->all();
+
+    return response()->json([
+        'news' => $newsItems,
+        'pagination' => [
+            'total' => $news->total(),
+            'count' => $news->count(),
+            'per_page' => $news->perPage(),
+            'current_page' => $news->currentPage(),
+            'total_pages' => $news->lastPage(),
+        ],
+        'message' => "News published Retrieved Successfully.",
+    ]);
+}
+
 
 public function create(NewsRequest $request)
 {

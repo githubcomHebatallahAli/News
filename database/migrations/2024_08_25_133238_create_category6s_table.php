@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('category6s', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

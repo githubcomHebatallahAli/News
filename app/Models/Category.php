@@ -56,7 +56,6 @@ class Category extends Model
     });
 
     static::deleted(function ($category) {
-        // فقط التعامل مع الحذف اللين
         if (!$category->trashed()) {
             $category->news_count = $category->news()->count();
             $category->save();
@@ -74,4 +73,7 @@ class Category extends Model
     {
         return $this->news()->count();
     }
+
+
+
 }

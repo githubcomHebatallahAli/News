@@ -19,9 +19,8 @@ class UserNewsResource extends JsonResource
             'news_id' => $this->id,
             'title' => $this->title,
             'img' => $this->img,
-            // 'formatted_date' => $this->formatted_date,
-            'formatted_date' => Carbon::parse($this->event_date)->format('Y-m-d H:i:s'),
-
+            'formatted_date' => Carbon::parse($this->created_at)->format('M d, Y H:i:s'),
+            
         ];
     }
 }

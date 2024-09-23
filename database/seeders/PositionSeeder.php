@@ -36,9 +36,18 @@ class PositionSeeder extends Seeder
         DB::table('ad_positions')->insert([
             'position' => 'Footer',
         ]);
-        
+
         DB::table('ad_positions')->insert([
             'position' => 'Middle Category',
+        ]);
+        DB::table('ad_positions')->insert([
+            'position' => 'Top News',
+        ]);
+        DB::table('ad_positions')->insert([
+            'position' => 'Middle News',
+        ]);
+        DB::table('ad_positions')->insert([
+            'position' => 'Bottom News',
         ]);
 
 

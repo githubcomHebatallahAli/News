@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
+use App\Models\News;
 use App\Models\Category3;
 use Illuminate\Http\Request;
 use App\Traits\ManagesModelsTrait;
@@ -16,10 +18,38 @@ class Category3Controller extends Controller
     {
         $this->authorize('manage_users');
 
-        $Category3 = Category3::with('category')->get();
+        $categories = Category3::with('category', 'news')->get();
+
+
+        $response = $categories->map(function ($category3) {
+
+            $latestNews = $category3->news()
+                ->where('status', 'published')
+                ->latest()
+                ->take(6)
+                ->get()
+                ->map(function ($news) {
+                    return [
+                        'news_id' => $news->id,
+                        'title' => $news->title,
+                        'img' => $news->img,
+                        'formatted_date' => Carbon::parse($news->event_date)->format('Y-m-d H:i:s'),
+                    ];
+                });
+
+
+            return [
+                'data' => [
+                    'id' => $category3->id,
+                    'category_name' => $category3->category->name,
+                ],
+                'latest_news' => $latestNews,
+            ];
+        });
+
         return response()->json([
-            'data' => Category3Resource::collection($Category3),
-            'message' => "Show All Category Selected Successfully."
+            'data' => $response,
+            'message' => "Show all selected categories with latest news."
         ]);
     }
 
@@ -28,17 +58,43 @@ class Category3Controller extends Controller
     {
         $this->authorize('manage_users');
 
-           $Category3 =Category3::create ([
-                "category_id" => $request-> category_id
+
+        $Category3 = Category3::create([
+            "category_id" => $request->category_id
+        ]);
+        $Category3->load('category');
+
+
+        $latestNews = News::where('category_id', $request->category_id)
+                          ->where('status', 'published')
+                          ->latest()
+                          ->take(6)
+                          ->get();
+
+
+        $Category3->news()->attach($latestNews->pluck('id'));
+
+        $newsData = $latestNews->map(function ($news) {
+            return [
+                'news_id' => $news->id,
+                'title' => $news->title,
+                'img' => $news->img,
+                'formatted_date' => Carbon::parse($news->event_date)->format('Y-m-d H:i:s'),
+            ];
+        });
+
+
+            return response()->json([
+                'data' =>new Category3Resource($Category3),
+                'latest_news' => $newsData,
+                'message' => "Category Selected Created Successfully and Latest Published News Attached."
+
             ]);
 
-           $Category3->save();
-           return response()->json([
-            'data' =>new Category3Resource($Category3),
-            'message' => "Category Selected Created Successfully."
-        ]);
 
-        }
+    }
+
+
 
 
     public function edit(string $id)
@@ -61,7 +117,7 @@ class Category3Controller extends Controller
     public function update(Category3Request $request, string $id)
     {
         $this->authorize('manage_users');
-       $Category3 =Category3::with('category')->findOrFail($id);
+       $Category3 =Category3::findOrFail($id);
 
        if (!$Category3) {
         return response()->json([
@@ -72,9 +128,32 @@ class Category3Controller extends Controller
         "category_id" => $request-> category_id
         ]);
 
+        $Category3->load('category');
+
+
+        $latestNews = News::where('category_id', $request->category_id)
+                          ->where('status', 'published')
+                          ->latest()
+                          ->take(6)
+                          ->get();
+
+
+        // $Category3->news()->attach($latestNews->pluck('id'));
+        $Category3->news()->sync($latestNews->pluck('id'));
+
+        $newsData = $latestNews->map(function ($news) {
+            return [
+                'news_id' => $news->id,
+                'title' => $news->title,
+                'img' => $news->img,
+                'formatted_date' => Carbon::parse($news->event_date)->format('Y-m-d H:i:s'),
+            ];
+        });
+
        $Category3->save();
        return response()->json([
         'data' =>new Category3Resource($Category3),
+        'latest_news' => $newsData,
         'message' => " Update Category Selected By Id Successfully."
     ]);
 }

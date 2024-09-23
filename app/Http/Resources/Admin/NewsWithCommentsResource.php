@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Auth\AdminRegisterResource;
@@ -30,7 +31,8 @@ class NewsWithCommentsResource extends JsonResource
             'part3' => $this -> part3,
             'keyWords' => $this -> keyWords,
             'news_views_count' => $this->news_views_count,
-            'formatted_date' => $this->formatted_date,
+            // 'formatted_date' => $this->formatted_date,
+             'formatted_date' => Carbon::parse($this->created_at)->format('M d, Y H:i:s'),
             'status' => $this -> status,
             'adsenseCode' => $this -> adsenseCode ,
             'admin' => new AdminRegisterResource($this->whenLoaded('admin')),

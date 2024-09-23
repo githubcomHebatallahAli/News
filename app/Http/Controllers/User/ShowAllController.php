@@ -98,7 +98,6 @@ class ShowAllController extends Controller
         $categoriesWithNews = Category::whereIn('id', $categoryIds)
             ->with(['news' => function ($query) {
                 $query->where('status', 'published')
-                    //   ->orderBy('updated_at', 'desc')
                       ->orderBy('created_at', 'desc')
                       ->take(4);
             }])
@@ -132,7 +131,6 @@ class ShowAllController extends Controller
             $categoriesWithNews = Category::whereIn('id', $categoryIds)
                 ->with(['news' => function ($query) {
                     $query->where('status', 'published')
-                        //   ->orderBy('updated_at', 'desc')
                           ->orderBy('created_at', 'desc')
                           ->take(6);
                 }])
@@ -169,6 +167,7 @@ class ShowAllController extends Controller
             'data' => UserTNewsResource::collection($tNews),
             'message' => "All TNews Retrieved Successfully."
         ]);
+
     }
 
 
@@ -204,6 +203,18 @@ class ShowAllController extends Controller
         ]);
     }
 
+    public function showAllallNews()
+    {
+        $publishedNews = News::where('status', 'published')
+        ->select('title', 'id as news_id', 'category_id')
+        ->get();
+
+    return response()->json([
+        'data' => $publishedNews,
+        'message' => "Published news retrieved successfully."
+    ]);
+
+    }
     public function showAllComments()
     {
         $Comments = Comment::get();

@@ -88,6 +88,12 @@ class News extends Model
         });
     }
 
+    public function categories3()
+{
+    return $this->belongsToMany(Category3::class, 'category3_news', 'news_id', 'category3_id');
+}
+
+
 
 
     public function category()

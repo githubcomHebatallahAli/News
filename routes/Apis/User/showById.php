@@ -12,9 +12,11 @@ Route::group([
 Route::get('show/category/{id}',[ShowByIdController::class,'showCategory']);
 Route::get('show/news/{id}',[ShowByIdController::class,'showNews']);
 Route::get('show/ad/{id}',[ShowByIdController::class,'showAd']);
+Route::get('show/news/limited/category/{categoryId}',[ShowByIdController::class,'showNewsByCategory']);
 
 
 });
+
 
 
 

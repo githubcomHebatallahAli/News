@@ -16,4 +16,10 @@ Route::controller(AdminProfileController::class)->prefix('/admin')->middleware('
    Route::get('/showDeleted/adminProfile', 'showDeleted');
 Route::get('/restore/adminProfile/{id}','restore');
 Route::delete('/forceDelete/adminProfile/{id}','forceDelete');
+
+
+Route::get('/edit/adminProfile/with/publised/news/{id}','editAdminProfileWithpublishedNews');
+Route::get('/edit/adminProfile/with/pending/news/{id}','editAdminProfileWithPendingNews');
+Route::get('/edit/adminProfile/with/reviewed/news/{id}','editAdminProfileWithReviewedNews');
+Route::get('/edit/adminProfile/with/rejected/news/{id}','editAdminProfileWithRejectedNews');
    });

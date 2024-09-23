@@ -15,6 +15,11 @@ class CommentController extends Controller
     {
         $this->authorize('manage_users');
         $Comments = Comment::with('user')->get();
+        if (!$Comments) {
+            return response()->json([
+                'message' => "No Comments messages found."
+            ], 404);
+        }
         return response()->json([
             'data' => CommentResource::collection($Comments),
             'message' => "Show All Comments Successfully."
@@ -71,7 +76,7 @@ class CommentController extends Controller
              'message' => "Comment not found."
          ], 404);
      }
-       
+
 
         $Comment->update(['status' => 'rejected']);
 

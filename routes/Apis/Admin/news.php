@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\NewsController;
    Route::post('/create/news', 'create');
    Route::post('/newCreate/news', 'newCreate');
 
-  
+
 
 
 
@@ -32,6 +32,11 @@ Route::patch('publish/news/{id}', 'publish');
 Route::patch('updateAdminId/news/{id}', 'updateAdminId');
 Route::get('showAll/mostReadNews',  'mostReadNews');
 
+// الجديد
+Route::get('/showAll/news/paginate','showAllNewsPginate');
+Route::get('/showAll/news/paginate/reviewed','showAllNewsPginateReviewed');
+Route::get('/showAll/news/paginate/rejected','showAllNewsPginateRejected');
+Route::get('/showAll/news/paginate/published','showAllNewsPginatePublished');
 });
 
 

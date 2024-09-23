@@ -23,5 +23,7 @@ Route::get('showAll/ads',[ShowAllController::class,'showAllAds']);
 Route::get('showAll/mostReadNews', [ShowAllController::class, 'mostReadNews']);
 Route::get('showAll/6Categories/with/latest4News', [ShowAllController::class, 'showAllLatest4NewsFrom6Selected']);
 Route::get('showAll/3Categories/with/latest6News', [ShowAllController::class, 'showAllLatest6NewsFrom3Selected']);
+
+Route::get('showAll/news/with/title',[ShowAllController::class,'showAllallNews']);
 });
 

@@ -15,4 +15,9 @@ Route::controller(CategoryController::class)->prefix('/admin')
    Route::get('/showDeleted/category', 'showDeleted');
 Route::get('/restore/category/{id}','restore');
 Route::delete('/forceDelete/category/{id}','forceDelete');
+
+// الجديد
+Route::get('/edit/category/paginate/{id}','showNewsByCategory');
+Route::get('/showAll/categories','showAllCategory');
+
    });
