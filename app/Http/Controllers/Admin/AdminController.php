@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin;
 use App\Traits\ManagesModelsTrait;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\UpdateAdminRegister;
 use App\Http\Resources\Auth\AdminRegisterResource;
 use App\Http\Requests\Auth\UpdateAdminRegisterRequest;
-use App\Http\Resources\Auth\EditAdminRegisterResource;
+
 
 class AdminController extends Controller
 {
@@ -54,7 +53,7 @@ class AdminController extends Controller
           ], 404);
       }
 
-      
+
       if ($request->filled('name')) {
           $Admin->name = $request->name;
       }
