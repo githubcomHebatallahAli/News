@@ -31,7 +31,7 @@ class CategoryController extends Controller
 
                   return response()->json([
                       'data' =>  CategoryBestNewsResource::collection($category),
-                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+                      'message' => "Show All Category  With News,BestNews and News Count."
                   ]);
     }
 
@@ -43,7 +43,7 @@ class CategoryController extends Controller
 
                   return response()->json([
                       'data' =>  CategoryResource::collection($category),
-                      'message' => "Edit Category  With News,BestNews and News Count By ID Successfully."
+                      'message' => "Show All Category With News."
                   ]);
     }
 
